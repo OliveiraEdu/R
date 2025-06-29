@@ -21,17 +21,17 @@ require(bibliometrix)
 ## Bibitex
 WoSA <- "savedrecs.bib"
 
-WoSB <- "savedrecs(2).bib"
+WoSB <- "savedrecs(1).bib"
 
-WoSC <- "savedrecs(3).bib"
+WoSC <- "savedrecs(2).bib"
 
-WoSD <- "savedrecs_D.bib"
+WoSD <- "savedrecs(3).bib"
 
-WoSE <- "savedrecs_E.bib"
+WoSE <- "savedrecs(4).bib"
 
-Scopus <- "scopus(2).csv"
+Scopus <- "scopus.csv"
 
-pubmed <- "pubmed-OpenScienc-set(1).txt"
+pubmed <- "summary-reproducib-set.txt"
 
 ## Data-frame
 WoSA_df <- convert2df( 
@@ -90,10 +90,10 @@ M <- mergeDbSources( #WoSA_df,
 head(M["TC"])
 
 # Criar arquivo *.csv a partir do objeto M (bases WoS e Scopus) ------------
-# write.csv(M, "dataset.csv")
+write.csv(M, "dataset.csv")
 
 # Criar arquivo .RData
-save(M, file = "SLR_6.RData")
+save(M, file = "SLR_1.RData")
 ##END
                
 # Biblioshiny --------------------------------------------------------------
