@@ -12,7 +12,7 @@ ifelse ( !require(bibliometrix),
          install.packages (
            "bibliometrix", 
            dependencies=TRUE), "Pacote carregado" ) # instalar pacote
-                                                    #se necessário
+#se necessário
 
 require(bibliometrix)
 
@@ -31,13 +31,13 @@ WoSE <- "savedrecs(4).bib"
 
 Scopus <- "scopus.csv"
 
-pubmed <- "summary-reproducib-set.txt"
+pubmed <- "pubmed-reproducib-set(1).txt"
 
 ## Data-frame
 WoSA_df <- convert2df( 
-   WoSA, 
-   dbsource = "wos", 
-   format = "bibtex" )
+  WoSA, 
+  dbsource = "wos", 
+  format = "bibtex" )
 head(WoSA_df["TC"])
 
 WoSB_df <- convert2df( 
@@ -79,25 +79,25 @@ head(pubmed_df["TC"])
 
 # Criar objeto com as bases unificadas -------------------------------------
 M <- mergeDbSources( #WoSA_df, 
-                     WoSB_df,
-                     WoSC_df,
-                     WoSD_df, 
-                     WoSE_df, 
-                     Scopus_df,
-                     pubmed_df,
-                     remove.duplicated = TRUE)
+  WoSB_df,
+  WoSC_df,
+  WoSD_df, 
+  WoSE_df, 
+  Scopus_df,
+  pubmed_df,
+  remove.duplicated = TRUE)
 
 head(M["TC"])
 
 # Criar arquivo *.csv a partir do objeto M (bases WoS e Scopus) ------------
-write.csv(M, "dataset.csv")
+# write.csv(M, "dataset.csv")
 
 # Criar arquivo .RData
 save(M, file = "SLR_1.RData")
 ##END
-               
+
 # Biblioshiny --------------------------------------------------------------
 biblioshiny() # necessita que o package "bibliometrix" 
-              # esteja carregado (linha 17)
+# esteja carregado (linha 17)
 
 
