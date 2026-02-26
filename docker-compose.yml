@@ -8,10 +8,20 @@ services:
       - TERM=xterm-256color
       - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no
     volumes:
-      # Mount your SSH key for GitHub access
+      # --- PERSISTENCE & SYNC ---
+      
+      # Maps your local repo to the container workspace
+      - ~/Git/R:/workspaces/R:cached
+      
+      # Named volume to keep R packages persistent across restarts
+      - r_libs:/usr/local/lib/R/site-library
+      
+      # Mount SSH key for Git operations within the container
       - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
-      # Your persistent R workspace
-      - ~/workspace/R:/workspaces/R
+
     stdin_open: true
     tty: true
     command: /bin/sh
+
+volumes:
+  r_libs:

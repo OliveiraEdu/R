@@ -9,33 +9,27 @@ apply_eligibility_criteria <- function(df, criteria = NULL) {
     criteria <- get_default_criteria()
   }
   
+  if (!"TI" %in% names(df)) df$TI <- ""
+  if (!"AB" %in% names(df)) df$AB <- ""
+  if (!"PY" %in% names(df)) df$PY <- NA
+  if (!"SO" %in% names(df)) df$SO <- ""
+  
   df$screening_id <- seq_len(nrow(df))
-  df$screening_status <- NA
+  df$screening_status <- "include"  # Default to include
   df$screening_notes <- ""
   df$screening_reason <- ""
   
-  # Apply inclusion criteria
+  # Apply each criterion - exclude if ANY criterion fails
   for (criterion in criteria) {
     result <- criterion(df)
-    df$include_temp <- result$include
-    df$reason_temp <- result$reason
     
-    # Update status for records that pass
-    included_ids <- which(df$include_temp & is.na(df$screening_status))
-    df$screening_status[included_ids] <- "include"
-    df$screening_notes[included_ids] <- paste(df$screening_notes[included_ids], df$reason_temp[included_ids])
-    
-    # Mark exclusions
-    excluded_ids <- which(!df$include_temp)
-    df$screening_status[excluded_ids] <- "exclude"
-    df$screening_reason[excluded_ids] <- df$reason_temp[excluded_ids]
+    # Update status for records that fail this criterion
+    failed_ids <- which(!result$include)
+    if (length(failed_ids) > 0) {
+      df$screening_status[failed_ids] <- "exclude"
+      df$screening_reason[failed_ids] <- result$reason
+    }
   }
-  
-  # Default to include if no criteria excluded
-  df$screening_status[is.na(df$screening_status)] <- "include"
-  
-  df$include_temp <- NULL
-  df$reason_temp <- NULL
   
   df
 }
@@ -120,6 +114,14 @@ get_default_criteria <- function() {
 title_abstract_screening <- function(df, reviewers = c("Reviewer1", "Reviewer2"), 
                                      output_path = NULL) {
   
+  # Ensure required columns exist
+  if (!"TI" %in% names(df)) df$TI <- NA
+  if (!"AU" %in% names(df)) df$AU <- NA
+  if (!"PY" %in% names(df)) df$PY <- NA
+  if (!"SO" %in% names(df)) df$SO <- NA
+  if (!"DOI" %in% names(df)) df$DOI <- NA
+  if (!"AB" %in% names(df)) df$AB <- NA
+  
   df$screening_id <- seq_len(nrow(df))
   
   # Initialize screening columns for each reviewer
@@ -133,8 +135,8 @@ title_abstract_screening <- function(df, reviewers = c("Reviewer1", "Reviewer2")
   # For automated screening, apply criteria
   df <- apply_eligibility_criteria(df)
   
-  # Mark initial decision
-  df$screening_decision <- ifelse(df$screening_status == "include", "include", "exclude")
+  # Mark initial decision based on screening_status
+  df$screening_decision <- ifelse(is.na(df$screening_status) | df$screening_status == "include", "include", "exclude")
   
   if (!is.null(output_path)) {
     saveRDS(df, output_path)
