@@ -1,0 +1,30 @@
+Package: slrengine
+Type: Package
+Title: Systematic Literature Review Engine
+Version: 1.0.0
+Date: 2026-02-26
+Authors@R: c(
+    person("Researcher", "Primary", email = "researcher@example.com", role = c("aut", "cre"))
+  )
+Description: A robust R package for conducting Systematic Literature Reviews
+    following PRISMA 2020 guidelines. Supports database import, deduplication,
+    screening, data extraction, quality assessment, and reporting.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 4.0.0)
+Imports: 
+    bibliometrix (>= 3.0),
+    dplyr,
+    tidyr,
+    stringr,
+    lubridate,
+    writexl,
+    httr,
+    jsonlite,
+    xml2
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
+RoxygenNote: 7.2.0
