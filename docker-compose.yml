@@ -1,0 +1,17 @@
+services:
+  opencode:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: R_docker
+    environment:
+      - TERM=xterm-256color
+      - GIT_SSH_COMMAND=ssh -i /root/.ssh/id_ed25519 -o StrictHostKeyChecking=no
+    volumes:
+      # Mount your SSH key for GitHub access
+      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+      # Your persistent R workspace
+      - ~/workspace/R:/workspaces/R
+    stdin_open: true
+    tty: true
+    command: /bin/sh
