@@ -70,7 +70,6 @@ R --quiet -e 'source("test_engine.R")'
 ```r
 # Preferred: Load only what you need from packages
 library(dplyr)    # For data manipulation
-library(writexl)  # For Excel export
 
 # Avoid: import.packages() inside functions (slower)
 # Prefer: library() at top of script
@@ -206,7 +205,9 @@ print(paste("Removed", nrow(df)-nrow(deduped), "duplicates"))
 | Package | Purpose | Required |
 |---------|---------|----------|
 | dplyr | Data manipulation | Yes |
-| writexl | Excel export | Yes |
+
+Output format: CSV UTF-8 (no external dependencies required)
+LaTeX export available for PRISMA flow diagram.
 
 Note: `bibliometrix` is optional - standalone import functions exist as fallback.
 

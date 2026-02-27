@@ -169,15 +169,27 @@ export_extraction_form(extraction, "output/extraction_form.csv")
 
 ## 6. Output Files
 
-The engine produces CSV UTF-8 files:
+The engine produces CSV UTF-8 and LaTeX files:
+
 | File | Description |
 |------|-------------|
 | `screening_results.rds` | All records with screening decisions |
 | `extraction_form.csv` | Data extraction template |
 | `quality_assessment.csv` | MMAT quality scores |
-| `prisma_flow.csv` | PRISMA flow diagram data |
+| `prisma_flow.csv` | PRISMA flow diagram (CSV) |
+| `prisma_flow.tex` | PRISMA flow diagram (LaTeX) |
 | `summary_tables.csv` | Summary statistics |
 | `gap_analysis.csv` | Gap analysis |
+
+### LaTeX Integration
+
+The PRISMA flow diagram can be directly included in LaTeX documents:
+
+```latex
+\input{path/to/prisma_flow.tex}
+```
+
+Or compile the `.tex` file separately and include the PDF.
 
 ---
 
