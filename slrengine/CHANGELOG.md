@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated data/ directory with sample database exports
 - **arXiv API integration**: `search_arxiv()` for searching arXiv preprints via API
 - **bioRxiv API integration**: `search_biorxiv()` for searching bioRxiv preprints via API
+- Default 6-month window for arXiv/bioRxiv searches to focus on recent research
 
 ### Changed
 - Updated test_full_pipeline.R to use data/ folder
