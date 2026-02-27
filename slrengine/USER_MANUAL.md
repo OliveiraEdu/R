@@ -48,7 +48,7 @@ Place your exported database files in a folder (e.g., `data/`).
 ### Step 2: Run the Complete Pipeline
 
 ```r
-# Load the engine functions
+# Load all engine functions
 source("slrengine/R/import_standalone.R")
 source("slrengine/R/deduplication.R")
 source("slrengine/R/screening.R")
@@ -56,31 +56,62 @@ source("slrengine/R/fulltext.R")
 source("slrengine/R/extraction.R")
 source("slrengine/R/quality.R")
 source("slrengine/R/prisma.R")
+source("slrengine/R/report.R")
 
-# Define your data sources
+# Define data sources (supported: wos, scopus, pubmed, pubmed_csv, ieee, acm)
 sources <- list(
-  wos = c("data/wos_export.bib"),
-  scopus = "data/scopus_export.csv",
-  pubmed = "data/pubmed_export.txt"
+  ieee = "data/ieee_export.csv",
+  wos = "data/wos_export.bib",
+  acm = "data/acm_export.bib",
+  pubmed_csv = "data/pubmed_export.csv",
+  scopus = "data/scopus_export.csv"
 )
 
-# Run the pipeline
+# Run pipeline
 merged <- import_databases(sources, remove_duplicates = TRUE)
 screened <- title_abstract_screening(merged)
-fulltext <- fulltext_assessment(screened[screened$screening_decision == "include", ])
-extraction <- extract_data(fulltext)
+included_ta <- screened[screened$screening_decision == "include", ]
+fulltext <- fulltext_assessment(included_ta)
+included_ft <- fulltext[fulltext$fulltext_status == "include", ]
+extraction <- extract_data(included_ft)
 qa <- auto_quality_indicators(quality_assessment(extraction))
 
 # Generate PRISMA flow
 prisma <- generate_prisma_flow(
   records_all = nrow(merged) + attr(merged, "duplicates_removed"),
   records_screened = nrow(merged),
-  records_excluded_ta = nrow(merged) - sum(screened$screening_decision == "include"),
-  records_assessed_ft = nrow(screened[screened$screening_decision == "include", ]),
-  records_excluded_ft = nrow(screened[screened$screening_decision == "include", ]) - nrow(fulltext[fulltext$fulltext_status == "include", ]),
+  records_excluded_ta = nrow(merged) - nrow(included_ta),
+  records_assessed_ft = nrow(included_ta),
+  records_excluded_ft = nrow(included_ta) - nrow(included_ft),
   records_included = nrow(extraction)
 )
+
+# Generate reports
+generate_markdown_report(prisma, extraction, qa, "output/report.md")
+generate_latex_report(prisma, extraction, qa, "output/report.tex")
 ```
+
+### Step 3: Alternative - Use Test Scripts
+
+The repository includes ready-to-use test scripts:
+
+```bash
+# Run full pipeline test with existing data
+Rscript test_full_pipeline.R
+
+# Run basic engine tests
+Rscript test_engine.R
+```
+
+### Supported Data Sources
+
+| Database | Format | Key Parameter |
+|----------|--------|---------------|
+| IEEE Xplore | CSV | `ieee` |
+| Web of Science | BibTeX | `wos` |
+| ACM Digital Library | BibTeX | `acm` |
+| PubMed | CSV | `pubmed_csv` |
+| Scopus | CSV | `scopus` |
 
 ---
 

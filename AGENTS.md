@@ -164,7 +164,13 @@ Every exported function must have:
 ├── slr/                    # Protocol and queries
 │   ├── PRISMA_2020_ROTOCOL.md
 │   └── SEARCH_QUERIES.md
-├── bibliometrix/           # Test data (WoS, Scopus, PubMed exports)
+├── data/                   # Database exports
+│   ├── ieee_*.csv
+│   ├── wos_*.bib
+│   ├── acm_*.bib
+│   ├── scopus_*.csv
+│   └── pubmed_*.csv
+├── slr_results/            # Pipeline output (generated)
 ├── test_engine.R           # Basic tests
 ├── test_full_pipeline.R    # Full pipeline test
 └── AGENTS.md              # Agent guidelines
@@ -186,22 +192,27 @@ Every exported function must have:
 ### Running Tests
 
 ```bash
+# Run full pipeline test
+Rscript test_full_pipeline.R
+
+# Run basic engine tests
+Rscript test_engine.R
+
 # Test import functions
 Rscript -e '
 source("slrengine/R/import_standalone.R")
-scopus <- import_scopus("bibliometrix/scopus.csv")
-print(paste("Imported", nrow(scopus), "records"))
+ieee <- import_ieee("data/export2026.02.27-06.44.06.csv")
+print(paste("Imported", nrow(ieee), "IEEE records"))
 '
 
 # Test deduplication
-Rscript -e '
-source("slrengine/R/import_standalone.R")
-source("slrengine/R/deduplication.R")
-df <- data.frame(TI=c("A","B","A"), DOI=c("10.1000/1","10.1000/2",NA), AU=c("X","Y","X"), PY=c(2020,2021,2020))
+Rscript -e "
+source('slrengine/R/import_standalone.R')
+source('slrengine/R/deduplication.R')
+df <- data.frame(TI=c('A','B','A'), DOI=c('10.1000/1','10.1000/2',NA), AU=c('X','Y','X'), PY=c(2020,2021,2020))
 deduped <- deduplicate_records(df)
-print(paste("Removed", nrow(df)-nrow(deduped), "duplicates"))
-'
-```
+print(paste('Removed', nrow(df)-nrow(deduped), 'duplicates'))
+"
 
 ### Updating CHANGELOG
 

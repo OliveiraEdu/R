@@ -5,6 +5,18 @@ All notable changes to the SLR Engine will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Support for PubMed CSV format via `import_pubmed_csv()`
+- Auto-detection of file formats via `import_file()`
+- Updated data/ directory with sample database exports
+
+### Changed
+- Updated test_full_pipeline.R to use data/ folder
+
+---
+
 ## [1.0.0] - 2026-02-27
 
 ### Added
@@ -31,17 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standalone import functions (no bibliometrix dependency required)
 - Modular design with separate R files for each pipeline stage
 - Pipeline orchestration via `run_slr_pipeline()`
-
----
-
-## [Unreleased]
-
-### Planned Features
-- [ ] API integration for live database searches
-- [ ] Interactive screening interface
-- [ ] Reference manager integration (EndNote, Zotero)
-- [ ] Citation network analysis
-- [ ] Additional export formats (BibTeX, RIS)
 
 ---
 
