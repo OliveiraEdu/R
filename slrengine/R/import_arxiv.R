@@ -6,6 +6,7 @@
 #' @param query Search string (e.g., "blockchain AND provenance")
 #' @param max_results Maximum results to return (default 100, max 30000)
 #' @param categories arXiv categories to search (e.g., c("cs.DC", "q-bio.QM"))
+#' @param months Number of months to search (default 6). Overrides date_from/date_to
 #' @param date_from Start date (optional, format: YYYYMMDD)
 #' @param date_to End date (optional, format: YYYYMMDD)
 #' @param sleep_time Seconds to wait between API calls (default 3)
@@ -14,6 +15,7 @@
 search_arxiv <- function(query,
                          max_results = 100,
                          categories = NULL,
+                         months = 6,
                          date_from = NULL,
                          date_to = NULL,
                          sleep_time = 3) {
@@ -23,6 +25,14 @@ search_arxiv <- function(query,
   }
   
   base_url <- "http://export.arxiv.org/api/query"
+  
+  # Calculate date range from months if not explicitly provided
+  if (is.null(date_from) || is.null(date_to)) {
+    end_date <- Sys.Date()
+    start_date <- end_date - (months * 30)
+    date_to <- format(end_date, "%Y%m%d")
+    date_from <- format(start_date, "%Y%m%d")
+  }
   
   # Build search query
   search_query <- query
@@ -240,12 +250,6 @@ import_arxiv_xml <- function(path) {
 #'
 #' Requires httr and jsonlite packages.
 #' Install with: install.packages(c("httr", "jsonlite"))
-#'
-#' @param query Search string
-#' @param max_results Maximum results (default 100)
-#' @param date_from Start date (YYYY-MM-DD)
-#' @param date_to End date (YYYY-MM-DD)
-#' @param sleep_time Seconds between calls (default 2)
 #' Search bioRxiv API
 #'
 #' Note: bioRxiv API does not support keyword search directly.
@@ -255,16 +259,20 @@ import_arxiv_xml <- function(path) {
 #'
 #' @param query Search string (keywords to filter)
 #' @param max_results Maximum results to return (default 100)
-#' @param date_from Start date (YYYY-MM-DD), defaults to 2020-01-01
+#' @param months Number of months to search (default 6). Overrides date_from/date_to
+#' @param date_from Start date (YYYY-MM-DD), defaults to 6 months ago
 #' @param date_to End date (YYYY-MM-DD), defaults to today
 #' @param sleep_time Seconds between calls (default 2)
+#' @param max_pages Maximum API pages to fetch (default 20, 100 records each)
 #' @return Data frame with bioRxiv records
 #' @export
 search_biorxiv <- function(query,
                           max_results = 100,
+                          months = 6,
                           date_from = NULL,
                           date_to = NULL,
-                          sleep_time = 2) {
+                          sleep_time = 2,
+                          max_pages = 20) {
   
   if (!requireNamespace("httr", quietly = TRUE)) {
     stop("httr package required. Install with: install.packages('httr')")
@@ -276,13 +284,22 @@ search_biorxiv <- function(query,
   
   base_url <- "https://api.biorxiv.org/details/biorxiv"
   
-  start_date <- ifelse(is.null(date_from), "2020-01-01", date_from)
-  end_date <- ifelse(is.null(date_to), format(Sys.Date(), "%Y-%m-%d"), date_to)
+  # Calculate date range from months if not explicitly provided
+  if (is.null(date_from) || is.null(date_to)) {
+    end_date <- as.Date(format(Sys.Date(), "%Y-%m-%d"))
+    start_date <- end_date - (months * 30)
+    start_date <- format(start_date, "%Y-%m-%d")
+    end_date <- format(end_date, "%Y-%m-%d")
+  } else {
+    start_date <- date_from
+    end_date <- date_to
+  }
   
   all_records <- list()
   cursor <- 0
+  page_count <- 0
   
-  while (length(all_records) < max_results) {
+  while (length(all_records) < max_results && page_count < max_pages) {
     url <- paste0(base_url, "/", start_date, "/", end_date, "/", cursor)
     
     message(paste("Fetching bioRxiv from cursor", cursor, "..."))
@@ -295,6 +312,8 @@ search_biorxiv <- function(query,
       warning(paste("API request failed:", e$message))
       return(NULL)
     })
+    
+    page_count <- page_count + 1
     
     if (is.null(response)) break
     if (response$status_code != 200) {
