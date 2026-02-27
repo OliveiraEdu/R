@@ -73,6 +73,11 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
   write.csv(gaps, file.path(output_dir, "08_gap_analysis.csv"), 
             fileEncoding = "UTF-8", row.names = FALSE)
 
+  # Generate reports
+  message("Generating reports...")
+  generate_markdown_report(prisma, extraction, qa, file.path(output_dir, "09_report.md"))
+  generate_latex_report(prisma, extraction, qa, file.path(output_dir, "09_report.tex"))
+
   message("\n=== Pipeline Complete ===")
   message(paste("Results saved to:", output_dir))
   
