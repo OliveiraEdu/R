@@ -149,6 +149,8 @@ Every exported function must have:
 ├── slrengine/              # Main R package
 │   ├── DESCRIPTION         # Package metadata
 │   ├── NAMESPACE           # Exports
+│   ├── CHANGELOG.md       # Version history
+│   ├── USER_MANUAL.md     # User documentation
 │   └── R/                  # Source files
 │       ├── import_standalone.R
 │       ├── deduplication.R
@@ -157,13 +159,15 @@ Every exported function must have:
 │       ├── extraction.R
 │       ├── quality.R
 │       ├── prisma.R
+│       ├── report.R
 │       └── pipeline.R
 ├── slr/                    # Protocol and queries
 │   ├── PRISMA_2020_ROTOCOL.md
 │   └── SEARCH_QUERIES.md
 ├── bibliometrix/           # Test data (WoS, Scopus, PubMed exports)
 ├── test_engine.R           # Basic tests
-└── test_full_pipeline.R    # Full pipeline test
+├── test_full_pipeline.R    # Full pipeline test
+└── AGENTS.md              # Agent guidelines
 ```
 
 ---
@@ -176,7 +180,8 @@ Every exported function must have:
 2. Add exported functions with roxygen2 documentation
 3. Export functions in `NAMESPACE`
 4. Update `DESCRIPTION` if new dependencies added
-5. Test with `test_engine.R` or `test_full_pipeline.R`
+5. Update CHANGELOG.md with changes
+6. Test with `test_engine.R` or `test_full_pipeline.R`
 
 ### Running Tests
 
@@ -197,6 +202,29 @@ deduped <- deduplicate_records(df)
 print(paste("Removed", nrow(df)-nrow(deduped), "duplicates"))
 '
 ```
+
+### Updating CHANGELOG
+
+When making changes, update `slrengine/CHANGELOG.md`:
+
+```markdown
+## [Unreleased]
+
+### Added
+- Description of new feature
+
+### Changed
+- Description of change
+
+### Fixed
+- Description of fix
+```
+
+Release process:
+1. Update CHANGELOG.md version number and date
+2. Update DESCRIPTION version
+3. Create git tag: `git tag v1.0.0`
+4. Push tag: `git push origin v1.0.0`
 
 ---
 

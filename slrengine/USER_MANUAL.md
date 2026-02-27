@@ -13,7 +13,8 @@ The SLR Engine is an R-based tool for conducting Systematic Literature Reviews f
 - Full-text assessment
 - Data extraction
 - Quality assessment (MMAT)
-- PRISMA reporting
+- PRISMA reporting (CSV, LaTeX, Markdown)
+- Automated report generation
 
 ---
 
@@ -167,19 +168,50 @@ export_extraction_form(extraction, "output/extraction_form.csv")
 
 ---
 
-## 6. Output Files
+## 6. Automated Report Generation
 
-The engine produces CSV UTF-8 and LaTeX files:
+The engine can generate full Markdown and LaTeX reports:
+
+```r
+source("slrengine/R/report.R")
+
+# Generate Markdown report
+generate_markdown_report(prisma, extraction, qa, "output/report.md")
+
+# Generate LaTeX report  
+generate_latex_report(prisma, extraction, qa, "output/report.tex")
+```
+
+### Report Contents
+- Executive Summary
+- PRISMA Flow Diagram with Mermaid flowchart
+- Study Characteristics (research focus, blockchain platform, provenance model, maDMP support, evaluation method)
+- Publication Year Distribution
+- Quality Assessment (MMAT scores)
+- Included Studies Table
+- Gap Analysis
+
+---
+
+## 7. Output Files
+
+The engine produces CSV UTF-8, LaTeX, and Markdown files:
 
 | File | Description |
 |------|-------------|
-| `screening_results.rds` | All records with screening decisions |
-| `extraction_form.csv` | Data extraction template |
-| `quality_assessment.csv` | MMAT quality scores |
-| `prisma_flow.csv` | PRISMA flow diagram (CSV) |
-| `prisma_flow.tex` | PRISMA flow diagram (LaTeX) |
-| `summary_tables.csv` | Summary statistics |
-| `gap_analysis.csv` | Gap analysis |
+| `01_merged_raw.rds` | Raw merged data |
+| `02_screened.rds` | Screened records |
+| `03_fulltext.rds` | Full-text assessment |
+| `04_extraction.rds` | Extracted data |
+| `05_quality.rds` | Quality assessment |
+| `04_extraction_form.csv` | Data extraction template |
+| `05_quality_assessment.csv` | MMAT quality scores |
+| `06_prisma_flow.csv` | PRISMA flow (CSV) |
+| `06_prisma_flow.tex` | PRISMA flow (LaTeX) |
+| `07_summary_tables.csv` | Summary statistics |
+| `08_gap_analysis.csv` | Gap analysis |
+| `09_report.md` | Full Markdown report |
+| `09_report.tex` | Full LaTeX report |
 
 ### LaTeX Integration
 
@@ -189,11 +221,15 @@ The PRISMA flow diagram can be directly included in LaTeX documents:
 \input{path/to/prisma_flow.tex}
 ```
 
-Or compile the `.tex` file separately and include the PDF.
+Or compile the full report:
+
+```bash
+pdflatex report.tex
+```
 
 ---
 
-## 7. Troubleshooting
+## 9. Troubleshooting
 
 ### Import Errors
 - **Column mismatch**: Ensure CSV files have headers matching standard field names
@@ -209,7 +245,7 @@ Or compile the `.tex` file separately and include the PDF.
 
 ---
 
-## 8. Protocol Compliance
+## 10. Protocol Compliance
 
 This engine implements the PRISMA 2020 protocol in `slr/PRISMA_2020_ROTOCOL.md`:
 
@@ -220,17 +256,18 @@ This engine implements the PRISMA 2020 protocol in `slr/PRISMA_2020_ROTOCOL.md`:
 - ✅ Two-stage screening
 - ✅ Data extraction form
 - ✅ MMAT quality assessment
-- ✅ PRISMA flow diagram
+- ✅ PRISMA flow diagram (CSV, LaTeX, Markdown)
+- ✅ Automated report generation
 
 ---
 
-## 9. Support
+## 11. Support
 
 For issues or questions, refer to:
 - PRISMA 2020 Statement: https://www.prisma-statement.org/
-- bibliometrix package: https://www.bibliometrix.org/
 
 ---
 
 *Generated: February 2026*
-*Version: 1.0*
+*Version: 1.0.0*
+*See CHANGELOG.md for version history*
