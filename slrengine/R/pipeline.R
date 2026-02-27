@@ -99,15 +99,39 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
 #' @export
 generate_search_strings <- function(protocol_version = "1.0") {
   
-  # Base concepts
+  # Base concepts (Protocol 1.0 - narrow)
   concepts <- list(
     provenance = c("provenance", "\"data lineage\"", "reproducibility", "verification", "\"chain of custody\""),
     technology = c("blockchain", "\"distributed ledger\"", "decentralized", "IPFS", "\"content addressable\""),
     data_management = c("DMP", "\"data management plan\"", "maDMP", "FAIR", "\"metadata standards\"")
   )
   
-  # Build search strings
-  search_strings <- list(
+  # Protocol 3.0 - Broad search strategy
+  broad_concepts <- list(
+    technology = c(
+      "blockchain", "\"distributed ledger\"", "\"distributed ledger technology\"", "DLT",
+      "\"smart contract\"", "\"smart contracts\"",
+      "Hyperledger", "Iroha", "Fabric", "Corda", "Ethereum",
+      "IPFS", "\"content addressable\"", "\"content addressing\""
+    ),
+    scientific_data = c(
+      "\"scientific data\"", "\"research data\"", "\"scholarly data\"",
+      "\"data management\"", "\"data sharing\"", "\"data repository\"",
+      "\"open science\"", "\"open data\"", "FAIR"
+    ),
+    provenance = c(
+      "provenance", "\"data lineage\"", "\"chain of custody\"",
+      "\"tamper-evident\"", "immutable", "integrity", "verification",
+      "reproducibility", "\"reproducible research\""
+    ),
+    dmp = c(
+      "DMP", "\"data management plan\"", "maDMP", "\"machine-actionable\"",
+      "\"DMPTool\"", "DMPonline", "Argos", "DAMAP"
+    )
+  )
+  
+  # Build narrow search strings (Protocol 1.0)
+  narrow_strings <- list(
     ieee = paste0(
       "(", paste(concepts$provenance, collapse = " OR "), ") ",
       "AND (", paste(concepts$technology, collapse = " OR "), ") ",
@@ -131,13 +155,60 @@ generate_search_strings <- function(protocol_version = "1.0") {
     scholar = "\"blockchain provenance scientific data\""
   )
   
-  # Add filters
+  # Build broad search strings (Protocol 3.0 - Phase 1)
+  broad_strings <- list(
+    ieee = paste0(
+      "(", paste(broad_concepts$technology, collapse = " OR "), ") ",
+      "AND (", paste(broad_concepts$scientific_data, collapse = " OR "), ")"
+    ),
+    acm = paste0(
+      "(", paste(broad_concepts$technology, collapse = " OR "), ") ",
+      "AND (", paste(broad_concepts$scientific_data, collapse = " OR "), ")"
+    ),
+    scopus = paste0(
+      "(", paste(broad_concepts$technology, collapse = " OR "), ") ",
+      "AND (", paste(broad_concepts$scientific_data, collapse = " OR "), ")"
+    ),
+    wos = paste0(
+      "(", paste(broad_concepts$technology, collapse = " OR "), ") ",
+      "AND (", paste(broad_concepts$scientific_data, collapse = " OR "), ")"
+    ),
+    arxiv = paste0(
+      "(", paste(broad_concepts$technology[c(1,2,7,8)], collapse = " OR "), ") ",
+      "AND (", paste(broad_concepts$scientific_data, collapse = " OR "), ")"
+    ),
+    biorxiv = paste0(
+      "(", paste(broad_concepts$technology[c(1,2)], collapse = " OR "), ") ",
+      "AND (", paste(c(broad_concepts$scientific_data[c(1,2,4)], broad_concepts$provenance[c(1)]), collapse = " OR "), ")"
+    ),
+    scholar = "\"blockchain provenance scientific data\""
+  )
+  
+  # Filters
   filters <- list(
     ieee = "documenttype:conference OR documenttype:journal",
     acm = "filter:content-type:conference OR filter:content-type:journal",
     scopus = "SUBJAREA:COMP OR SUBJAREA:DATA",
     wos = "WC:Computer Science OR WC:Information Science",
-    scholar = "No specific filters"
+    scholar = "No specific filters",
+    arxiv = "cat:cs.DC OR cat:q-bio.QM OR cat:stat.ML",
+    biorxiv = "No category filter"
+  )
+  
+  # arXiv categories
+  arxiv_categories <- c("cs.DC", "q-bio.QM", "stat.ML", "cs.LG", "cs.AI")
+  
+  list(
+    protocol_version = protocol_version,
+    concepts_narrow = concepts,
+    concepts_broad = broad_concepts,
+    narrow = narrow_strings,
+    broad = broad_strings,
+    filters = filters,
+    arxiv_categories = arxiv_categories,
+    date_range = "2018-2026"
+  )
+}
   )
   
   list(

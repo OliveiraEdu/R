@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for PubMed CSV format via `import_pubmed_csv()`
 - Auto-detection of file formats via `import_file()`
 - Updated data/ directory with sample database exports
+- **arXiv API integration**: `search_arxiv()` for searching arXiv preprints via API
+- **bioRxiv API integration**: `search_biorxiv()` for searching bioRxiv preprints via API
 
 ### Changed
 - Updated test_full_pipeline.R to use data/ folder
