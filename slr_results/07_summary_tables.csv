@@ -1,0 +1,23 @@
+"Table","Category","Count"
+"by_year","2019",1
+"by_year","2020",1
+"by_year","2021",4
+"by_year","2022",5
+"by_year","2023",15
+"by_year","2024",9
+"by_year","2025",15
+"by_year","2026",3
+"by_research_focus","Blockchain",22
+"by_research_focus","Blockchain; Provenance",1
+"by_research_focus","Other",30
+"by_blockchain_platform","Ethereum",5
+"by_blockchain_platform","Fabric",1
+"by_blockchain_platform","Fabric; Hyperledger",1
+"by_blockchain_platform","Not specified",46
+"by_provenance_model","Custom",2
+"by_provenance_model","None",41
+"by_provenance_model","OPM",10
+"by_madmp_support","None",53
+"by_evaluation","Experiment",17
+"by_evaluation","Not clear",33
+"by_evaluation","User study",3
