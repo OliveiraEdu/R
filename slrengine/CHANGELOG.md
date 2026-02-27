@@ -14,9 +14,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **arXiv API integration**: `search_arxiv()` for searching arXiv preprints via API
 - **bioRxiv API integration**: `search_biorxiv()` for searching bioRxiv preprints via API
 - Default 6-month window for arXiv/bioRxiv searches to focus on recent research
+- **Protocol 3.0 support**: Broad search strategy with preprint servers
+  - `generate_search_strings(protocol_version = "3.0")` for broad search
+  - `run_slr_pipeline()` now accepts `arxiv_search`, `biorxiv_search`, `protocol_version` params
+  - Preprint-aware screening criteria for Protocol 3.0
+  - `title_abstract_screening()` accepts `protocol_version` parameter
 
 ### Changed
 - Updated test_full_pipeline.R to use data/ folder
+
+### Fixed
+- Syntax error in pipeline.R (duplicate code)
 
 ---
 

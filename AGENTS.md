@@ -153,6 +153,7 @@ Every exported function must have:
 │   ├── USER_MANUAL.md     # User documentation
 │   └── R/                  # Source files
 │       ├── import_standalone.R
+│       ├── import_arxiv.R    # arXiv and bioRxiv API integration
 │       ├── deduplication.R
 │       ├── screening.R
 │       ├── fulltext.R
@@ -187,7 +188,8 @@ Every exported function must have:
 3. Export functions in `NAMESPACE`
 4. Update `DESCRIPTION` if new dependencies added
 5. Update CHANGELOG.md with changes
-6. Test with `test_engine.R` or `test_full_pipeline.R`
+6. Update AGENTS.md if adding new workflow steps
+7. Test with `test_engine.R` or `test_full_pipeline.R`
 
 ### Running Tests
 
@@ -244,6 +246,8 @@ Release process:
 | Package | Purpose | Required |
 |---------|---------|----------|
 | dplyr | Data manipulation | Yes |
+| httr | HTTP requests (arXiv API) | Yes |
+| jsonlite | JSON parsing (bioRxiv API) | Yes |
 
 Output format: CSV UTF-8 (no external dependencies required)
 LaTeX export available for PRISMA flow diagram.
@@ -252,7 +256,37 @@ Note: `bibliometrix` is optional - standalone import functions exist as fallback
 
 ---
 
-## 6. Common Patterns
+## 6. Protocol Versions
+
+### Protocol 1.0 (Narrow)
+- 3-concept search: Provenance + Technology + DMP
+- Peer-reviewed sources only
+- Use for final analysis
+
+### Protocol 3.0 (Broad)
+- 2-concept search: Technology + Scientific Data
+- Includes preprint servers (arXiv, bioRxiv)
+- Use for edge case discovery
+
+```r
+# Protocol 1.0
+strings <- generate_search_strings("1.0")
+
+# Protocol 3.0
+strings <- generate_search_strings("3.0")
+
+# Run pipeline with Protocol 3.0
+results <- run_slr_pipeline(
+  sources = list(ieee = "data/ieee.csv"),
+  arxiv_search = strings$search_strings$arxiv,
+  biorxiv_search = strings$search_strings$biorxiv,
+  protocol_version = "3.0"
+)
+```
+
+---
+
+## 7. Common Patterns
 
 ### Import Pipeline
 ```r
@@ -264,9 +298,30 @@ sources <- list(
 merged <- import_databases(sources, remove_duplicates = TRUE)
 ```
 
+### Preprint Server Import (arXiv/bioRxiv)
+```r
+# Search arXiv (last 6 months by default)
+arxiv_results <- search_arxiv(
+  query = "blockchain data provenance",
+  max_results = 100,
+  months = 6
+)
+
+# Search bioRxiv (fetches by date, filters locally)
+biorxiv_results <- search_biorxiv(
+  query = "blockchain",
+  max_results = 100,
+  months = 6
+)
+```
+
 ### Screening Pipeline
 ```r
+# Protocol 1.0 (default)
 screened <- title_abstract_screening(merged)
+
+# Protocol 3.0 (with preprint support)
+screened <- title_abstract_screening(merged, protocol_version = "3.0")
 included <- screened[screened$screening_decision == "include", ]
 ```
 
@@ -278,12 +333,13 @@ qa <- auto_quality_indicators(quality_assessment(extraction))
 
 ---
 
-## 7. Important Notes
+## 8. Important Notes
 
 - Always use `stringsAsFactors = FALSE` when creating data frames
 - Check for NA values before operations
 - The pipeline expects standard column names: TI, AU, PY, SO, DOI, AB, C1, TC, DB
 - PRISMA protocol is in `slr/PRISMA_2020_ROTOCOL.md`
+- Use `DB` column to identify preprint sources (arXiv, bioRxiv, medRxiv)
 
 ---
 
