@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Full pipeline test with existing data
+# Full pipeline test with data folder
 
 library(dplyr)
 
@@ -10,15 +10,18 @@ source("slrengine/R/fulltext.R")
 source("slrengine/R/extraction.R")
 source("slrengine/R/quality.R")
 source("slrengine/R/prisma.R")
+source("slrengine/R/report.R")
 
 cat("=== Full SLR Pipeline Test ===\n\n")
 
-# Step 1: Import databases
+# Step 1: Import databases from data folder
 cat("Step 1: Importing databases...\n")
 sources <- list(
-  scopus = "bibliometrix/scopus.csv",
-  pubmed = "bibliometrix/pubmed-reproducib-set.txt",
-  wos = c("bibliometrix/savedrecs.bib")
+  ieee = "data/export2026.02.27-06.44.06.csv",
+  wos = "data/savedrecs(5).bib",
+  acm = "data/acm.bib",
+  pubmed_csv = "data/csv-provenance-set.csv",
+  scopus = "data/scopus_export_Feb 27-2026_637dcbd8-8aaf-4c51-a0c6-4c1a89bdad05.csv"
 )
 
 merged <- import_databases(sources, remove_duplicates = TRUE)
@@ -71,5 +74,10 @@ cat(paste("Studies included:", prisma$included, "\n"))
 cat("\n=== Extraction Summary ===\n")
 summary <- extraction_summary(extraction)
 cat(paste("Total studies:", summary$total_studies, "\n"))
+
+# Quality summary
+cat("\n=== Quality Summary ===\n")
+qual <- quality_report(qa)
+cat(paste("Mean quality score:", round(qual$mean_score, 2), "\n"))
 
 cat("\n=== Pipeline Complete ===\n")
