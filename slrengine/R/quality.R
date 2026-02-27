@@ -119,11 +119,7 @@ calculate_mmat_score <- function(qa) {
 #' @param path Output file path
 #' @export
 export_quality_form <- function(qa, path) {
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    stop("writexl package required")
-  }
-  
-  writexl::write_xlsx(qa, path)
+  write.csv(qa, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported quality assessment to:", path))
 }
 

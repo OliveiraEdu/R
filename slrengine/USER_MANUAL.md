@@ -134,8 +134,8 @@ See `slr/SEARCH_QUERIES.md` for complete details.
 1. Export screening results:
 ```r
 # After running title_abstract_screening()
-# Export for manual review
-write.csv(screened, "output/screening_review.csv")
+# Uses UTF-8 encoding
+export_screening_results(screened, "output/screening_review.csv")
 ```
 
 2. Review each record in the exported file
@@ -147,7 +147,7 @@ write.csv(screened, "output/screening_review.csv")
 ```r
 # Get studies needing full-text
 ft_studies <- screened[screened$screening_decision == "include", ]
-write.csv(ft_studies[, c("TI", "AU", "DOI", "SO")], "output/fulltext_list.csv")
+export_fulltext_list(ft_studies, "output/fulltext_list.csv")
 ```
 
 2. After obtaining full texts, assess each using criteria in the protocol
@@ -157,7 +157,7 @@ write.csv(ft_studies[, c("TI", "AU", "DOI", "SO")], "output/fulltext_list.csv")
 1. Export extraction form:
 ```r
 extraction <- extract_data(ft_included)
-writexl::write_xlsx(extraction, "output/extraction_form.xlsx")
+export_extraction_form(extraction, "output/extraction_form.csv")
 ```
 
 2. Manually complete the extraction fields:
@@ -169,13 +169,15 @@ writexl::write_xlsx(extraction, "output/extraction_form.xlsx")
 
 ## 6. Output Files
 
-The engine produces:
+The engine produces CSV UTF-8 files:
 | File | Description |
 |------|-------------|
 | `screening_results.rds` | All records with screening decisions |
-| `extraction_form.xlsx` | Data extraction template |
-| `quality_assessment.xlsx` | MMAT quality scores |
-| `prisma_flow.xlsx` | PRISMA flow diagram data |
+| `extraction_form.csv` | Data extraction template |
+| `quality_assessment.csv` | MMAT quality scores |
+| `prisma_flow.csv` | PRISMA flow diagram data |
+| `summary_tables.csv` | Summary statistics |
+| `gap_analysis.csv` | Gap analysis |
 
 ---
 

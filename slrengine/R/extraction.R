@@ -117,25 +117,17 @@ extract_data <- function(df) {
 #' @param path Output file path
 #' @export
 export_extraction_form <- function(extraction, path) {
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    stop("writexl package required")
-  }
-  
-  writexl::write_xlsx(extraction, path)
+  write.csv(extraction, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported extraction form to:", path))
 }
 
 
 #' Import completed extraction form
-#' @param path Path to completed Excel file
+#' @param path Path to completed CSV file
 #' @return Data frame with extracted data
 #' @export
 import_extraction_data <- function(path) {
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    stop("writexl package required")
-  }
-  
-  df <- readxl::read_excel(path)
+  df <- read.csv(path, stringsAsFactors = FALSE, fileEncoding = "UTF-8")
   message(paste("Imported extraction data from:", path))
   df
 }

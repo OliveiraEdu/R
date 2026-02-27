@@ -40,7 +40,7 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
   saveRDS(extraction, file.path(output_dir, "04_extraction.rds"))
   
   # Export extraction form for manual completion
-  export_extraction_form(extraction, file.path(output_dir, "04_extraction_form.xlsx"))
+  export_extraction_form(extraction, file.path(output_dir, "04_extraction_form.csv"))
   message(paste("  Extracted:", nrow(extraction), "studies\n"))
   
   # Step 5: Quality assessment
@@ -62,19 +62,16 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
     records_included = nrow(extraction)
   )
   
-  export_prisma_flow(prisma, file.path(output_dir, "06_prisma_flow.xlsx"))
-  
+  export_prisma_flow(prisma, file.path(output_dir, "06_prisma_flow.csv"))
+
   # Generate summary tables
-  export_summary_tables(extraction, file.path(output_dir, "07_summary_tables.xlsx"))
-  
+  export_summary_tables(extraction, file.path(output_dir, "07_summary_tables.csv"))
+
   # Gap analysis
   gaps <- gap_analysis(extraction)
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    warning("writexl not available, skipping gap analysis export")
-  } else {
-    writexl::write_xlsx(list(Gap_Analysis = gaps), file.path(output_dir, "08_gap_analysis.xlsx"))
-  }
-  
+  write.csv(gaps, file.path(output_dir, "08_gap_analysis.csv"), 
+            fileEncoding = "UTF-8", row.names = FALSE)
+
   message("\n=== Pipeline Complete ===")
   message(paste("Results saved to:", output_dir))
   

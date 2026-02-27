@@ -9,20 +9,16 @@ Authors@R: c(
 Description: A robust R package for conducting Systematic Literature Reviews
     following PRISMA 2020 guidelines. Supports database import, deduplication,
     screening, data extraction, quality assessment, and reporting.
+    Output format: CSV UTF-8.
 License: MIT
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 4.0.0)
 Imports: 
-    bibliometrix (>= 3.0),
     dplyr,
     tidyr,
     stringr,
-    lubridate,
-    writexl,
-    httr,
-    jsonlite,
-    xml2
+    lubridate
 Suggests: 
     testthat,
     knitr,

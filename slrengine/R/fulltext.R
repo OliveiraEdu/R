@@ -84,7 +84,7 @@ export_fulltext_list <- function(df, path) {
     stringsAsFactors = FALSE
   )
   
-  writexl::write_xlsx(export_df, path)
+  write.csv(export_df, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported", nrow(export_df), "records to:", path))
 }
 

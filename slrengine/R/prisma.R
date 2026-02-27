@@ -62,7 +62,7 @@ export_prisma_flow <- function(prisma_data, path) {
     stringsAsFactors = FALSE
   )
   
-  writexl::write_xlsx(df, path)
+  write.csv(df, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported PRISMA flow data to:", path))
 }
 
@@ -104,31 +104,28 @@ generate_characteristics_table <- function(extraction) {
 
 #' Export all summary tables
 #' @param extraction Data frame from extract_data()
-#' @param path Output directory path
+#' @param path Output file path (.csv)
 #' @export
 export_summary_tables <- function(extraction, path) {
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    stop("writexl package required")
-  }
-  
   char <- generate_characteristics_table(extraction)
   
-  # Export each table to separate sheets
-  sheets <- list(
-    "Characteristics" = as.data.frame(do.call(cbind, lapply(char, function(x) {
-      df <- as.data.frame(x)
-      names(df) <- c("Category", "Count")
-      df
-    }))),
-    "By_Year" = as.data.frame(char$by_year),
-    "By_Focus" = as.data.frame(char$by_research_focus),
-    "By_Platform" = as.data.frame(char$by_blockchain_platform),
-    "By_Model" = as.data.frame(char$by_provenance_model),
-    "By_maDMP" = as.data.frame(char$by_madmp_support),
-    "By_Evaluation" = as.data.frame(char$by_eval)
-  )
+  # Export as single combined CSV
+  all_data <- data.frame()
   
-  writexl::write_xlsx(sheets, path)
+  for (name in names(char)) {
+    df <- data.frame(
+      Category = names(char[[name]]),
+      Count = as.integer(char[[name]]),
+      stringsAsFactors = FALSE
+    )
+    df$Table <- name
+    all_data <- rbind(all_data, df)
+  }
+  
+  # Reorder columns
+  all_data <- all_data[, c("Table", "Category", "Count")]
+  
+  write.csv(all_data, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported summary tables to:", path))
 }
 

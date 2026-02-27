@@ -164,7 +164,8 @@ export_screening_results <- function(df, path) {
   
   export_df <- df[, cols, drop = FALSE]
   
-  writexl::write_xlsx(export_df, path)
+  # Export as UTF-8 CSV
+  write.csv(export_df, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported to:", path))
 }
 
