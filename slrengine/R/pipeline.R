@@ -3,11 +3,19 @@
 #' Run complete SLR pipeline
 #' @param sources Named list of database file paths
 #' @param output_dir Output directory for results
+#' @param arxiv_search Search string for arXiv (optional)
+#' @param biorxiv_search Search string for bioRxiv (optional)
+#' @param protocol_version Protocol version ("1.0" or "3.0")
 #' @return List with all pipeline outputs
 #' @export
-run_slr_pipeline <- function(sources, output_dir = "slr_results") {
+run_slr_pipeline <- function(sources, 
+                            output_dir = "slr_results",
+                            arxiv_search = NULL,
+                            biorxiv_search = NULL,
+                            protocol_version = "1.0") {
   
   message("=== Starting SLR Pipeline ===\n")
+  message(paste("Protocol version:", protocol_version, "\n"))
   
   # Create output directory
   if (!dir.exists(output_dir)) {
@@ -16,7 +24,56 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
   
   # Step 1: Import databases
   message("Step 1: Importing databases...")
+  
+  # Import traditional databases
   merged <- import_databases(sources, remove_duplicates = TRUE)
+  
+  # Import from preprint servers if specified
+  preprint_records <- data.frame()
+  
+  if (!is.null(arxiv_search)) {
+    message("  Searching arXiv...")
+    source("slrengine/R/import_arxiv.R")
+    arxiv_data <- tryCatch({
+      search_arxiv(arxiv_search, max_results = 100)
+    }, error = function(e) {
+      warning(paste("arXiv search failed:", e$message))
+      data.frame()
+    })
+    if (nrow(arxiv_data) > 0) {
+      arxiv_data$DB <- "arXiv"
+      preprint_records <- rbind(preprint_records, arxiv_data)
+      message(paste("    Retrieved", nrow(arxiv_data), "arXiv records"))
+    }
+  }
+  
+  if (!is.null(biorxiv_search)) {
+    message("  Searching bioRxiv...")
+    source("slrengine/R/import_arxiv.R")
+    biorxiv_data <- tryCatch({
+      search_biorxiv(biorxiv_search, max_results = 100)
+    }, error = function(e) {
+      warning(paste("bioRxiv search failed:", e$message))
+      data.frame()
+    })
+    if (nrow(biorxiv_data) > 0) {
+      biorxiv_data$DB <- "bioRxiv"
+      preprint_records <- rbind(preprint_records, biorxiv_data)
+      message(paste("    Retrieved", nrow(biorxiv_data), "bioRxiv records"))
+    }
+  }
+  
+  # Merge preprint records with main dataset
+  if (nrow(preprint_records) > 0) {
+    merged <- tryCatch({
+      dplyr::bind_rows(merged, preprint_records)
+    }, error = function(e) {
+      warning(paste("Failed to merge preprint records:", e$message))
+      merged
+    })
+  }
+  
+  merged <- deduplicate_records(merged)
   saveRDS(merged, file.path(output_dir, "01_merged_raw.rds"))
   message(paste("  Total records:", nrow(merged), "\n"))
   
@@ -198,6 +255,15 @@ generate_search_strings <- function(protocol_version = "1.0") {
   # arXiv categories
   arxiv_categories <- c("cs.DC", "q-bio.QM", "stat.ML", "cs.LG", "cs.AI")
   
+  # Return based on protocol version
+  if (protocol_version == "1.0") {
+    search_strings <- narrow_strings
+  } else if (protocol_version == "3.0") {
+    search_strings <- broad_strings
+  } else {
+    search_strings <- narrow_strings
+  }
+  
   list(
     protocol_version = protocol_version,
     concepts_narrow = concepts,
@@ -206,16 +272,7 @@ generate_search_strings <- function(protocol_version = "1.0") {
     broad = broad_strings,
     filters = filters,
     arxiv_categories = arxiv_categories,
-    date_range = "2018-2026"
-  )
-}
-  )
-  
-  list(
-    protocol_version = protocol_version,
-    concepts = concepts,
-    search_strings = search_strings,
-    filters = filters,
-    date_range = "2018-2026"
+    date_range = "2018-2026",
+    search_strings = search_strings
   )
 }

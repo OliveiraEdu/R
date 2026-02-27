@@ -306,4 +306,107 @@ AND ("data management plan"[Title/Abstract] OR maDMP[Title/Abstract] OR FAIR[Tit
 
 ---
 
-*Last Updated: February 2026*
+# Protocol 3.0: Broad Search Strategy
+
+## Overview
+
+Protocol 3.0 uses a broader search strategy to capture edge cases and emerging research:
+- **Technology + Scientific Data** (2 concepts) instead of 3
+- Includes preprint servers (arXiv, bioRxiv) for recent research
+- Focus on capturing all relevant work before narrow filtering
+
+## Search Concepts
+
+| Concept | Search Terms | Boolean Operators |
+|---------|-------------|-------------------|
+| **Technology** | blockchain, "distributed ledger", "DLT", "smart contract", Hyperledger, Fabric, Corda, Ethereum, IPFS | OR |
+| **Scientific Data** | "scientific data", "research data", "data management", "data sharing", "open science", "open data", FAIR | OR |
+
+**Combined Formula:** `(Technology) AND (Scientific Data)`
+
+---
+
+## IEEE Xplore (Protocol 3.0)
+
+```
+(blockchain OR "distributed ledger" OR "distributed ledger technology" OR DLT OR 
+"smart contract" OR "smart contracts" OR Hyperledger OR Iroha OR Fabric OR Corda OR 
+Ethereum OR IPFS OR "content addressable" OR "content addressing") 
+AND ("scientific data" OR "research data" OR "scholarly data" OR "data management" OR 
+"data sharing" OR "data repository" OR "open science" OR "open data" OR FAIR)
+```
+
+### Filters
+| Filter | Value |
+|--------|-------|
+| Year | 2018-2026 |
+| Document Type | Conference, Journal |
+| Language | English |
+
+---
+
+## ACM Digital Library (Protocol 3.0)
+
+```
+(blockchain OR "distributed ledger" OR "DLT" OR "smart contract" OR 
+Hyperledger OR Fabric OR Corda OR Ethereum OR IPFS) 
+AND ("scientific data" OR "research data" OR "data management" OR 
+"data sharing" OR "open science" OR FAIR)
+```
+
+---
+
+## arXiv (Protocol 3.0)
+
+Search via API with categories:
+- **cs.DC** (Distributed computing)
+- **cs.LG** (Machine learning)
+- **cs.AI** (Artificial intelligence)
+- **q-bio.QM** (Quantitative methods)
+
+### API Usage
+```r
+source("slrengine/R/import_arxiv.R")
+arxiv_results <- search_arxiv(
+  query = "(blockchain OR \"distributed ledger\" OR Hyperledger) AND 
+           (\"scientific data\" OR \"research data\" OR \"data management\")",
+  max_results = 100,
+  categories = c("cs.DC", "cs.LG", "cs.AI"),
+  months = 6
+)
+```
+
+---
+
+## bioRxiv (Protocol 3.0)
+
+Search via API (fetches recent papers, filters locally):
+
+```r
+source("slrengine/R/import_arxiv.R")
+biorxiv_results <- search_biorxiv(
+  query = "blockchain",
+  max_results = 100,
+  months = 6
+)
+```
+
+Note: bioRxiv API doesn't support keyword search directly. The function fetches recent papers and filters by keyword locally.
+
+---
+
+## Protocol Version Selection
+
+Use `generate_search_strings()` in the SLR Engine:
+
+```r
+# Protocol 1.0 (narrow)
+strings <- generate_search_strings("1.0")
+
+# Protocol 3.0 (broad)
+strings <- generate_search_strings("3.0")
+```
+
+---
+
+*Protocol 3.0 Added: February 2026*

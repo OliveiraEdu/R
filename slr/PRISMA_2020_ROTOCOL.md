@@ -253,3 +253,84 @@ AND (DMP OR "data management plan" OR maDMP OR FAIR)
 ***Protocol prepared: February 26, 2026  
 To be registered on: OSF (osf.io)  
 Version: 1.0
+
+---
+
+# Protocol 3.0: Broad Search Strategy (Addendum)
+
+## Overview
+
+Protocol 3.0 provides a broader search strategy to capture edge cases and emerging research that may be missed by the narrow Protocol 1.0 approach.
+
+## Key Differences from Protocol 1.0
+
+| Aspect | Protocol 1.0 | Protocol 3.0 |
+|--------|--------------|-------------|
+| Search Formula | Provenance + Tech + DMP (3 concepts) | Tech + Scientific Data (2 concepts) |
+| Information Sources | IEEE, ACM, Scopus, WoS | + arXiv, bioRxiv |
+| Coverage | Peer-reviewed only | + preprints |
+| Strategy | Narrow, precise | Broad, exploratory |
+
+## Modified Eligibility Criteria
+
+### Inclusion Criteria (Protocol 3.0)
+
+| # | Criterion | Specification |
+|---|-----------|---------------|
+| I1 | Language | English |
+| I2 | Publication type | Journal, Conference, **Preprints (arXiv, bioRxiv)** |
+| I3 | Date range | 2018-2026 |
+| I4 | Technical implementation | Must describe technical system (broader criteria) |
+| I5 | Domain relevance | Scientific/research data (broader) |
+
+### Exclusion Criteria (Protocol 3.0)
+
+| # | Criterion | Rationale |
+|---|-----------|-----------|
+| E1 | Opinion pieces, editorials | Not empirical contributions |
+| E2 | Non-research contexts | Supply chains, finance, non-scientific |
+| E3 | Preprints | **Mark but don't exclude** (Protocol 3.0) |
+
+## Search Concepts (Protocol 3.0)
+
+| Concept | Terms |
+|---------|-------|
+| **Technology** | blockchain, "distributed ledger", DLT, "smart contract", Hyperledger, Fabric, Corda, Ethereum, IPFS |
+| **Scientific Data** | "scientific data", "research data", "data management", "data sharing", "open science", FAIR |
+
+## Information Sources (Protocol 3.0)
+
+| Database | Platform | Search Date |
+|----------|----------|-------------|
+| IEEE Xplore | ieeexplore.ieee.org | |
+| ACM Digital Library | dl.acm.org | |
+| Scopus | scopus.com | |
+| Web of Science | webofscience.com | |
+| **arXiv** | arxiv.org | API |
+| **bioRxiv** | biorxiv.org | API |
+
+## Implementation in SLR Engine
+
+```r
+# Protocol 3.0 with preprint servers
+source("slrengine/R/pipeline.R")
+
+# Generate search strings
+strings <- generate_search_strings("3.0")
+
+# Run pipeline with arXiv and bioRxiv
+results <- run_slr_pipeline(
+  sources = list(
+    ieee = "data/ieee_export.csv",
+    scopus = "data/scopus_export.csv"
+  ),
+  arxiv_search = strings$search_strings$arxiv,
+  biorxiv_search = strings$search_strings$biorxiv,
+  protocol_version = "3.0"
+)
+```
+
+---
+
+*Protocol 3.0 Addendum: February 2026*
+*This addendum supplements Protocol 1.0 for broad-edge case discovery*
