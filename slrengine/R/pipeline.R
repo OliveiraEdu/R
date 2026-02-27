@@ -63,6 +63,7 @@ run_slr_pipeline <- function(sources, output_dir = "slr_results") {
   )
   
   export_prisma_flow(prisma, file.path(output_dir, "06_prisma_flow.csv"))
+  export_prisma_flow_latex(prisma, file.path(output_dir, "06_prisma_flow.tex"))
 
   # Generate summary tables
   export_summary_tables(extraction, file.path(output_dir, "07_summary_tables.csv"))

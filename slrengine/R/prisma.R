@@ -32,13 +32,9 @@ generate_prisma_flow <- function(records_all, records_screened,
 
 #' Export PRISMA flow diagram data
 #' @param prisma_data List from generate_prisma_flow()
-#' @param path Output file path
+#' @param path Output file path (.csv)
 #' @export
 export_prisma_flow <- function(prisma_data, path) {
-  if (!requireNamespace("writexl", quietly = TRUE)) {
-    stop("writexl package required")
-  }
-  
   # Create summary table
   df <- data.frame(
     Stage = c(
@@ -64,6 +60,57 @@ export_prisma_flow <- function(prisma_data, path) {
   
   write.csv(df, path, fileEncoding = "UTF-8", row.names = FALSE)
   message(paste("Exported PRISMA flow data to:", path))
+}
+
+
+#' Export PRISMA flow diagram as LaTeX table
+#' @param prisma_data List from generate_prisma_flow()
+#' @param path Output file path (.tex)
+#' @export
+export_prisma_flow_latex <- function(prisma_data, path) {
+  
+  # Calculate derived values
+  records_identified <- prisma_data$identified$database_searches + prisma_data$identified$added_through_other
+  after_dups <- prisma_data$screened$after_duplicates
+  screened <- prisma_data$screened$screened
+  excluded_ta <- prisma_data$screened$excluded_ta
+  assessed_ft <- prisma_data$fulltext$assessed_ft
+  excluded_ft <- prisma_data$fulltext$excluded_ft
+  included <- prisma_data$included
+  
+  latex_code <- paste0(
+    "\\begin{table}[htbp]\n",
+    "\\centering\n",
+    "\\caption{PRISMA 2020 Flow Diagram}\n",
+    "\\label{tab:prisma-flow}\n",
+    "\\begin{tabular}{llr}\n",
+    "\\hline\n",
+    "\\textbf{Stage} & & \\textbf{Number of records} \\\\ \n",
+    "\\hline\n",
+    "\\hline\n",
+    "\\textit{Identification of studies via databases} &  &  \\\\ \n",
+    "  \\hspace{1em} Records identified from: &  &  \\\\ \n",
+    "    \\hspace{2em} Database searching & ", records_identified, " &  \\\\ \n",
+    "    \\hspace{2em} Other sources & ", prisma_data$identified$added_through_other, " &  \\\\ \n",
+    "\\hline\n",
+    "\\textit{Screening} &  &  \\\\ \n",
+    "  \\hspace{1em} After duplicates removed & ", after_dups, " &  \\\\ \n",
+    "  \\hspace{1em} Screened & ", screened, " &  \\\\ \n",
+    "  \\hspace{1em} Excluded at title/abstract & ", excluded_ta, " &  \\\\ \n",
+    "\\hline\n",
+    "\\textit{Eligibility} &  &  \\\\ \n",
+    "  \\hspace{1em} Reports assessed for full-text & ", assessed_ft, " &  \\\\ \n",
+    "  \\hspace{1em} Reports excluded (reasons) & ", excluded_ft, " &  \\\\ \n",
+    "\\hline\n",
+    "\\textit{Included} &  &  \\\\ \n",
+    "  \\hspace{1em} Studies included & ", included, " &  \\\\ \n",
+    "\\hline\n",
+    "\\end{tabular}\n",
+    "\\end{table}"
+  )
+  
+  writeLines(latex_code, path)
+  message(paste("Exported PRISMA flow LaTeX to:", path))
 }
 
 
