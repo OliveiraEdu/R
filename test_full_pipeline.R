@@ -16,15 +16,25 @@ cat("=== Full SLR Pipeline Test ===\n\n")
 
 # Step 1: Import databases from data folder
 cat("Step 1: Importing databases...\n")
-sources <- list(
-  ieee = "data/export2026.02.27-06.44.06.csv",
-  wos = "data/savedrecs(5).bib",
-  acm = "data/acm.bib",
-  pubmed_csv = "data/csv-provenance-set.csv",
-  scopus = "data/scopus_export_Feb 27-2026_637dcbd8-8aaf-4c51-a0c6-4c1a89bdad05.csv"
-)
 
-merged <- import_databases(sources, remove_duplicates = TRUE)
+# Import each WoS file separately, then combine
+wos1 <- import_wos("data/savedrecs(7).bib")
+wos2 <- import_wos("data/savedrecs(8).bib")
+wos3 <- import_wos("data/savedrecs(9).bib")
+acm <- import_acm("data/acm(1).bib")
+
+# Standardize columns
+std_cols <- c("TI", "AU", "PY", "SO", "DOI", "ID", "AB", "C1", "TC", "DB")
+for (df in list(wos1, wos2, wos3, acm)) {
+  for (col in std_cols) {
+    if (!(col %in% names(df))) df[[col]] <- NA
+  }
+}
+
+# Merge all
+merged <- dplyr::bind_rows(wos1, wos2, wos3, acm)
+merged <- deduplicate_records(merged)
+
 cat(paste("  Total records after deduplication:", nrow(merged), "\n\n"))
 
 # Step 2: Title/Abstract screening

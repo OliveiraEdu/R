@@ -4,9 +4,12 @@
 \usepackage{longtable}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper,margin=1in}
 
 \title{
-Systematic Literature Review: Blockchain-Enabled Provenance
+Systematic Review Findings Report
 }
 \date{\today}
 
@@ -16,24 +19,25 @@ Systematic Literature Review: Blockchain-Enabled Provenance
 
 \section{Executive Summary}
 
-This systematic review identified 53 studies meeting inclusion criteria.
+This systematic review identified \textbf{183 studies} meeting inclusion criteria. 
+The review followed PRISMA 2020 guidelines and covered the period 2018-2026. 
+The studies were sourced from ACM Digital Library and Web of Science, focusing on blockchain-enabled provenance for scientific data management.
 
 \section{PRISMA Flow}
 
 \begin{table}[htbp]
 \centering
 \caption{PRISMA Flow Diagram}
-\begin{tabular}{lr}
+\begin{tabular}{lrr}
 \toprule
-Stage & Count \\
+Stage & Count & Percentage \\
 \midrule
-Records identified & 1132 \\
-After duplicates removed & 866 \\
-Screened & 866 \\
-Excluded at title/abstract & 800 \\
-Assessed for full-text & 66 \\
-Excluded at full-text & 13 \\
-\textbf{Studies included} & \textbf{53} \\
+Records identified & 2494 & 100\\% \\
+After duplicates removed & 2392 & 95.9\% \\
+Excluded at title/abstract & 1900 & 79.4\% \\
+Assessed for full-text & 492 & 20.6\% \\
+Excluded at full-text & 309 & 62.8\% \\
+\textbf{Studies included} & \textbf{183} & \textbf{7.3\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -47,16 +51,107 @@ Excluded at full-text & 13 \\
 \toprule
 Research Focus & Count \\
 \midrule
-Blockchain & 22 \\
-Blockchain; Provenance & 1 \\
-Other & 30 \\
+Blockchain & 67 \\
+Blockchain; Provenance & 26 \\
+Other & 71 \\
+Provenance & 19 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by Blockchain Platform}
+\begin{tabular}{lr}
+\toprule
+Platform & Count \\
+\midrule
+Ethereum & 2 \\
+Fabric & 1 \\
+Fabric; Hyperledger & 1 \\
+Not specified & 179 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by Provenance Model}
+\begin{tabular}{lr}
+\toprule
+Model & Count \\
+\midrule
+Custom & 10 \\
+None & 155 \\
+OPM & 18 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by maDMP Support}
+\begin{tabular}{lr}
+\toprule
+maDMP Support & Count \\
+\midrule
+None & 183 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Publication Year Distribution}
+\begin{tabular}{lr}
+\toprule
+Year & Count \\
+\midrule
+2018 & 14 \\
+2019 & 20 \\
+2020 & 23 \\
+2021 & 18 \\
+2022 & 29 \\
+2023 & 16 \\
+2024 & 22 \\
+2025 & 36 \\
+2026 & 5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Storage Integration Patterns}
+\begin{tabular}{lr}
+\toprule
+Storage Type & Count \\
+\midrule
+External DB & 7 \\
+IPFS + blockchain & 2 \\
+Not specified & 174 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Permission Model Distribution}
+\begin{tabular}{lr}
+\toprule
+Permission Model & Count \\
+\midrule
+Hybrid & 2 \\
+Not specified & 177 \\
+Permissioned & 1 \\
+Permissionless & 3 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \section{Quality Assessment}
 
-Mean Quality Score: 0.57
+Mean Quality Score: 0.64 / 5.0
 
 \begin{table}[htbp]
 \centering
@@ -65,13 +160,92 @@ Mean Quality Score: 0.57
 \toprule
 Rating & Count \\
 \midrule
-Medium & 53 \\
+Medium & 183 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+\begin{table}[htbp]
+\centering
+\caption{MMAT Item Scores}
+\begin{tabular}{lrrr}
+\toprule
+MMAT Item & Yes & No & Rate \\
+\midrule
+Clear Research Questions & 3 & 0 & 1.6\% \\
+Appropriate Methodology & 115 & 0 & 62.8\% \\
+Rigorous Data Collection & 0 & 0 & 0\% \\
+Sound Analysis & 132 & 0 & 72.1\% \\
+Well-supported Conclusions & 0 & 0 & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Key Findings and Implications}
+
+\subsection{Summary of Current State}
+
+\begin{itemize}
+    \item The review identified \textbf{183 studies} addressing blockchain for scientific data provenance
+    \item Research spans from 2018 to 2026
+    \item Most studies (50.8\%) focus on blockchain infrastructure
+    \item Limited integration of formal provenance models (PROV-O)
+    \item Few studies address maDMP specifically
+\end{itemize}
+
+\subsection{Research Gaps}
+
+\begin{itemize}
+    \item Lack of permissioned blockchain solutions for scientific data
+    \item Limited PROV-O implementation for provenance tracking
+    \item Gap in maDMP + blockchain integration
+    \item Need for evaluation studies comparing approaches
+\end{itemize}
+
+\section{Limitations}
+
+\begin{itemize}
+    \item \textbf{Language restriction:} English publications only
+    \item \textbf{Database coverage:} May miss specialized sources
+    \item \textbf{Classification:} Based on title/abstract may have errors
+    \item \textbf{Rapidly evolving field:} Snapshot as of review date
+    \item \textbf{Automated extraction:} Key findings require manual verification
+\end{itemize}
+
 \section{Conclusions}
 
-This systematic review identified 53 relevant studies.
+This systematic review identified \textbf{183 relevant studies} examining blockchain-enabled provenance for scientific data management. 
+The literature shows growing interest in blockchain for research data integrity, with a concentration on permissionless platforms. 
+However, significant gaps remain in permissioned blockchain solutions, PROV-O integration, and maDMP support. 
+This review provides a foundation for understanding the current landscape and identifying opportunities for future research, 
+particularly in addressing the reproducibility crisis through cryptographically-secured provenance tracking.
+
+\section{Included Studies}
+
+See Appendix A: Extraction Form (04_extraction_form.csv) for complete list of studies.
+
+\section*{Appendix A: Top Publication Sources}
+\addcontentsline{toc}{section}{Appendix A: Top Publication Sources}
+
+\begin{table}[htbp]
+\centering
+\caption{Top 10 Publication Sources}
+\begin{tabular}{lr}
+\toprule
+Source & Count \\
+\midrule
+ACM Trans. Storage & 7 \\
+IEEE ACCESS & 5 \\
+Proceedings of the International Conf... & 5 \\
+Proceedings of the SC '23 Workshops o... & 5 \\
+Proceedings of the SC '24 Workshops o... & 4 \\
+ELECTRONICS & 3 \\
+Proceedings of the SC '25 Workshops o... & 3 \\
+ACM Trans. Sen. Netw. & 2 \\
+APPLIED SCIENCES-BASEL & 2 \\
+CLUSTER COMPUTING-THE JOURNAL OF NETW... & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \end{document}

@@ -334,3 +334,154 @@ results <- run_slr_pipeline(
 
 *Protocol 3.0 Addendum: February 2026*
 *This addendum supplements Protocol 1.0 for broad-edge case discovery*
+
+---
+
+# Protocol 4.0: Focused RQ, Narrow Scope (Addendum)
+
+## Overview
+
+Protocol 4.0 provides a focused, title-only search strategy for the specific research question on blockchain-anchored maDMPs for scientific data provenance.
+
+## Key Differences from Protocol 1.0 and 3.0
+
+| Aspect | Protocol 1.0 | Protocol 3.0 | Protocol 4.0 |
+|--------|--------------|-------------|--------------|
+| Research Questions | 3 RQs | 3 RQs | 1 RQ + 5 sub-questions |
+| Search Strategy | Abstract | Abstract | **Title-focused** |
+| Search Formula | Provenance + Tech + DMP (3 concepts) | Tech + Scientific Data (2 concepts) | maDMP + provenance + platform |
+| Expected Results | ~2,000 | ~19,000 | ~1,955 |
+| Novelty Support | Weak | Weak | **Strong** (comparison tables) |
+| SLR Manageability | Moderate | Impractical | **Practical** |
+
+## Research Question (Protocol 4.0)
+
+**RQ:** *How can machine-actionable Data Management Plans (maDMPs) be anchored on a permissioned blockchain to enable verifiable provenance tracking for scientific data?*
+
+### Sub-Questions
+
+| SQ | Question | Purpose |
+|----|----------|---------|
+| SQ1 | What blockchain platforms have been used for scientific data provenance? | Map technology landscape |
+| SQ2 | How do existing systems model and represent provenance? | Identify semantic approaches |
+| SQ3 | What are the architectural patterns for combining blockchain with external storage? | Understand dual-ledger approaches |
+| SQ4 | How do permissioned blockchains compare to permissionless for scientific data use cases? | Evaluate trust models |
+| SQ5 | What evaluation methods have been used to assess blockchain provenance systems? | Inform evaluation design |
+
+## Modified Eligibility Criteria
+
+### Inclusion Criteria (Protocol 4.0)
+
+| # | Criterion | Specification |
+|---|-----------|---------------|
+| I1 | Language | English language publications |
+| I2 | Publication type | Peer-reviewed journal articles, conference proceedings, arXiv preprints |
+| I3 | Date range | Publications from 2018 to 2026 |
+| I4 | Technical implementation | Must describe a technical system, framework, or methodology (not just conceptual) |
+| I5 | Domain relevance | Must address **maDMP** OR (**blockchain provenance** AND **scientific/research data**) |
+
+### Exclusion Criteria (Protocol 4.0)
+
+| # | Criterion | Rationale |
+|---|-----------|-----------|
+| E1 | Opinion pieces, editorials | Not empirical/technical contributions |
+| E2 | Non-research contexts | Supply chains, financial applications, non-scientific use cases |
+| E3 | No technical implementation | Conceptual frameworks without implementation details |
+| E4 | Duplicate publications | Same work reported in multiple venues |
+| E5 | Full text unavailable | Cannot assess technical content |
+| E6 | No blockchain component | Pure provenance without blockchain |
+| E7 | No scientific data context | General-purpose systems not applicable |
+
+## Search Strategy (Protocol 4.0)
+
+### Primary Search String (Title-Focused)
+
+```
+(
+  "Document Title":"machine-actionable" OR "Document Title":"maDMP" OR 
+  "Document Title":"data management" OR "Document Title":DMP OR 
+  "Document Title":provenance OR "Document Title":"data lineage" OR 
+  "Document Title":"chain of custody" OR "Document Title":verification OR 
+  "Document Title":"scientific data" OR "Document Title":"research data" OR 
+  "Document Title":"open science" OR "Document Title":metadata OR 
+  "Document Title":"PROV-O" OR "Document Title":semantic OR 
+  "Document Title":desci OR "Document Title":FAIR OR 
+  "Document Title":reproducibility OR "Document Title":reproducible
+) 
+AND 
+(
+  "Document Title":platform OR "Document Title":repository OR 
+  "Document Title":storage OR "Document Title":blockchain OR 
+  "Document Title":IPFS OR "Document Title":decentralized
+)
+```
+
+## Database-Specific Search Strings (Protocol 4.0)
+
+### IEEE Xplore
+```
+(("Document Title":"machine-actionable" OR "Document Title":"maDMP" OR "Document Title":"data management" OR "Document Title":DMP OR "Document Title":provenance OR "Document Title":"data lineage" OR "Document Title":"chain of custody" OR "Document Title":verification OR "Document Title":"scientific data" OR "Document Title":"research data" OR "Document Title":"open science" OR "Document Title":metadata OR "Document Title":"PROV-O" OR "Document Title":semantic OR "Document Title":desci OR "Document Title":FAIR OR "Document Title":reproducibility OR "Document Title":reproducible) AND ("Document Title":platform OR "Document Title":repository OR "Document Title":storage OR "Document Title":blockchain OR "Document Title":IPFS OR "Document Title":decentralized))
+```
+
+### Scopus
+```
+(TITLE("machine-actionable") OR TITLE("maDMP") OR TITLE("data management") OR TITLE("DMP") OR TITLE("provenance") OR TITLE("data lineage") OR TITLE("chain of custody") OR TITLE("verification") OR TITLE("scientific data") OR TITLE("research data") OR TITLE("open science") OR TITLE("metadata") OR TITLE("PROV-O") OR TITLE("semantic") OR TITLE("desci") OR TITLE("FAIR") OR TITLE("reproducibility") OR TITLE("reproducible")) AND (TITLE("platform") OR TITLE("repository") OR TITLE("storage") OR TITLE("blockchain") OR TITLE("IPFS") OR TITLE("decentralized"))
+```
+
+### Web of Science
+```
+TI=("machine-actionable" OR "maDMP" OR "data management" OR "DMP" OR "provenance" OR "data lineage" OR "chain of custody" OR "verification" OR "scientific data" OR "research data" OR "open science" OR "metadata" OR "PROV-O" OR "semantic" OR "desci" OR "FAIR" OR "reproducibility" OR "reproducible") AND TI=("platform" OR "repository" OR "storage" OR "blockchain" OR "IPFS" OR "decentralized")
+```
+
+### PubMed
+```
+(("machine-actionable"[ti] OR "maDMP"[ti] OR "data management"[ti] OR "DMP"[ti] OR "provenance"[ti] OR "data lineage"[ti] OR "chain of custody"[ti] OR "verification"[ti] OR "scientific data"[ti] OR "research data"[ti] OR "open science"[ti] OR "metadata"[ti] OR "PROV-O"[ti] OR "semantic"[ti] OR "desci"[ti] OR "FAIR"[ti] OR "reproducibility"[ti] OR "reproducible"[ti]) AND ("platform"[ti] OR "repository"[ti] OR "storage"[ti] OR "blockchain"[ti] OR "IPFS"[ti] OR "decentralized"[ti]))
+```
+
+### ACM Digital Library
+```
+(Title:"machine-actionable" OR Title:maDMP OR Title:"data management" OR Title:DMP OR Title:provenance OR Title:"data lineage" OR Title:"chain of custody" OR Title:verification OR Title:"scientific data" OR Title:"research data" OR Title:"open science" OR Title:metadata OR Title:PROV-O OR Title:semantic OR Title:desci OR Title:FAIR OR Title:reproducibility OR Title:reproducible) AND (Title:platform OR Title:repository OR Title:storage OR Title:blockchain OR Title:IPFS OR Title:decentralized)
+```
+
+### arXiv
+```
+(ti:"machine-actionable" OR ti:maDMP OR ti:"data management" OR ti:DMP OR ti:provenance OR ti:"data lineage" OR ti:"chain of custody" OR ti:verification OR ti:"scientific data" OR ti:"research data" OR ti:"open science" OR ti:metadata OR ti:PROV-O OR ti:semantic OR ti:desci OR ti:FAIR OR ti:reproducibility OR ti:reproducible) AND (ti:platform OR ti:repository OR ti:storage OR ti:blockchain OR ti:IPFS OR ti:decentralized)
+```
+
+## Data Extraction (Protocol 4.0)
+
+### Additional Fields
+
+| Field | Description |
+|-------|-------------|
+| Storage_Integration | IPFS / IPFS + blockchain / External DB / Hybrid / Not specified |
+| Permission_Model | Permissioned / Permissionless / Hybrid / Not specified |
+
+## Implementation in SLR Engine
+
+```r
+# Protocol 4.0 - Focused search
+source("slrengine/R/pipeline.R")
+
+# Generate search strings
+strings <- generate_search_strings("4.0")
+
+# View search strings
+print(strings$search_strings$ieee)
+
+# Run pipeline
+results <- run_slr_pipeline(
+  sources = list(
+    ieee = "data/ieee.csv",
+    scopus = "data/scopus.csv"
+  ),
+  protocol_version = "4.0"
+)
+```
+
+---
+
+*Protocol 4.0 Addendum: February 28, 2026*
+*This addendum provides focused RQ with title-focused search for high precision*
+
+(End of file - total lines will vary)

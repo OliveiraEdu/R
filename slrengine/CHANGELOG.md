@@ -19,6 +19,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `run_slr_pipeline()` now accepts `arxiv_search`, `biorxiv_search`, `protocol_version` params
   - Preprint-aware screening criteria for Protocol 3.0
   - `title_abstract_screening()` accepts `protocol_version` parameter
+- **Protocol 4.0 support**: Focused RQ with title-focused search
+  - `generate_search_strings(protocol_version = "4.0")` for focused search
+  - Title-focused search strings for IEEE, Scopus, WoS, PubMed, ACM, arXiv
+  - Database-specific validated syntax
+- **New extraction fields** (Protocol 4.0):
+  - `Storage_Integration`: IPFS, IPFS + blockchain, External DB, Hybrid
+  - `Permission_Model`: Permissioned, Permissionless, Hybrid
+- **Enhanced reporting**: Both markdown and LaTeX reports now include:
+  - PRISMA flow with percentages
+  - Storage Integration and Permission Model tables
+  - Cross-tabulation analysis
+  - Top publication sources
+  - MMAT items with Yes/No counts
+  - Thematic synthesis
+  - Detailed Key Findings and Implications sections
+  - Comprehensive Limitations list
 
 ### Changed
 - Updated test_full_pipeline.R to use data/ folder

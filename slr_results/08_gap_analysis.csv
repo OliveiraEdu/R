@@ -11,9 +11,9 @@
 "Platform x Provenance Model","Iroha x None",0
 "Platform x Provenance Model","Ethereum x PROV-O",0
 "Platform x Provenance Model","Ethereum x PROV-DM",0
-"Platform x Provenance Model","Ethereum x OPM",2
+"Platform x Provenance Model","Ethereum x OPM",0
 "Platform x Provenance Model","Ethereum x Custom",0
-"Platform x Provenance Model","Ethereum x None",3
+"Platform x Provenance Model","Ethereum x None",2
 "Platform x Provenance Model","Hyperledger x PROV-O",0
 "Platform x Provenance Model","Hyperledger x PROV-DM",0
 "Platform x Provenance Model","Hyperledger x OPM",0
@@ -31,6 +31,6 @@
 "Platform x Provenance Model","Multi-chain x None",0
 "Platform x Provenance Model","Not specified x PROV-O",0
 "Platform x Provenance Model","Not specified x PROV-DM",0
-"Platform x Provenance Model","Not specified x OPM",8
-"Platform x Provenance Model","Not specified x Custom",2
-"Platform x Provenance Model","Not specified x None",36
+"Platform x Provenance Model","Not specified x OPM",18
+"Platform x Provenance Model","Not specified x Custom",10
+"Platform x Provenance Model","Not specified x None",151

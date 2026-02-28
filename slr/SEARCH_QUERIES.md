@@ -410,3 +410,129 @@ strings <- generate_search_strings("3.0")
 ---
 
 *Protocol 3.0 Added: February 2026*
+
+---
+
+# Protocol 4.0: Focused RQ, Title-Focused Search
+
+## Overview
+
+Protocol 4.0 uses a title-focused search strategy for the specific research question on blockchain-anchored maDMPs:
+
+**RQ:** *How can machine-actionable Data Management Plans (maDMPs) be anchored on a permissioned blockchain to enable verifiable provenance tracking for scientific data?*
+
+Key features:
+- **Title-focused** → higher precision, more relevant results
+- **Narrow scope** → focused on maDMP + blockchain provenance intersection
+- **Comparison tables** → supports novelty claims
+
+## Search Concepts
+
+| Concept | Search Terms | Boolean Operators |
+|---------|-------------|-------------------|
+| **maDMP** | "machine-actionable", maDMP, "data management", DMP | OR |
+| **Provenance** | provenance, "data lineage", "chain of custody", verification | OR |
+| **Platform** | platform, repository, storage, blockchain, IPFS, decentralized | OR |
+| **Semantic** | PROV-O, semantic, FAIR, reproducibility | OR |
+| **Scientific Data** | "scientific data", "research data", "open science", metadata | OR |
+
+**Combined Formula:** `(maDMP OR Provenance OR Semantic OR Scientific Data) AND (Platform)`
+
+---
+
+## IEEE Xplore (Protocol 4.0)
+
+**Interface:** Advanced Search → Command Search
+
+**Search String:**
+```
+(("Document Title":"machine-actionable" OR "Document Title":"maDMP" OR "Document Title":"data management" OR "Document Title":DMP OR "Document Title":provenance OR "Document Title":"data lineage" OR "Document Title":"chain of custody" OR "Document Title":verification OR "Document Title":"scientific data" OR "Document Title":"research data" OR "Document Title":"open science" OR "Document Title":metadata OR "Document Title":"PROV-O" OR "Document Title":semantic OR "Document Title":desci OR "Document Title":FAIR OR "Document Title":reproducibility OR "Document Title":reproducible) AND ("Document Title":platform OR "Document Title":repository OR "Document Title":storage OR "Document Title":blockchain OR "Document Title":IPFS OR "Document Title":decentralized))
+```
+
+**Filters:** Document Type: Conference OR Journal; Year: 2018-2026
+
+---
+
+## Scopus (Protocol 4.0)
+
+**Interface:** Advanced Search
+
+**Search String:**
+```
+(TITLE("machine-actionable") OR TITLE("maDMP") OR TITLE("data management") OR TITLE("DMP") OR TITLE("provenance") OR TITLE("data lineage") OR TITLE("chain of custody") OR TITLE("verification") OR TITLE("scientific data") OR TITLE("research data") OR TITLE("open science") OR TITLE("metadata") OR TITLE("PROV-O") OR TITLE("semantic") OR TITLE("desci") OR TITLE("FAIR") OR TITLE("reproducibility") OR TITLE("reproducible")) AND (TITLE("platform") OR TITLE("repository") OR TITLE("storage") OR TITLE("blockchain") OR TITLE("IPFS") OR TITLE("decentralized"))
+```
+
+**Filters:** Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2018-2026
+
+---
+
+## Web of Science (Protocol 4.0)
+
+**Interface:** Advanced Search → Query Builder
+
+**Search String:**
+```
+TI=("machine-actionable" OR "maDMP" OR "data management" OR "DMP" OR "provenance" OR "data lineage" OR "chain of custody" OR "verification" OR "scientific data" OR "research data" OR "open science" OR "metadata" OR "PROV-O" OR "semantic" OR "desci" OR "FAIR" OR "reproducibility" OR "reproducible") AND TI=("platform" OR "repository" OR "storage" OR "blockchain" OR "IPFS" OR "decentralized")
+```
+
+**Filters:** Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2018-2026
+
+---
+
+## PubMed (Protocol 4.0)
+
+**Interface:** Advanced Search
+
+**Search String:**
+```
+(("machine-actionable"[ti] OR "maDMP"[ti] OR "data management"[ti] OR "DMP"[ti] OR "provenance"[ti] OR "data lineage"[ti] OR "chain of custody"[ti] OR "verification"[ti] OR "scientific data"[ti] OR "research data"[ti] OR "open science"[ti] OR "metadata"[ti] OR "PROV-O"[ti] OR "semantic"[ti] OR "desci"[ti] OR "FAIR"[ti] OR "reproducibility"[ti] OR "reproducible"[ti]) AND ("platform"[ti] OR "repository"[ti] OR "storage"[ti] OR "blockchain"[ti] OR "IPFS"[ti] OR "decentralized"[ti]))
+```
+
+**Filters:** Publication Types: Article, Review, Clinical Trial; Year: 2018-2026
+
+---
+
+## ACM Digital Library (Protocol 4.0)
+
+**Interface:** Advanced Search → Edit Query
+
+**Search String:**
+```
+(Title:"machine-actionable" OR Title:maDMP OR Title:"data management" OR Title:DMP OR Title:provenance OR Title:"data lineage" OR Title:"chain of custody" OR Title:verification OR Title:"scientific data" OR Title:"research data" OR Title:"open science" OR Title:metadata OR Title:PROV-O OR Title:semantic OR Title:desci OR Title:FAIR OR Title:reproducibility OR Title:reproducible) AND (Title:platform OR Title:repository OR Title:storage OR Title:blockchain OR Title:IPFS OR Title:decentralized)
+```
+
+**Filters:** Content Type: Conference Papers, Journal Articles; Year: 2018-2026
+
+---
+
+## arXiv (Protocol 4.0)
+
+**Interface:** https://arxiv.org/search/
+
+**Search String:**
+```
+(ti:"machine-actionable" OR ti:maDMP OR ti:"data management" OR ti:DMP OR ti:provenance OR ti:"data lineage" OR ti:"chain of custody" OR ti:verification OR ti:"scientific data" OR ti:"research data" OR ti:"open science" OR ti:metadata OR ti:PROV-O OR ti:semantic OR ti:desci OR ti:FAIR OR ti:reproducibility OR ti:reproducible) AND (ti:platform OR ti:repository OR ti:storage OR ti:blockchain OR ti:IPFS OR ti:decentralized)
+```
+
+**Filters:** Categories: cs.DC, cs.CY, q-bio.QM; Year: 2018-2026
+
+---
+
+## Protocol Version Selection
+
+Use `generate_search_strings()` in the SLR Engine:
+
+```r
+# Protocol 1.0 (narrow - 3 concepts)
+strings <- generate_search_strings("1.0")
+
+# Protocol 3.0 (broad - 2 concepts, preprints)
+strings <- generate_search_strings("3.0")
+
+# Protocol 4.0 (focused - title-focused)
+strings <- generate_search_strings("4.0")
+```
+
+---
+
+*Protocol 4.0 Added: February 28, 2026*

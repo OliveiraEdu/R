@@ -58,8 +58,49 @@ extract_data <- function(df) {
     if (any(grepl("hyperledger", text_lower))) platforms <- c(platforms, "Hyperledger")
     if (any(grepl("bigchaindb", text_lower))) platforms <- c(platforms, "BigchainDB")
     if (any(grepl("multichain", text_lower))) platforms <- c(platforms, "Multi-chain")
+    if (any(grepl("corda", text_lower))) platforms <- c(platforms, "Corda")
+    if (any(grepl("hyperledger sawtooth|sawtooth", text_lower))) platforms <- c(platforms, "Sawtooth")
     if (length(platforms) == 0) platforms <- "Not specified"
     paste(unique(platforms), collapse = "; ")
+  })
+  
+  # Storage Integration (Protocol 4.0)
+  extraction$Storage_Integration <- sapply(paste(df$TI, df$AB), function(text) {
+    if (is.na(text)) return("Not specified")
+    text_lower <- tolower(text)
+    storage <- c()
+    if (any(grepl("ipfs", text_lower))) {
+      if (any(grepl("blockchain.*ipfs|ipfs.*blockchain", text_lower))) {
+        storage <- c(storage, "IPFS + blockchain")
+      } else {
+        storage <- c(storage, "IPFS")
+      }
+    }
+    if (any(grepl("external database|external db|off-chain|database", text_lower))) storage <- c(storage, "External DB")
+    if (any(grepl("orbitdb", text_lower))) storage <- c(storage, "OrbitDB")
+    if (any(grepl("ipfs", text_lower)) && any(grepl("external|off-chain", text_lower))) storage <- c(storage, "Hybrid")
+    if (length(storage) == 0) storage <- "Not specified"
+    paste(unique(storage), collapse = "; ")
+  })
+  
+  # Permission Model (Protocol 4.0)
+  extraction$Permission_Model <- sapply(paste(df$TI, df$AB), function(text) {
+    if (is.na(text)) return("Not specified")
+    text_lower <- tolower(text)
+    model <- c()
+    if (any(grepl("permissioned|private.*blockchain|licensed", text_lower))) {
+      if (any(grepl("fabric|iroha|corda|hyperledger", text_lower))) {
+        model <- c(model, "Permissioned")
+      }
+    }
+    if (any(grepl("permissionless|public.*blockchain|unlicensed|ethereum", text_lower))) {
+      if (!any(grepl("private|permissioned", text_lower))) {
+        model <- c(model, "Permissionless")
+      }
+    }
+    if (any(grepl("hybrid.*blockchain|quorum|multichain", text_lower))) model <- c(model, "Hybrid")
+    if (length(model) == 0) model <- "Not specified"
+    paste(unique(model), collapse = "; ")
   })
   
   # Provenance Model
@@ -143,6 +184,8 @@ extraction_summary <- function(extraction) {
     by_year = table(extraction$Year, useNA = "ifany"),
     by_research_focus = table(extraction$Research_Focus, useNA = "ifany"),
     by_blockchain_platform = table(extraction$Blockchain_Platform, useNA = "ifany"),
+    by_storage_integration = table(extraction$Storage_Integration, useNA = "ifany"),
+    by_permission_model = table(extraction$Permission_Model, useNA = "ifany"),
     by_provenance_model = table(extraction$Provenance_Model, useNA = "ifany"),
     by_madmp_support = table(extraction$maDMP_Support, useNA = "ifany"),
     by_evaluation = table(extraction$Evaluation_Method, useNA = "ifany")
