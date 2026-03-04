@@ -11,37 +11,50 @@ This repository contains an R-based Systematic Literature Review (SLR) Engine fo
 ### Running the Application
 
 ```bash
-# Run full pipeline test with existing data
+# Run full pipeline test with all database sources
 Rscript test_full_pipeline.R
 
 # Run basic engine tests
 Rscript test_engine.R
 ```
 
-### R Package Testing
+### Running Single Tests
 
 ```bash
-# Check if R is available and version
-R --version
+# Test a specific import function
+Rscript -e '
+source("slrengine/R/import_standalone.R")
+ieee <- import_ieee("data/export2026.03.04-06.39.06.csv")
+print(paste("Imported", nrow(ieee), "IEEE records"))
+'
 
-# Run R interactively
-R
+# Test deduplication
+Rscript -e "
+source(\"slrengine/R/import_standalone.R\")
+source(\"slrengine/R/deduplication.R\")
+df <- data.frame(TI=c(\"A\",\"B\",\"A\"), DOI=c(\"10.1000/1\",\"10.1000/2\",NA), AU=c(\"X\",\"Y\",\"X\"), PY=c(2020,2021,2020))
+deduped <- deduplicate_records(df)
+print(paste(\"Removed\", nrow(df)-nrow(deduped), \"duplicates\"))
+"
 
-# Run R script with specific file
-Rscript <script_name>.R
+# Test screening
+Rscript -e "
+source(\"slrengine/R/import_standalone.R\")
+source(\"slrengine/R/screening.R\")
+df <- import_wos(\"data/savedrecs(7).bib\")
+screened <- title_abstract_screening(df)
+print(paste(\"Included:\", sum(screened\$screening_decision == \"include\")))
+"
 
-# Check installed packages
-R --quiet -e 'installed.packages()[,"Package"]'
-```
+# Test PRISMA generation
+Rscript -e "
+source(\"slrengine/R/prisma.R\")
+prisma <- generate_prisma_flow(100, 90, 50, 30, 10, 20)
+print(paste(\"Included:\", prisma\$included))
+"
 
-### Code Checking (R-specific)
-
-```bash
-# Check R syntax only (no package required)
-R CMD check --no-manual slrengine/
-
-# The R console in batch mode
-R --quiet -e 'source("test_engine.R")'
+# Run R syntax check on a file
+Rscript -e 'source("slrengine/R/import_standalone.R"); print("Syntax OK")'
 ```
 
 ---
@@ -63,17 +76,6 @@ R --quiet -e 'source("test_engine.R")'
 | Functions | snake_case() | `import_databases()` |
 | Variables | snake_case | `merged_data` |
 | Constants | UPPER_SNAKE | `MAX_RECORDS` |
-| Data frames | descriptive | `screened_records` |
-
-### Import Guidelines
-
-```r
-# Preferred: Load only what you need from packages
-library(dplyr)    # For data manipulation
-
-# Avoid: import.packages() inside functions (slower)
-# Prefer: library() at top of script
-```
 
 ### Code Formatting
 
@@ -82,13 +84,13 @@ library(dplyr)    # For data manipulation
 x <- 5
 result <- my_function(x)
 
-# Space after comma, no space before
+# Space after comma
 c(1, 2, 3)
 
 # Function definitions with newlines between arguments
 my_function <- function(arg1,
-                       arg2 = default,
-                       arg3 = NULL) {
+                      arg2 = default,
+                      arg3 = NULL) {
   # Function body
 }
 
@@ -112,19 +114,15 @@ tryCatch({
 
 # Validate inputs at function start
 validate_input <- function(df) {
-  if (!is.data.frame(df)) {
-    stop("Input must be a data frame")
-  }
-  if (nrow(df) == 0) {
-    stop("Input data frame is empty")
-  }
+  if (!is.data.frame(df)) stop("Input must be a data frame")
+  if (nrow(df) == 0) stop("Input data frame is empty")
   TRUE
 }
 ```
 
 ### Documentation
 
-Every exported function must have:
+Every exported function must have roxygen2-style documentation:
 
 ```r
 #' Function Title
@@ -132,7 +130,6 @@ Every exported function must have:
 #' Description of what the function does
 #'
 #' @param df Input data frame description
-#' @param param2 Description of second parameter
 #' @return Description of return value
 #' @export
 #' @examples
@@ -150,10 +147,9 @@ Every exported function must have:
 │   ├── DESCRIPTION         # Package metadata
 │   ├── NAMESPACE           # Exports
 │   ├── CHANGELOG.md       # Version history
-│   ├── USER_MANUAL.md     # User documentation
 │   └── R/                  # Source files
 │       ├── import_standalone.R
-│       ├── import_arxiv.R    # arXiv and bioRxiv API integration
+│       ├── import_arxiv.R    # arXiv and bioRxiv API
 │       ├── deduplication.R
 │       ├── screening.R
 │       ├── fulltext.R
@@ -162,15 +158,8 @@ Every exported function must have:
 │       ├── prisma.R
 │       ├── report.R
 │       └── pipeline.R
-├── slr/                    # Protocol and queries
-│   ├── PRISMA_2020_ROTOCOL.md
-│   └── SEARCH_QUERIES.md
 ├── data/                   # Database exports
-│   ├── ieee_*.csv
-│   ├── wos_*.bib
-│   ├── acm_*.bib
-│   ├── scopus_*.csv
-│   └── pubmed_*.csv
+│   ├── ieee_*.csv, wos_*.bib, acm_*.bib, scopus_*.csv, pubmed_*.csv
 ├── slr_results/            # Pipeline output (generated)
 ├── test_engine.R           # Basic tests
 ├── test_full_pipeline.R    # Full pipeline test
@@ -188,56 +177,14 @@ Every exported function must have:
 3. Export functions in `NAMESPACE`
 4. Update `DESCRIPTION` if new dependencies added
 5. Update CHANGELOG.md with changes
-6. Update AGENTS.md if adding new workflow steps
-7. Test with `test_engine.R` or `test_full_pipeline.R`
+6. Test with `test_engine.R` or `test_full_pipeline.R`
 
 ### Running Tests
 
 ```bash
-# Run full pipeline test
-Rscript test_full_pipeline.R
-
-# Run basic engine tests
-Rscript test_engine.R
-
-# Test import functions
-Rscript -e '
-source("slrengine/R/import_standalone.R")
-ieee <- import_ieee("data/export2026.02.27-06.44.06.csv")
-print(paste("Imported", nrow(ieee), "IEEE records"))
-'
-
-# Test deduplication
-Rscript -e "
-source('slrengine/R/import_standalone.R')
-source('slrengine/R/deduplication.R')
-df <- data.frame(TI=c('A','B','A'), DOI=c('10.1000/1','10.1000/2',NA), AU=c('X','Y','X'), PY=c(2020,2021,2020))
-deduped <- deduplicate_records(df)
-print(paste('Removed', nrow(df)-nrow(deduped), 'duplicates'))
-"
-
-### Updating CHANGELOG
-
-When making changes, update `slrengine/CHANGELOG.md`:
-
-```markdown
-## [Unreleased]
-
-### Added
-- Description of new feature
-
-### Changed
-- Description of change
-
-### Fixed
-- Description of fix
+Rscript test_full_pipeline.R    # Full pipeline test
+Rscript test_engine.R          # Basic engine tests
 ```
-
-Release process:
-1. Update CHANGELOG.md version number and date
-2. Update DESCRIPTION version
-3. Create git tag: `git tag v1.0.0`
-4. Push tag: `git push origin v1.0.0`
 
 ---
 
@@ -249,9 +196,6 @@ Release process:
 | httr | HTTP requests (arXiv API) | Yes |
 | jsonlite | JSON parsing (bioRxiv API) | Yes |
 
-Output format: CSV UTF-8 (no external dependencies required)
-LaTeX export available for PRISMA flow diagram.
-
 Note: `bibliometrix` is optional - standalone import functions exist as fallback.
 
 ---
@@ -261,28 +205,10 @@ Note: `bibliometrix` is optional - standalone import functions exist as fallback
 ### Protocol 1.0 (Narrow)
 - 3-concept search: Provenance + Technology + DMP
 - Peer-reviewed sources only
-- Use for final analysis
 
 ### Protocol 3.0 (Broad)
 - 2-concept search: Technology + Scientific Data
 - Includes preprint servers (arXiv, bioRxiv)
-- Use for edge case discovery
-
-```r
-# Protocol 1.0
-strings <- generate_search_strings("1.0")
-
-# Protocol 3.0
-strings <- generate_search_strings("3.0")
-
-# Run pipeline with Protocol 3.0
-results <- run_slr_pipeline(
-  sources = list(ieee = "data/ieee.csv"),
-  arxiv_search = strings$search_strings$arxiv,
-  biorxiv_search = strings$search_strings$biorxiv,
-  protocol_version = "3.0"
-)
-```
 
 ---
 
@@ -290,38 +216,13 @@ results <- run_slr_pipeline(
 
 ### Import Pipeline
 ```r
-sources <- list(
-  wos = c("data/wos.bib"),
-  scopus = "data/scopus.csv",
-  pubmed = "data/pubmed.txt"
-)
-merged <- import_databases(sources, remove_duplicates = TRUE)
-```
-
-### Preprint Server Import (arXiv/bioRxiv)
-```r
-# Search arXiv (last 6 months by default)
-arxiv_results <- search_arxiv(
-  query = "blockchain data provenance",
-  max_results = 100,
-  months = 6
-)
-
-# Search bioRxiv (fetches by date, filters locally)
-biorxiv_results <- search_biorxiv(
-  query = "blockchain",
-  max_results = 100,
-  months = 6
-)
+sources <- list(wos = "data/wos.bib", acm = "data/acm.bib")
+merged <- import_databases(sources)
 ```
 
 ### Screening Pipeline
 ```r
-# Protocol 1.0 (default)
 screened <- title_abstract_screening(merged)
-
-# Protocol 3.0 (with preprint support)
-screened <- title_abstract_screening(merged, protocol_version = "3.0")
 included <- screened[screened$screening_decision == "include", ]
 ```
 
@@ -337,10 +238,9 @@ qa <- auto_quality_indicators(quality_assessment(extraction))
 
 - Always use `stringsAsFactors = FALSE` when creating data frames
 - Check for NA values before operations
-- The pipeline expects standard column names: TI, AU, PY, SO, DOI, AB, C1, TC, DB
-- PRISMA protocol is in `slr/PRISMA_2020_ROTOCOL.md`
-- Use `DB` column to identify preprint sources (arXiv, bioRxiv, medRxiv)
+- Standard column names: TI, AU, PY, SO, DOI, AB, C1, TC, DB
+- Use `DB` column to identify sources (arXiv, bioRxiv, WoS, ACM, etc.)
 
 ---
 
-*Last Updated: February 2026*
+*Last Updated: March 2026*
