@@ -39,15 +39,17 @@ import_pubmed_csv <- function(path) {
   
   df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8")
   
-  # Map PubMed CSV columns to standard format
+  # Map PubMed CSV columns to standard format (handles variations in column names)
   standardized <- data.frame(
     TI = if ("Title" %in% names(df)) df$Title else NA,
     AU = if ("Authors" %in% names(df)) df$Authors else NA,
-    PY = if ("Publication Year" %in% names(df)) as.integer(df$`Publication Year`) else NA,
-    SO = if ("Journal/Book" %in% names(df)) df$`Journal/Book` else NA,
+    PY = if ("Publication.Year" %in% names(df)) as.integer(df$Publication.Year) 
+         else if ("Publication Year" %in% names(df)) as.integer(df$`Publication Year`) else NA,
+    SO = if ("Journal.Book" %in% names(df)) df$Journal.Book 
+         else if ("Journal/Book" %in% names(df)) df$`Journal/Book` else NA,
     DOI = if ("DOI" %in% names(df)) df$DOI else NA,
     ID = if ("PMID" %in% names(df)) df$PMID else NA,
-    AB = NA,  # Usually not in PubMed CSV exports
+    AB = NA,
     C1 = NA,
     TC = NA,
     DB = "PubMed",

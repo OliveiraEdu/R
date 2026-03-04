@@ -10,6 +10,13 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
                                     title = "Systematic Review Findings Report",
                                     date = format(Sys.Date(), "%B %d, %Y")) {
   
+  # Calculate database string for report
+  db_string <- if (!is.null(prisma_data$databases)) {
+    paste(prisma_data$databases, collapse = ", ")
+  } else {
+    "multiple databases"
+  }
+  
   # Calculate additional statistics
   year_range <- paste(min(extraction$Year, na.rm = TRUE), max(extraction$Year, na.rm = TRUE), sep = "-")
   top_sources <- sort(table(extraction$Source), decreasing = TRUE)[1:10]
@@ -17,12 +24,6 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
   
   # Cross-tabulation: Platform x Provenance
   platform_prov <- table(extraction$Blockchain_Platform, extraction$Provenance_Model)
-  
-  # Cross-tabulation: Platform x maDMP
-  platform_madmp <- table(extraction$Blockchain_Platform, extraction$maDMP_Support)
-  
-  # Year trends
-  year_dist <- table(extraction$Year)
   
   lines <- c(
     paste0("# ", title),
@@ -36,7 +37,7 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
     "",
     paste0("This systematic review identified **", prisma_data$included, " studies** meeting inclusion criteria. "),
     paste0("The review followed PRISMA 2020 guidelines and covered the period ", year_range, ". "),
-    "The studies were sourced from ACM Digital Library and Web of Science, focusing on blockchain-enabled provenance for scientific data management.",
+    paste0("The studies were sourced from ", db_string, ", focusing on blockchain-enabled provenance for scientific data management."),
     "",
     "---",
     "",
@@ -71,39 +72,88 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
     "    style H fill:#e8f5e9",
     "```",
     "",
+    "### 1.3 Exclusion Reasons",
+    "",
+    "| Reason | Count |",
+    "|--------|-------|",
+    paste0("| Wrong topic (technical implementation) | ", ifelse(is.null(prisma_data$screened$excluded_technical), 0, prisma_data$screened$excluded_technical), " |"),
+    paste0("| Wrong topic (domain relevance) | ", ifelse(is.null(prisma_data$screened$excluded_domain), 0, prisma_data$screened$excluded_domain), " |"),
+    paste0("| Opinion piece | ", ifelse(is.null(prisma_data$screened$excluded_opinion), 0, prisma_data$screened$excluded_opinion), " |"),
+    paste0("| Non-research context | ", ifelse(is.null(prisma_data$screened$excluded_nonresearch), 0, prisma_data$screened$excluded_nonresearch), " |"),
+    "",
     "---",
     "",
-    "## 2. Study Characteristics",
+    "## 2. Methods",
     "",
-    paste0("### 2.1 Distribution by Research Focus (n=", nrow(extraction), ")"),
+    "### 2.1 Search Strategy",
+    "",
+    paste0("This systematic review searched the following databases: ", 
+           paste(ifelse(is.null(prisma_data$databases), c("ACM Digital Library", "Web of Science"), prisma_data$databases), collapse = ", "), ". "),
+    "Search strings were developed following PRISMA 2020 guidelines with three concept groups:",
+    "",
+    "- **Concept 1:** Blockchain/DLT (blockchain, distributed ledger, smart contract, DLT)",
+    "- **Concept 2:** Provenance (provenance, data lineage, chain of custody, verification)",
+    "- **Concept 3:** Scientific Data (scientific data, research data, data management, FAIR)",
+    "",
+    "### 2.2 Eligibility Criteria",
+    "",
+    "| Criterion | Description |",
+    "|-----------|-------------|",
+    "| Language | English |",
+    "| Publication type | Journal articles, conference papers, preprints |",
+    "| Date range | 2018-2026 |",
+    "| Topic | Blockchain/DLT for scientific data provenance |",
+    "| Domain | Research data management, data sharing, reproducibility |",
+    "",
+    "### 2.3 Screening Process",
+    "",
+    "1. Records imported from databases and duplicates removed",
+    "2. Title and abstract screening using automated keyword-based eligibility criteria",
+    "3. Full-text assessment for all included records",
+    "4. Data extraction for included studies",
+    "5. Quality assessment using Mixed Methods Appraisal Tool (MMAT)",
+    "",
+    "### 2.4 Data Extraction",
+    "",
+    "Extracted variables include: Research focus, Blockchain platform, Provenance model, maDMP support, Evaluation method, Storage integration, Permission model.",
+    "",
+    "### 2.5 Quality Assessment",
+    "",
+    "Quality was assessed using the MMAT with five criteria: Clear research questions, Appropriate methodology, Rigorous data collection, Sound analysis, and Well-supported conclusions.",
+    "",
+    "---",
+    "",
+    "## 3. Study Characteristics",
+    "",
+    paste0("### 3.1 Distribution by Research Focus (n=", nrow(extraction), ")"),
     "",
     generate_md_table_from_vector(table(extraction$Research_Focus), "Research Focus", "Count"),
     "",
-    "### 2.2 Distribution by Blockchain Platform",
+    "### 3.2 Distribution by Blockchain Platform",
     "",
     generate_md_table_from_vector(table(extraction$Blockchain_Platform), "Platform", "Count"),
     "",
-    "### 2.3 Distribution by Provenance Model",
+    "### 3.3 Distribution by Provenance Model",
     "",
     generate_md_table_from_vector(table(extraction$Provenance_Model), "Model", "Count"),
     "",
-    "### 2.4 Distribution by maDMP Support",
+    "### 3.4 Distribution by maDMP Support",
     "",
     generate_md_table_from_vector(table(extraction$maDMP_Support), "maDMP Support", "Count"),
     "",
-    "### 2.5 Distribution by Evaluation Method",
+    "### 3.5 Distribution by Evaluation Method",
     "",
     generate_md_table_from_vector(table(extraction$Evaluation_Method), "Evaluation Method", "Count"),
     "",
-    "### 2.6 Publication Year Distribution",
+    "### 3.6 Publication Year Distribution",
     "",
     generate_md_table_from_vector(table(extraction$Year), "Year", "Count"),
     "",
     "---",
     "",
-    "## 3. Detailed Analysis",
+    "## 4. Detailed Analysis",
     "",
-    "### 3.1 Top Publication Sources (Journals/Conferences)",
+    "### 4.1 Top Publication Sources (Journals/Conferences)",
     "",
     "| Source | Count |",
     "|--------|-------|",
@@ -119,7 +169,7 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
   # Storage Integration (if available)
   if ("Storage_Integration" %in% names(extraction)) {
     lines <- c(lines,
-      "### 3.2 Storage Integration Patterns",
+      "### 4.2 Storage Integration Patterns",
       "",
       generate_md_table_from_vector(table(extraction$Storage_Integration), "Storage Type", "Count"),
       ""
@@ -129,7 +179,7 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
   # Permission Model (if available)
   if ("Permission_Model" %in% names(extraction)) {
     lines <- c(lines,
-      "### 3.3 Permission Model Distribution",
+      "### 4.3 Permission Model Distribution",
       "",
       generate_md_table_from_vector(table(extraction$Permission_Model), "Permission Model", "Count"),
       ""
@@ -137,25 +187,27 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
   }
   
   # Cross-tabulation: Platform x Provenance
-  lines <- c(lines,
-    "### 2.7 Cross-Tabulation: Blockchain Platform × Provenance Model",
-    "",
-    "| Platform | ", paste(colnames(platform_prov), collapse = " | "), " |",
-    "|----------|", paste(rep("---", ncol(platform_prov)), collapse = "|"), "|"
-  )
-  
-  for (i in 1:nrow(platform_prov)) {
-    lines <- c(lines, paste0("| ", rownames(platform_prov)[i], " | ", paste(platform_prov[i,], collapse = " | "), " |"))
+  platform_prov <- table(extraction$Blockchain_Platform, extraction$Provenance_Model)
+  if (nrow(platform_prov) > 0 && ncol(platform_prov) > 0) {
+    lines <- c(lines,
+      "### 4.4 Cross-Tabulation: Blockchain Platform × Provenance Model",
+      "",
+      "| Platform | ", paste(colnames(platform_prov), collapse = " | "), " |",
+      "|----------|", paste(rep("---", ncol(platform_prov)), collapse = "|"), "|"
+    )
+    
+    for (i in 1:nrow(platform_prov)) {
+      lines <- c(lines, paste0("| ", rownames(platform_prov)[i], " | ", paste(platform_prov[i,], collapse = " | "), " |"))
+    }
+    lines <- c(lines, "")
   }
-  
-  lines <- c(lines, "")
   
   # System names identified
   systems <- extraction$System_Name[!is.na(extraction$System_Name)]
   if (length(systems) > 0) {
     top_systems <- sort(table(systems), decreasing = TRUE)[1:10]
     lines <- c(lines,
-      "### 2.8 Systems/Frameworks Identified",
+      "### 4.5 Systems/Frameworks Identified",
       "",
       "| System/Framework | Mentions |",
       "|------------------|----------|"
@@ -165,33 +217,33 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
     }
     lines <- c(lines, "")
   }
-  
+
   lines <- c(lines,
     "---",
     "",
-    "## 4. Quality Assessment",
+    "## 5. Quality Assessment",
     "",
-    "### 4.1 Quality Ratings Distribution",
+    "### 5.1 Quality Ratings Distribution",
     "",
     generate_md_table_from_vector(table(qa$Quality_Rating, useNA = "ifany"), "Rating", "Count"),
     "",
-    "### 4.2 MMAT Item Scores",
+    "### 5.2 MMAT Item Scores",
     "",
-    "| MMAT Item | Yes | No | Rate |",
-    "|-----------|-----|----|------|",
-    paste0("| Clear Research Questions | ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_1_ClearRQ == "No", na.rm = TRUE), " | ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "% |"),
-    paste0("| Appropriate Methodology | ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_2_AppropriateMethod == "No", na.rm = TRUE), " | ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "% |"),
-    paste0("| Rigorous Data Collection | ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_3_RigorousData == "No", na.rm = TRUE), " | ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "% |"),
-    paste0("| Sound Analysis | ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_4_SoundAnalysis == "No", na.rm = TRUE), " | ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "% |"),
-    paste0("| Well-supported Conclusions | ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_5_Conclusions == "No", na.rm = TRUE), " | ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "% |"),
+    "| MMAT Item | Yes | Can't tell | Rate |",
+    "|-----------|-----|------------|------|",
+    paste0("| Clear Research Questions | ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_1_ClearRQ == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "% |"),
+    paste0("| Appropriate Methodology | ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_2_AppropriateMethod == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "% |"),
+    paste0("| Rigorous Data Collection | ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_3_RigorousData == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "% |"),
+    paste0("| Sound Analysis | ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_4_SoundAnalysis == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "% |"),
+    paste0("| Well-supported Conclusions | ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_5_Conclusions == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "% |"),
     "",
     paste0("**Mean Quality Score:** ", round(mean(qa$MMAT_Overall, na.rm = TRUE), 2), " / 5.0"),
     "",
     "---",
     "",
-    "## 5. Thematic Synthesis",
+    "## 6. Thematic Synthesis",
     "",
-    "### 5.1 Research Themes Identified",
+    "### 6.1 Research Themes Identified",
     "",
     "| Theme | Description | Studies |",
     "|-------|-------------|---------|",
@@ -200,7 +252,7 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
     "| maDMP | Papers on machine-actionable data management plans | ", sum(grepl("maDMP", extraction$Research_Focus, ignore.case = TRUE)), " |",
     "| Combined Approach | Papers addressing multiple themes | ", sum(grepl(";", extraction$Research_Focus)), " |",
     "",
-    "### 5.2 Technical Architecture Patterns",
+    "### 6.2 Technical Architecture Patterns",
     "",
     "| Pattern | Description | Count |",
     "|---------|-------------|-------|",
@@ -221,8 +273,8 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
   study_table <- extraction[, study_cols]
   
   lines <- c(lines, 
-    "| ", paste(study_cols, collapse = " | "), " |",
-    "| ", paste(rep("---", length(study_cols)), collapse = " | "), " |"
+    paste0("| ", paste(study_cols, collapse = " | "), " |"),
+    paste0("| ", paste(rep("---", length(study_cols)), collapse = " | "), " |")
   )
   
   for (i in 1:min(nrow(study_table), 100)) {
@@ -358,7 +410,7 @@ generate_latex_report <- function(prisma_data, extraction, qa, output_path,
     "",
     paste0("This systematic review identified \\textbf{", prisma_data$included, " studies} meeting inclusion criteria. "),
     paste0("The review followed PRISMA 2020 guidelines and covered the period ", year_range, ". "),
-    "The studies were sourced from ACM Digital Library and Web of Science, focusing on blockchain-enabled provenance for scientific data management.",
+    paste0("The studies were sourced from ", paste(ifelse(is.null(prisma_data$databases), "multiple databases", prisma_data$databases), collapse = ", "), ", focusing on blockchain-enabled provenance for scientific data management."),
     "",
     "\\section{PRISMA Flow}",
     "",
@@ -582,13 +634,13 @@ generate_latex_report <- function(prisma_data, extraction, qa, output_path,
     "\\caption{MMAT Item Scores}",
     "\\begin{tabular}{lrrr}",
     "\\toprule",
-    "MMAT Item & Yes & No & Rate \\\\",
+    "MMAT Item & Yes & Can't tell & Rate \\\\",
     "\\midrule",
-    paste0("Clear Research Questions & ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_1_ClearRQ == "No", na.rm = TRUE), " & ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "\\% \\\\"),
-    paste0("Appropriate Methodology & ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_2_AppropriateMethod == "No", na.rm = TRUE), " & ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "\\% \\\\"),
-    paste0("Rigorous Data Collection & ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_3_RigorousData == "No", na.rm = TRUE), " & ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "\\% \\\\"),
-    paste0("Sound Analysis & ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_4_SoundAnalysis == "No", na.rm = TRUE), " & ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "\\% \\\\"),
-    paste0("Well-supported Conclusions & ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_5_Conclusions == "No", na.rm = TRUE), " & ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "\\% \\\\"),
+    paste0("Clear Research Questions & ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_1_ClearRQ == "Can't tell", na.rm = TRUE), " & ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "\\% \\\\"),
+    paste0("Appropriate Methodology & ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_2_AppropriateMethod == "Can't tell", na.rm = TRUE), " & ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "\\% \\\\"),
+    paste0("Rigorous Data Collection & ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_3_RigorousData == "Can't tell", na.rm = TRUE), " & ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "\\% \\\\"),
+    paste0("Sound Analysis & ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_4_SoundAnalysis == "Can't tell", na.rm = TRUE), " & ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "\\% \\\\"),
+    paste0("Well-supported Conclusions & ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " & ", sum(qa$MMAT_5_Conclusions == "Can't tell", na.rm = TRUE), " & ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "\\% \\\\"),
     "\\bottomrule",
     "\\end{tabular}",
     "\\end{table}",

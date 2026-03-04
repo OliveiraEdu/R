@@ -5,11 +5,21 @@
 #' @param records_assessed_ft Records assessed for full-text
 #' @param records_excluded_ft Records excluded at full-text
 #' @param records_included Final included studies
+#' @param excluded_technical Count excluded for technical topic
+#' @param excluded_domain Count excluded for domain relevance
+#' @param excluded_opinion Count excluded as opinion pieces
+#' @param excluded_nonresearch Count excluded for non-research context
+#' @param databases Database sources searched
 #' @return List with PRISMA flow data
 #' @export
 generate_prisma_flow <- function(records_all, records_screened, 
                                   records_excluded_ta, records_assessed_ft,
-                                  records_excluded_ft, records_included) {
+                                  records_excluded_ft, records_included,
+                                  excluded_technical = 0,
+                                  excluded_domain = 0,
+                                  excluded_opinion = 0,
+                                  excluded_nonresearch = 0,
+                                  databases = NULL) {
   
   list(
     identified = list(
@@ -19,13 +29,18 @@ generate_prisma_flow <- function(records_all, records_screened,
     screened = list(
       after_duplicates = records_screened,
       screened = records_screened,
-      excluded_ta = records_excluded_ta
+      excluded_ta = records_excluded_ta,
+      excluded_technical = excluded_technical,
+      excluded_domain = excluded_domain,
+      excluded_opinion = excluded_opinion,
+      excluded_nonresearch = excluded_nonresearch
     ),
     fulltext = list(
       assessed_ft = records_assessed_ft,
       excluded_ft = records_excluded_ft
     ),
-    included = records_included
+    included = records_included,
+    databases = databases
   )
 }
 
@@ -183,32 +198,42 @@ export_summary_tables <- function(extraction, path) {
 #' @export
 gap_analysis <- function(extraction) {
   
-  # Create matrix of coverage
-  platforms <- unique(unlist(strsplit(extraction$Blockchain_Platform, "; ")))
-  models <- unique(unlist(strsplit(extraction$Provenance_Model, "; ")))
-  
   gaps <- data.frame(
     Category = character(),
     Combination = character(),
+    Description = character(),
     Count = integer(),
     stringsAsFactors = FALSE
   )
   
-  # Analyze missing combinations
   all_platforms <- c("Fabric", "Iroha", "Ethereum", "Hyperledger", "BigchainDB", "Multi-chain", "Not specified")
   all_models <- c("PROV-O", "PROV-DM", "OPM", "Custom", "None")
   
+  gap_descriptions <- list(
+    "Fabric x PROV-O" = "Permissioned blockchain with W3C provenance standard",
+    "Fabric x PROV-DM" = "Fabric with PROV-DM data model",
+    "Fabric x OPM" = "Fabric with Open Provenance Model",
+    "Iroha x PROV-O" = "Iroha with W3C provenance standard",
+    "Ethereum x PROV-O" = "Public blockchain with standard provenance",
+    "Hyperledger x PROV-O" = "Hyperledger ecosystem with W3C PROV"
+  )
+  
   for (plat in all_platforms) {
     for (mod in all_models) {
+      combo <- paste(plat, "x", mod)
       count <- sum(grepl(plat, extraction$Blockchain_Platform) & grepl(mod, extraction$Provenance_Model))
+      desc <- ifelse(count == 0, 
+                     ifelse(combo %in% names(gap_descriptions), gap_descriptions[[combo]], "No studies found"),
+                     "Active research area")
       gaps <- rbind(gaps, data.frame(
         Category = "Platform x Provenance Model",
-        Combination = paste(plat, "x", mod),
+        Combination = combo,
+        Description = desc,
         Count = count,
         stringsAsFactors = FALSE
       ))
     }
   }
   
-  gaps
+  gaps[order(gaps$Count), ]
 }

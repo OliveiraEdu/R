@@ -130,6 +130,13 @@ run_slr_pipeline <- function(sources,
   write.csv(gaps, file.path(output_dir, "08_gap_analysis.csv"), 
             fileEncoding = "UTF-8", row.names = FALSE)
 
+  # Bibliometric analysis
+  message("Step 7: Bibliometric analysis...")
+  source("slrengine/R/bibliometric.R")
+  bm <- bibliometric_analysis(extraction)
+  export_bibliometric(bm, output_dir)
+  message("  Bibliometric analysis complete\n")
+
   # Generate reports
   message("Generating reports...")
   generate_markdown_report(prisma, extraction, qa, file.path(output_dir, "09_report.md"))
@@ -273,6 +280,17 @@ generate_search_strings <- function(protocol_version = "1.0") {
     scholar = "\"machine-actionable\" OR maDMP blockchain provenance \"scientific data\""
   )
   
+  # Protocol 3.0 filters
+  filters_3.0 <- list(
+    ieee = "Document Type: Conference OR Journal; Year: 2018-2026",
+    scopus = "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2018-2026",
+    wos = "Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2018-2026",
+    pubmed = "Publication Types: Article, Review; Year: 2018-2026",
+    acm = "Content Type: Conference Papers, Journal Articles; Year: 2018-2026",
+    arxiv = "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2018-2026",
+    scholar = "Limit first 200 results"
+  )
+  
   # Protocol 4.0 filters
   protocol_4_filters <- list(
     ieee = "Document Type: Conference OR Journal; Year: 2018-2026",
@@ -317,7 +335,7 @@ generate_search_strings <- function(protocol_version = "1.0") {
       concepts_broad = broad_concepts,
       narrow = narrow_strings,
       broad = broad_strings,
-      filters = filters,
+      filters = filters_3.0,
       arxiv_categories = arxiv_categories,
       date_range = "2018-2026",
       search_strings = search_strings,
