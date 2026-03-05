@@ -35,6 +35,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Thematic synthesis
   - Detailed Key Findings and Implications sections
   - Comprehensive Limitations list
+- **Supplementary data fields** added to imports:
+  - `ID`: Author keywords (Scopus, IEEE, WoS, ACM)
+  - `OA`: Open Access status (Scopus, WoS)
+  - `LA`: Language (WoS)
+  - `PT`: Publication Type/Document Type (Scopus)
+  - `TC`: Citation counts (IEEE)
+- **Enhanced bibliometric analysis**:
+  - Keywords now include author keywords from ID column
+  - Open Access (OA) metrics in summary and exports
+  - Publication Type (PT) metrics in summary and exports
+  - New exports: `bibliometric_oa.csv`, `bibliometric_pubtypes.csv`
 
 ### Changed
 - Updated test_full_pipeline.R to use data/ folder

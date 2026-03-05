@@ -10,17 +10,32 @@ import_scopus <- function(path) {
   df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8")
   
   # Map Scopus columns to standard format (handles multiple column name variations)
+  get_col <- function(df, names_vec) {
+    for (nm in names_vec) {
+      if (nm %in% names(df)) return(df[[nm]])
+      # Try with dots replaced by spaces and vice versa
+      nm_dot <- gsub(" ", ".", nm)
+      nm_space <- gsub("\\.", " ", nm)
+      if (nm_dot %in% names(df)) return(df[[nm_dot]])
+      if (nm_space %in% names(df)) return(df[[nm_space]])
+    }
+    NA
+  }
+  
   standardized <- data.frame(
-    TI = if ("Title" %in% names(df)) df$Title else NA,
-    AU = if ("Authors" %in% names(df)) df$Authors else NA,
-    PY = if ("Year" %in% names(df)) as.integer(df$Year) else NA,
-    SO = if ("Source title" %in% names(df)) df$`Source title` else NA,
-    DOI = if ("DOI" %in% names(df)) df$DOI else NA,
-    ID = NA,
-    AB = if ("Abstract" %in% names(df)) df$Abstract else NA,
-    C1 = if ("Affiliations" %in% names(df)) df$Affiliations else NA,
-    TC = NA,
+    TI = get_col(df, c("Title")),
+    AU = get_col(df, c("Authors")),
+    PY = as.integer(get_col(df, c("Year"))),
+    SO = get_col(df, c("Source title", "Source.title")),
+    DOI = get_col(df, c("DOI")),
+    ID = get_col(df, c("Author Keywords", "Index Keywords", "Author.Keywords", "Index.Keywords")),
+    AB = get_col(df, c("Abstract")),
+    C1 = get_col(df, c("Affiliations")),
+    TC = as.integer(get_col(df, c("Cited by", "Cited.by"))),
     DB = "Scopus",
+    LA = NA,
+    OA = get_col(df, c("Open Access", "Open.Access")),
+    PT = get_col(df, c("Document Type", "Document.Type")),
     stringsAsFactors = FALSE
   )
   
@@ -40,19 +55,27 @@ import_pubmed_csv <- function(path) {
   df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8")
   
   # Map PubMed CSV columns to standard format (handles variations in column names)
+  get_col_pm <- function(df, names_vec) {
+    for (nm in names_vec) {
+      if (nm %in% names(df)) return(df[[nm]])
+    }
+    NA
+  }
+  
   standardized <- data.frame(
-    TI = if ("Title" %in% names(df)) df$Title else NA,
-    AU = if ("Authors" %in% names(df)) df$Authors else NA,
-    PY = if ("Publication.Year" %in% names(df)) as.integer(df$Publication.Year) 
-         else if ("Publication Year" %in% names(df)) as.integer(df$`Publication Year`) else NA,
-    SO = if ("Journal.Book" %in% names(df)) df$Journal.Book 
-         else if ("Journal/Book" %in% names(df)) df$`Journal/Book` else NA,
-    DOI = if ("DOI" %in% names(df)) df$DOI else NA,
-    ID = if ("PMID" %in% names(df)) df$PMID else NA,
+    TI = get_col_pm(df, c("Title")),
+    AU = get_col_pm(df, c("Authors")),
+    PY = as.integer(get_col_pm(df, c("Publication.Year", "Publication Year"))),
+    SO = get_col_pm(df, c("Journal.Book", "Journal/Book")),
+    DOI = get_col_pm(df, c("DOI")),
+    ID = get_col_pm(df, c("PMID")),
     AB = NA,
     C1 = NA,
     TC = NA,
     DB = "PubMed",
+    LA = get_col_pm(df, c("Language")),
+    OA = NA,
+    PT = get_col_pm(df, c("Publication Type")),
     stringsAsFactors = FALSE
   )
   
@@ -72,17 +95,32 @@ import_ieee <- function(path) {
   df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8")
   
   # Map IEEE columns to standard format (handles multiple column name variations)
+  get_col_ieee <- function(df, names_vec) {
+    for (nm in names_vec) {
+      if (nm %in% names(df)) return(df[[nm]])
+      # Try with dots replaced by spaces and vice versa
+      nm_dot <- gsub(" ", ".", nm)
+      nm_space <- gsub("\\.", " ", nm)
+      if (nm_dot %in% names(df)) return(df[[nm_dot]])
+      if (nm_space %in% names(df)) return(df[[nm_space]])
+    }
+    NA
+  }
+  
   standardized <- data.frame(
-    TI = if ("Document Title" %in% names(df)) df$`Document Title` else NA,
-    AU = if ("Authors" %in% names(df)) df$Authors else NA,
-    PY = if ("Publication Year" %in% names(df)) as.integer(df$`Publication Year`) else NA,
-    SO = if ("Publication Title" %in% names(df)) df$`Publication Title` else NA,
-    DOI = if ("DOI" %in% names(df)) df$DOI else NA,
-    ID = NA,
-    AB = if ("Abstract" %in% names(df)) df$Abstract else NA,
-    C1 = if ("Author Affiliations" %in% names(df)) df$`Author Affiliations` else NA,
-    TC = NA,
+    TI = get_col_ieee(df, c("Document Title")),
+    AU = get_col_ieee(df, c("Authors")),
+    PY = as.integer(get_col_ieee(df, c("Publication Year"))),
+    SO = get_col_ieee(df, c("Publication Title")),
+    DOI = get_col_ieee(df, c("DOI")),
+    ID = get_col_ieee(df, c("Author Keywords", "IEEE Terms")),
+    AB = get_col_ieee(df, c("Abstract")),
+    C1 = get_col_ieee(df, c("Author Affiliations")),
+    TC = as.integer(get_col_ieee(df, c("Article Citation Count"))),
     DB = "IEEE Xplore",
+    LA = NA,
+    OA = NA,
+    PT = NA,
     stringsAsFactors = FALSE
   )
   
@@ -150,7 +188,7 @@ import_wos <- function(paths) {
       }),
       SO = sapply(records, function(x) ifelse(is.null(x$JOURNAL), ifelse(is.null(x$BOOKTITLE), NA, x$BOOKTITLE), x$JOURNAL)),
       DOI = sapply(records, function(x) ifelse(is.null(x$DOI), NA, x$DOI)),
-      ID = NA,
+      ID = sapply(records, function(x) ifelse(is.null(x$KEYWORDS), NA, x$KEYWORDS)),
       AB = sapply(records, function(x) ifelse(is.null(x$ABSTRACT), NA, x$ABSTRACT)),
       C1 = sapply(records, function(x) ifelse(is.null(x$AFFILIATION), NA, x$AFFILIATION)),
       TC = sapply(records, function(x) {
@@ -158,6 +196,9 @@ import_wos <- function(paths) {
         if (is.null(tc)) NA else as.integer(tc)
       }),
       DB = "WoS",
+      LA = sapply(records, function(x) ifelse(is.null(x$LANGUAGE), NA, x$LANGUAGE)),
+      OA = sapply(records, function(x) ifelse(is.null(x$OA), NA, x$OA)),
+      PT = sapply(records, function(x) ifelse(is.null(x$TYPE), NA, x$TYPE)),
       stringsAsFactors = FALSE
     )
     
@@ -226,11 +267,14 @@ import_acm <- function(path) {
     }),
     SO = sapply(records, function(x) ifelse(is.null(x$JOURNAL), ifelse(is.null(x$BOOKTITLE), NA, x$BOOKTITLE), x$JOURNAL)),
     DOI = sapply(records, function(x) ifelse(is.null(x$DOI), NA, x$DOI)),
-    ID = NA,
+    ID = sapply(records, function(x) ifelse(is.null(x$KEYWORDS), NA, x$KEYWORDS)),
     AB = sapply(records, function(x) ifelse(is.null(x$ABSTRACT), NA, x$ABSTRACT)),
     C1 = sapply(records, function(x) ifelse(is.null(x$AFFILIATION), NA, x$AFFILIATION)),
     TC = NA,
     DB = "ACM DL",
+    LA = NA,
+    OA = NA,
+    PT = NA,
     stringsAsFactors = FALSE
   )
   
@@ -293,6 +337,9 @@ import_pubmed <- function(path) {
     C1 = sapply(records, function(x) ifelse(is.null(x$C1), NA, x$C1)),
     TC = NA,
     DB = "PubMed",
+    LA = NA,
+    OA = NA,
+    PT = NA,
     stringsAsFactors = FALSE
   )
   
@@ -390,7 +437,8 @@ import_databases <- function(sources, remove_duplicates = TRUE) {
   }
   
   # Ensure all data frames have the same columns
-  std_cols <- c("TI", "AU", "PY", "SO", "DOI", "ID", "AB", "C1", "TC", "DB")
+  std_cols <- c("TI", "AU", "PY", "SO", "DOI", "ID", "AB", "C1", "TC", "DB", 
+                "LA", "OA", "PT")
   
   for (i in seq_along(dfs)) {
     for (col in std_cols) {

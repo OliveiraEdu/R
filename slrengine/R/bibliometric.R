@@ -44,6 +44,28 @@ bibliometric_analysis <- function(df) {
   # Collaboration analysis
   results$collab_metrics <- collaboration_analysis(df)
   
+  # Open Access analysis (if available)
+  if ("OA" %in% colnames(df)) {
+    oa_data <- df$OA[!is.na(df$OA)]
+    if (length(oa_data) > 0) {
+      results$oa_metrics <- list(
+        total_oa = length(oa_data),
+        oa_by_type = table(oa_data, dnn = "Open Access Type")
+      )
+    }
+  }
+  
+  # Publication type analysis (if available)
+  if ("PT" %in% colnames(df)) {
+    pt_data <- df$PT[!is.na(df$PT)]
+    if (length(pt_data) > 0) {
+      results$pt_metrics <- list(
+        total_typed = length(pt_data),
+        pt_by_type = table(pt_data, dnn = "Publication Type")
+      )
+    }
+  }
+  
   # Year trends
   results$year_trends <- yearly_trends(df)
   
@@ -161,6 +183,15 @@ keyword_analysis <- function(df, n_keywords = 30) {
   if ("AB" %in% colnames(df) || "Abstract" %in% colnames(df)) {
     ab_col <- if ("AB" %in% colnames(df)) "AB" else "Abstract"
     texts <- paste(texts, df[[ab_col]], sep = " ")
+  }
+  
+  # Also include author keywords from ID column if available
+  if ("ID" %in% colnames(df)) {
+    id_text <- df$ID
+    id_text <- id_text[!is.na(id_text)]
+    if (length(id_text) > 0) {
+      texts <- paste(texts, paste(id_text, collapse = " "), sep = " ")
+    }
   }
   
   # Common stopwords
@@ -304,6 +335,20 @@ summary.bibliometric <- function(object, ...) {
     cat("Collaboration rate:", round(object$collab_metrics$collaboration_rate, 1), "%\n")
   }
   
+  if (!is.null(object$oa_metrics)) {
+    cat("\n--- Open Access Metrics ---\n")
+    cat("Total with OA status:", object$oa_metrics$total_oa, "\n")
+    cat("OA Types:\n")
+    print(object$oa_metrics$oa_by_type)
+  }
+  
+  if (!is.null(object$pt_metrics)) {
+    cat("\n--- Publication Type Metrics ---\n")
+    cat("Total with type:", object$pt_metrics$total_typed, "\n")
+    cat("Types:\n")
+    print(object$pt_metrics$pt_by_type)
+  }
+  
   cat("\n")
 }
 
@@ -343,6 +388,28 @@ export_bibliometric <- function(bm, output_dir = "slr_results") {
   if (!is.null(bm$year_trends)) {
     write.csv(bm$year_trends,
               file.path(output_dir, "bibliometric_trends.csv"),
+              row.names = FALSE, fileEncoding = "UTF-8")
+  }
+  
+  # Export Open Access metrics
+  if (!is.null(bm$oa_metrics)) {
+    oa_df <- data.frame(
+      Type = names(bm$oa_metrics$oa_by_type),
+      Count = as.integer(bm$oa_metrics$oa_by_type)
+    )
+    write.csv(oa_df,
+              file.path(output_dir, "bibliometric_oa.csv"),
+              row.names = FALSE, fileEncoding = "UTF-8")
+  }
+  
+  # Export Publication Type metrics
+  if (!is.null(bm$pt_metrics)) {
+    pt_df <- data.frame(
+      Type = names(bm$pt_metrics$pt_by_type),
+      Count = as.integer(bm$pt_metrics$pt_by_type)
+    )
+    write.csv(pt_df,
+              file.path(output_dir, "bibliometric_pubtypes.csv"),
               row.names = FALSE, fileEncoding = "UTF-8")
   }
   

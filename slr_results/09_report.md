@@ -1,15 +1,15 @@
 # Systematic Review Findings Report
 
-**Date:** February 28, 2026
+**Date:** March 04, 2026
 **Review Protocol:** PRISMA 2020 Guidelines
 
 ---
 
 ## Executive Summary
 
-This systematic review identified **183 studies** meeting inclusion criteria. 
+This systematic review identified **237 studies** meeting inclusion criteria. 
 The review followed PRISMA 2020 guidelines and covered the period 2018-2026. 
-The studies were sourced from ACM Digital Library and Web of Science, focusing on blockchain-enabled provenance for scientific data management.
+The studies were sourced from WoS, ACM DL, IEEE Xplore, PubMed, arXiv, focusing on blockchain-enabled provenance for scientific data management.
 
 ---
 
@@ -19,83 +19,134 @@ The studies were sourced from ACM Digital Library and Web of Science, focusing o
 
 | Stage | Count | Percentage |
 |-------|-------|------------|
-| Records identified | 2494 | 100% |
-| After duplicates removed | 2392 | 95.9% |
-| Screened | 2392 | 100% |
-| Excluded at title/abstract | 1900 | 79.4% |
-| Assessed for full-text | 492 | 20.6% |
-| Excluded at full-text | 309 | 62.8% |
-| **Studies included** | **183** | **7.3%** |
+| Records identified | 2909 | 100% |
+| After duplicates removed | 2550 | 87.7% |
+| Screened | 2550 | 100% |
+| Excluded at title/abstract | 1992 | 78.1% |
+| Assessed for full-text | 558 | 21.9% |
+| Excluded at full-text | 321 | 57.5% |
+| **Studies included** | **237** | **8.1%** |
 
 ### 1.2 Mermaid Flowchart
 
 ```mermaid
 flowchart TD
-    A[Records Identified<br/>n=2494] --> B[Duplicate Records Removed<br/>n=2392]
-    B --> C[Records Screened<br/>n=2392]
-    C --> D[Excluded by Title/Abstract<br/>n=1900]
-    D --> E[Records Eligible<br/>n=492]
-    E --> F[Full-Text Assessed<br/>n=492]
-    F --> G[Excluded Full-Text<br/>n=309]
-    G --> H[Studies Included<br/>n=183]
+    A[Records Identified<br/>n=2909] --> B[Duplicate Records Removed<br/>n=2550]
+    B --> C[Records Screened<br/>n=2550]
+    C --> D[Excluded by Title/Abstract<br/>n=1992]
+    D --> E[Records Eligible<br/>n=558]
+    E --> F[Full-Text Assessed<br/>n=558]
+    F --> G[Excluded Full-Text<br/>n=321]
+    G --> H[Studies Included<br/>n=237]
     style A fill:#e1f5fe
     style C fill:#fff3e0
     style F fill:#fff3e0
     style H fill:#e8f5e9
 ```
 
+### 1.3 Exclusion Reasons
+
+| Reason | Count |
+|--------|-------|
+| Wrong topic (technical implementation) | 260 |
+| Wrong topic (domain relevance) | 1564 |
+| Opinion piece | 19 |
+| Non-research context | 138 |
+
 ---
 
-## 2. Study Characteristics
+## 2. Methods
 
-### 2.1 Distribution by Research Focus (n=183)
+### 2.1 Search Strategy
+
+This systematic review searched the following databases: WoS. 
+Search strings were developed following PRISMA 2020 guidelines with three concept groups:
+
+- **Concept 1:** Blockchain/DLT (blockchain, distributed ledger, smart contract, DLT)
+- **Concept 2:** Provenance (provenance, data lineage, chain of custody, verification)
+- **Concept 3:** Scientific Data (scientific data, research data, data management, FAIR)
+
+### 2.2 Eligibility Criteria
+
+| Criterion | Description |
+|-----------|-------------|
+| Language | English |
+| Publication type | Journal articles, conference papers, preprints |
+| Date range | 2018-2026 |
+| Topic | Blockchain/DLT for scientific data provenance |
+| Domain | Research data management, data sharing, reproducibility |
+
+### 2.3 Screening Process
+
+1. Records imported from databases and duplicates removed
+2. Title and abstract screening using automated keyword-based eligibility criteria
+3. Full-text assessment for all included records
+4. Data extraction for included studies
+5. Quality assessment using Mixed Methods Appraisal Tool (MMAT)
+
+### 2.4 Data Extraction
+
+Extracted variables include: Research focus, Blockchain platform, Provenance model, maDMP support, Evaluation method, Storage integration, Permission model.
+
+### 2.5 Quality Assessment
+
+Quality was assessed using the MMAT with five criteria: Clear research questions, Appropriate methodology, Rigorous data collection, Sound analysis, and Well-supported conclusions.
+
+---
+
+## 3. Study Characteristics
+
+### 3.1 Distribution by Research Focus (n=237)
 
 | Research Focus | Count |
 |------------|------|
-| Blockchain | 67 |
-| Blockchain; Provenance | 26 |
-| Other | 71 |
-| Provenance | 19 |
+| Blockchain | 93 |
+| Blockchain; Provenance | 33 |
+| Other | 91 |
+| Provenance | 20 |
 
 
-### 2.2 Distribution by Blockchain Platform
+### 3.2 Distribution by Blockchain Platform
 
 | Platform | Count |
 |------------|------|
-| Ethereum | 2 |
-| Fabric | 1 |
+| Ethereum | 7 |
+| Fabric | 2 |
 | Fabric; Hyperledger | 1 |
-| Not specified | 179 |
+| Multi-chain | 2 |
+| Not specified | 225 |
 
 
-### 2.3 Distribution by Provenance Model
+### 3.3 Distribution by Provenance Model
 
 | Model | Count |
 |------------|------|
-| Custom | 10 |
-| None | 155 |
-| OPM | 18 |
+| Custom | 13 |
+| None | 200 |
+| OPM | 23 |
+| OPM; Custom | 1 |
 
 
-### 2.4 Distribution by maDMP Support
+### 3.4 Distribution by maDMP Support
 
 | maDMP Support | Count |
 |------------|------|
-| None | 183 |
+| None | 237 |
 
 
-### 2.5 Distribution by Evaluation Method
+### 3.5 Distribution by Evaluation Method
 
 | Evaluation Method | Count |
 |------------|------|
-| Case study | 1 |
-| Experiment | 20 |
-| Not clear | 157 |
+| Case study | 3 |
+| Experiment | 32 |
+| Experiment; User study | 1 |
+| Not clear | 193 |
 | Proof of concept | 2 |
-| User study | 3 |
+| User study | 6 |
 
 
-### 2.6 Publication Year Distribution
+### 3.6 Publication Year Distribution
 
 | Year | Count |
 |------------|------|
@@ -104,20 +155,21 @@ flowchart TD
 | 2020 | 23 |
 | 2021 | 18 |
 | 2022 | 29 |
-| 2023 | 16 |
-| 2024 | 22 |
-| 2025 | 36 |
-| 2026 | 5 |
+| 2023 | 18 |
+| 2024 | 30 |
+| 2025 | 66 |
+| 2026 | 19 |
 
 
 ---
 
-## 3. Detailed Analysis
+## 4. Detailed Analysis
 
-### 3.1 Top Publication Sources (Journals/Conferences)
+### 4.1 Top Publication Sources (Journals/Conferences)
 
 | Source | Count |
 |--------|-------|
+| arXiv | 49 |
 | ACM Trans. Storage | 7 |
 | IEEE ACCESS | 5 |
 | Proceedings of the International Conference for High Performance Computing Networking Storage and Analysis | 5 |
@@ -127,45 +179,48 @@ flowchart TD
 | Proceedings of the SC '25 Workshops of the International Conference for High Performance Computing Networking Storage and Analysis | 3 |
 | ACM Trans. Sen. Netw. | 2 |
 | APPLIED SCIENCES-BASEL | 2 |
-| CLUSTER COMPUTING-THE JOURNAL OF NETWORKS SOFTWARE TOOLS AND | 2 |
 
-### 3.2 Storage Integration Patterns
+### 4.2 Storage Integration Patterns
 
 | Storage Type | Count |
 |------------|------|
-| External DB | 7 |
-| IPFS + blockchain | 2 |
-| Not specified | 174 |
+| External DB | 12 |
+| IPFS + blockchain | 6 |
+| IPFS + blockchain; External DB; Hybrid | 1 |
+| Not specified | 218 |
 
 
-### 3.3 Permission Model Distribution
+### 4.3 Permission Model Distribution
 
 | Permission Model | Count |
 |------------|------|
-| Hybrid | 2 |
-| Not specified | 177 |
+| Hybrid | 9 |
+| Not specified | 213 |
 | Permissioned | 1 |
-| Permissionless | 3 |
+| Permissionless | 13 |
+| Permissionless; Hybrid | 1 |
 
 
-### 2.7 Cross-Tabulation: Blockchain Platform × Provenance Model
+### 4.4 Cross-Tabulation: Blockchain Platform × Provenance Model
 
 | Platform | 
-Custom | None | OPM
+Custom | None | OPM | OPM; Custom
  |
 |----------|
----|---|---
+---|---|---|---
 |
-| Ethereum | 0 | 2 | 0 |
-| Fabric | 0 | 1 | 0 |
-| Fabric; Hyperledger | 0 | 1 | 0 |
-| Not specified | 10 | 151 | 18 |
+| Ethereum | 1 | 5 | 1 | 0 |
+| Fabric | 0 | 2 | 0 | 0 |
+| Fabric; Hyperledger | 0 | 1 | 0 | 0 |
+| Multi-chain | 1 | 1 | 0 | 0 |
+| Not specified | 11 | 191 | 22 | 1 |
 
-### 2.8 Systems/Frameworks Identified
+### 4.5 Systems/Frameworks Identified
 
 | System/Framework | Mentions |
 |------------------|----------|
-| Provenance | 43 |
+| Provenance | 51 |
+| Ethereum | 2 |
 | Ethereum, Provenance | 1 |
 | IPFS | 1 |
 | Provenance, IPFS | 1 |
@@ -174,79 +229,74 @@ Custom | None | OPM
 | NA | NA |
 | NA | NA |
 | NA | NA |
-| NA | NA |
 
 ---
 
-## 4. Quality Assessment
+## 5. Quality Assessment
 
-### 4.1 Quality Ratings Distribution
+### 5.1 Quality Ratings Distribution
 
 | Rating | Count |
 |------------|------|
-| Medium | 183 |
+| Medium | 237 |
 
 
-### 4.2 MMAT Item Scores
+### 5.2 MMAT Item Scores
 
-| MMAT Item | Yes | No | Rate |
-|-----------|-----|----|------|
-| Clear Research Questions | 3 | 0 | 1.6% |
-| Appropriate Methodology | 115 | 0 | 62.8% |
-| Rigorous Data Collection | 0 | 0 | 0% |
-| Sound Analysis | 132 | 0 | 72.1% |
-| Well-supported Conclusions | 0 | 0 | 0% |
+| MMAT Item | Yes | Can't tell | Rate |
+|-----------|-----|------------|------|
+| Clear Research Questions | 3 | 234 | 1.3% |
+| Appropriate Methodology | 141 | 96 | 59.5% |
+| Rigorous Data Collection | 0 | 237 | 0% |
+| Sound Analysis | 147 | 90 | 62% |
+| Well-supported Conclusions | 0 | 237 | 0% |
 
-**Mean Quality Score:** 0.64 / 5.0
+**Mean Quality Score:** 0.62 / 5.0
 
 ---
 
-## 5. Thematic Synthesis
+## 6. Thematic Synthesis
 
-### 5.1 Research Themes Identified
+### 6.1 Research Themes Identified
 
 | Theme | Description | Studies |
 |-------|-------------|---------|
 | Blockchain Infrastructure | Papers focusing on blockchain platforms, DLT architecture | 
-93
+126
  |
 | Provenance Tracking | Papers on data lineage, verification, chain of custody | 
-45
+53
  |
 | maDMP | Papers on machine-actionable data management plans | 
 0
  |
 | Combined Approach | Papers addressing multiple themes | 
-26
+33
  |
 
-### 5.2 Technical Architecture Patterns
+### 6.2 Technical Architecture Patterns
 
 | Pattern | Description | Count |
 |---------|-------------|-------|
 | Permissioned Blockchain | Systems using Hyperledger Fabric/Iroha | 
-2
+3
  |
 | Permissionless Blockchain | Systems using Ethereum/public chains | 
-2
+7
  |
 | PROV-O Based | Systems using W3C PROV ontology | 
 0
  |
 | Custom Provenance | Systems with proprietary provenance models | 
-10
+14
  |
 
 ---
 
 ## 6. Included Studies
 
-| 
-Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platform | Provenance_Model | maDMP_Support | Evaluation_Method
- |
-| 
---- | --- | --- | --- | --- | --- | --- | --- | --- | ---
- |
+| Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platform | Provenance_Model | maDMP_Support | Evaluation_Method |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | REV001 | The Approach to Managing Provenance M... | 2018 | Demichev Andrey and Kryukov Alexander... | 2018 IVANNIKOV ISPRAS OPEN CONFERENCE... | Provenance | Not specified | None | None | Not clear |
 | REV002 | A Decentralized System for Medical Da... | 2020 | Yang Qingzhu and Liu Qiao and Lv Hair... | JOURNAL OF INTERNET TECHNOLOGY | Blockchain | Not specified | None | None | Not clear |
 | REV003 | A blockchain-based platform architect... | 2021 | Liu Yue and Lu Qinghua and Zhu Chunsh... | MULTIMEDIA TOOLS AND APPLICATIONS | Blockchain | Not specified | None | None | Not clear |
@@ -348,7 +398,7 @@ Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platfor
 | REV099 | A Reliable Data Provenance and Privac... | 2018 | Liang Xueping and Shetty Sachin and T... | INTERNATIONAL JOURNAL OF INFORMATION ... | Provenance | Not specified | None | None | Not clear |
 | REV100 | Power global multi-source heterogeneo... | 2025 | Li Jiwei and Li Bo and Liu Shi and Lv... | RESULTS IN ENGINEERING | Other | Not specified | None | None | Not clear |
 
-*... and 83 more studies (see extraction form for complete list)*
+*... and 137 more studies (see extraction form for complete list)*
 
 ---
 
@@ -356,21 +406,21 @@ Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platfor
 
 | Research Gap | Evidence | Studies |
 |--------------|----------|---------|
-| Fabric x PROV-O |  | 0 |
-| Fabric x PROV-DM |  | 0 |
-| Fabric x OPM |  | 0 |
-| Fabric x Custom |  | 0 |
-| Fabric x None |  | 2 |
-| Iroha x PROV-O |  | 0 |
-| Iroha x PROV-DM |  | 0 |
-| Iroha x OPM |  | 0 |
-| Iroha x Custom |  | 0 |
-| Iroha x None |  | 0 |
-| Ethereum x PROV-O |  | 0 |
-| Ethereum x PROV-DM |  | 0 |
-| Ethereum x OPM |  | 0 |
-| Ethereum x Custom |  | 0 |
-| Ethereum x None |  | 2 |
+| Fabric x PROV-O | Permissioned blockchain with W3C provenance standard | 0 |
+| Fabric x PROV-DM | Fabric with PROV-DM data model | 0 |
+| Fabric x OPM | Fabric with Open Provenance Model | 0 |
+| Fabric x Custom | No studies found | 0 |
+| Iroha x PROV-O | Iroha with W3C provenance standard | 0 |
+| Iroha x PROV-DM | No studies found | 0 |
+| Iroha x OPM | No studies found | 0 |
+| Iroha x Custom | No studies found | 0 |
+| Iroha x None | No studies found | 0 |
+| Ethereum x PROV-O | Public blockchain with standard provenance | 0 |
+| Ethereum x PROV-DM | No studies found | 0 |
+| Hyperledger x PROV-O | Hyperledger ecosystem with W3C PROV | 0 |
+| Hyperledger x PROV-DM | No studies found | 0 |
+| Hyperledger x OPM | No studies found | 0 |
+| Hyperledger x Custom | No studies found | 0 |
 
 ---
 
@@ -378,9 +428,9 @@ Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platfor
 
 ### 8.1 Summary of Current State
 
-- The review identified **183 studies** addressing blockchain for scientific data provenance
+- The review identified **237 studies** addressing blockchain for scientific data provenance
 - Research spans from 2018 to 2026
-- Most studies (50.8%) focus on blockchain infrastructure
+- Most studies (53.2%) focus on blockchain infrastructure
 - Limited integration of formal provenance models (PROV-O)
 - Few studies address maDMP specifically
 
@@ -405,7 +455,7 @@ Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platfor
 
 ## 10. Conclusions
 
-This systematic review identified **183 relevant studies** examining blockchain-enabled provenance for scientific data management. 
+This systematic review identified **237 relevant studies** examining blockchain-enabled provenance for scientific data management. 
 The literature shows growing interest in blockchain for research data integrity, with a concentration on permissionless platforms. 
 However, significant gaps remain in permissioned blockchain solutions, PROV-O integration, and maDMP support. 
 This review provides a foundation for understanding the current landscape and identifying opportunities for future research, 
@@ -413,5 +463,5 @@ particularly in addressing the reproducibility crisis through cryptographically-
 
 ---
 
-*Report generated: February 28, 2026*
+*Report generated: March 04, 2026*
 *Full extraction data available in: 04_extraction_form.csv*
