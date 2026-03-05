@@ -225,19 +225,28 @@ generate_markdown_report <- function(prisma_data, extraction, qa, output_path,
     "",
     "### 5.1 Quality Ratings Distribution",
     "",
-    generate_md_table_from_vector(table(qa$Quality_Rating, useNA = "ifany"), "Rating", "Count"),
+    "| Rating | Description | Count |",
+    "|--------|-------------|-------|",
+    "| Excellent | Score 5 - clear methodology, rigorous evaluation | ", sum(qa$Quality_Rating == "Excellent", na.rm = TRUE), " |",
+    "| Good | Score 4 - minor methodological gaps | ", sum(qa$Quality_Rating == "Good", na.rm = TRUE), " |",
+    "| Acceptable | Score 3 - some concerns | ", sum(qa$Quality_Rating == "Acceptable", na.rm = TRUE), " |",
+    "| Poor | Score 2 - significant gaps | ", sum(qa$Quality_Rating == "Poor", na.rm = TRUE), " |",
+    "| Very Poor | Score 1 - cannot assess | ", sum(qa$Quality_Rating == "Very Poor", na.rm = TRUE), " |",
+    "",
+    paste0("**Mean Quality Score:** ", round(mean(qa$MMAT_Overall, na.rm = TRUE), 2), " / 1.0"),
+    paste0("**Mean Rating (1-5):** ", round(mean(qa$Quality_Score, na.rm = TRUE), 2), " / 5.0"),
     "",
     "### 5.2 MMAT Item Scores",
     "",
     "| MMAT Item | Yes | Can't tell | Rate |",
     "|-----------|-----|------------|------|",
-    paste0("| Clear Research Questions | ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_1_ClearRQ == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "% |"),
-    paste0("| Appropriate Methodology | ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_2_AppropriateMethod == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "% |"),
-    paste0("| Rigorous Data Collection | ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_3_RigorousData == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "% |"),
-    paste0("| Sound Analysis | ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_4_SoundAnalysis == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "% |"),
-    paste0("| Well-supported Conclusions | ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_5_Conclusions == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "% |"),
+    "| Clear Research Questions | ", sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_1_ClearRQ == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_1_ClearRQ == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_1_ClearRQ)) * 100, 1), "% |",
+    "| Appropriate Methodology | ", sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_2_AppropriateMethod == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_2_AppropriateMethod == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_2_AppropriateMethod)) * 100, 1), "% |",
+    "| Rigorous Data Collection | ", sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_3_RigorousData == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_3_RigorousData == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_3_RigorousData)) * 100, 1), "% |",
+    "| Sound Analysis | ", sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_4_SoundAnalysis == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_4_SoundAnalysis == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_4_SoundAnalysis)) * 100, 1), "% |",
+    "| Well-supported Conclusions | ", sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE), " | ", sum(qa$MMAT_5_Conclusions == "Can't tell", na.rm = TRUE), " | ", round(sum(qa$MMAT_5_Conclusions == "Yes", na.rm = TRUE) / sum(!is.na(qa$MMAT_5_Conclusions)) * 100, 1), "% |",
     "",
-    paste0("**Mean Quality Score:** ", round(mean(qa$MMAT_Overall, na.rm = TRUE), 2), " / 5.0"),
+    "**Quality Scale (per Protocol Section 8.2):** 5 = Excellent, 4 = Good, 3 = Acceptable, 2 = Poor, 1 = Very Poor",
     "",
     "---",
     "",
@@ -605,19 +614,30 @@ generate_latex_report <- function(prisma_data, extraction, qa, output_path,
   lines <- c(lines,
     "\\section{Quality Assessment}",
     "",
-    paste0("Mean Quality Score: ", round(mean(qa$MMAT_Overall, na.rm = TRUE), 2), " / 5.0"),
+    paste0("Mean Quality Score: ", round(mean(qa$MMAT_Overall, na.rm = TRUE), 2), " / 1.0"),
+    paste0("Mean Rating (1-5 scale): ", round(mean(qa$Quality_Score, na.rm = TRUE), 2), " / 5.0"),
     "",
     "\\begin{table}[htbp]",
     "\\centering",
-    "\\caption{Quality Ratings}",
+    "\\caption{Quality Ratings (1-5 Scale per MMAT)}",
     "\\begin{tabular}{lr}",
     "\\toprule",
     "Rating & Count \\\\",
     "\\midrule"
   )
   
-  for (i in seq_along(qual_table)) {
-    lines <- c(lines, paste0(ifelse(is.na(names(qual_table)[i]), "NA", names(qual_table)[i]), " & ", qual_table[i], " \\\\"))
+  ratings_order <- c("Excellent", "Good", "Acceptable", "Poor", "Very Poor")
+  for (rating in ratings_order) {
+    count <- sum(qa$Quality_Rating == rating, na.rm = TRUE)
+    if (count > 0) {
+      lines <- c(lines, paste0(rating, " & ", count, " \\\\"))
+    }
+  }
+  
+  # Add NA if any
+  na_count <- sum(is.na(qa$Quality_Rating))
+  if (na_count > 0) {
+    lines <- c(lines, paste0("NA & ", na_count, " \\\\"))
   }
   
   lines <- c(lines,
@@ -631,7 +651,7 @@ generate_latex_report <- function(prisma_data, extraction, qa, output_path,
   lines <- c(lines,
     "\\begin{table}[htbp]",
     "\\centering",
-    "\\caption{MMAT Item Scores}",
+    "\\caption{MMAT Item Scores (1 = Yes, 0.5 = Can't tell, 0 = No)}",
     "\\begin{tabular}{lrrr}",
     "\\toprule",
     "MMAT Item & Yes & Can't tell & Rate \\\\",

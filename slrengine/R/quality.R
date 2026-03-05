@@ -15,7 +15,11 @@ quality_assessment <- function(extraction) {
   qa$MMAT_5_Conclusions <- NA  # Well-supported conclusions?
   qa$MMAT_Overall <- NA
   
-  # Overall quality interpretation
+  # Overall quality score (1-5 scale per protocol Section 8.2)
+  # 5: Excellent, 4: Good, 3: Acceptable, 2: Poor, 1: Very Poor
+  qa$Quality_Score <- NA
+  
+  # Quality rating text
   qa$Quality_Rating <- NA
   
   qa
@@ -95,18 +99,34 @@ calculate_mmat_score <- function(qa) {
       switch(val, "Yes" = 1, "No" = 0, "Can't tell" = 0.5)
     })
     
-    qa$MMAT_Overall[i] <- mean(scores, na.rm = TRUE)
+    # Calculate 1-5 scale score (based on protocol Section 8.2)
+    # 5: Excellent, 4: Good, 3: Acceptable, 2: Poor, 1: Very Poor
+    raw_score <- mean(scores, na.rm = TRUE)
     
-    # Quality rating
-    overall <- qa$MMAT_Overall[i]
-    if (is.na(overall)) {
+    if (is.na(raw_score)) {
+      qa$MMAT_Overall[i] <- NA
+      qa$Quality_Score[i] <- NA
       qa$Quality_Rating[i] <- NA
-    } else if (overall >= 0.75) {
-      qa$Quality_Rating[i] <- "High"
-    } else if (overall >= 0.5) {
-      qa$Quality_Rating[i] <- "Medium"
+    } else if (raw_score >= 0.9) {
+      qa$MMAT_Overall[i] <- raw_score
+      qa$Quality_Score[i] <- 5
+      qa$Quality_Rating[i] <- "Excellent"
+    } else if (raw_score >= 0.7) {
+      qa$MMAT_Overall[i] <- raw_score
+      qa$Quality_Score[i] <- 4
+      qa$Quality_Rating[i] <- "Good"
+    } else if (raw_score >= 0.5) {
+      qa$MMAT_Overall[i] <- raw_score
+      qa$Quality_Score[i] <- 3
+      qa$Quality_Rating[i] <- "Acceptable"
+    } else if (raw_score >= 0.3) {
+      qa$MMAT_Overall[i] <- raw_score
+      qa$Quality_Score[i] <- 2
+      qa$Quality_Rating[i] <- "Poor"
     } else {
-      qa$Quality_Rating[i] <- "Low"
+      qa$MMAT_Overall[i] <- raw_score
+      qa$Quality_Score[i] <- 1
+      qa$Quality_Rating[i] <- "Very Poor"
     }
   }
   
@@ -132,8 +152,10 @@ quality_report <- function(qa) {
   list(
     total_studies = nrow(qa),
     by_rating = table(qa$Quality_Rating, useNA = "ifany"),
+    by_score = table(qa$Quality_Score, useNA = "ifany"),
     mean_score = mean(qa$MMAT_Overall, na.rm = TRUE),
     sd_score = sd(qa$MMAT_Overall, na.rm = TRUE),
+    mean_quality_score = mean(qa$Quality_Score, na.rm = TRUE),
     item_yes_rates = sapply(
       c("MMAT_1_ClearRQ", "MMAT_2_AppropriateMethod", 
         "MMAT_3_RigorousData", "MMAT_4_SoundAnalysis", "MMAT_5_Conclusions"),

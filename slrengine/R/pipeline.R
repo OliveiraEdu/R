@@ -5,7 +5,7 @@
 #' @param output_dir Output directory for results
 #' @param arxiv_search Search string for arXiv (optional)
 #' @param biorxiv_search Search string for bioRxiv (optional)
-#' @param protocol_version Protocol version ("1.0" or "3.0")
+#' @param protocol_version Protocol version ("1.0", "3.0", "4.0", or "4.4")
 #' @return List with all pipeline outputs
 #' @export
 run_slr_pipeline <- function(sources, 
@@ -16,6 +16,14 @@ run_slr_pipeline <- function(sources,
   
   message("=== Starting SLR Pipeline ===\n")
   message(paste("Protocol version:", protocol_version, "\n"))
+  
+  # Normalize protocol version (4.4 maps to 4.0 for search strings)
+  if (protocol_version == "4.4") {
+    search_protocol <- "4.0"
+    message("  (Using Protocol 4.0 search strategy for version 4.4)\n")
+  } else {
+    search_protocol <- protocol_version
+  }
   
   # Create output directory
   if (!dir.exists(output_dir)) {
@@ -310,14 +318,17 @@ generate_search_strings <- function(protocol_version = "1.0") {
     search_strings <- narrow_strings
   } else if (protocol_version == "3.0") {
     search_strings <- broad_strings
-  } else if (protocol_version == "4.0") {
+  } else if (protocol_version == "4.0" || protocol_version == "4.4") {
     search_strings <- protocol_4_strings
   } else {
     search_strings <- narrow_strings
   }
   
+  # Protocol 4.4 uses the same search strings as 4.0
+  effective_version <- if (protocol_version == "4.4") "4.0" else protocol_version
+  
   # Return full protocol config
-  if (protocol_version == "4.0") {
+  if (effective_version == "4.0") {
     list(
       protocol_version = protocol_version,
       concepts = protocol_4_concepts,
@@ -328,7 +339,7 @@ generate_search_strings <- function(protocol_version = "1.0") {
       strategy = "title-focused",
       focus = "maDMP + blockchain provenance intersection"
     )
-  } else if (protocol_version == "3.0") {
+  } else if (effective_version == "3.0") {
     list(
       protocol_version = protocol_version,
       concepts_narrow = concepts,
