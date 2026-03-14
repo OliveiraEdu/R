@@ -1,0 +1,278 @@
+date_ranges:
+  arxiv:
+    start: 2025
+    end: 2026
+  scopus:
+    start: 2018
+    end: 2026
+  ieee:
+    start: 2018
+    end: 2026
+  wos:
+    start: 2018
+    end: 2026
+  acm:
+    start: 2018
+    end: 2026
+
+categories:
+  - computer.science
+  - biotherapy
+
+sources:
+  scopus:
+    start_year: 2018
+    end_year: 2026
+    categories:
+      - computer.science
+      - biotherapy
+  ieee:
+    start_year: 2018
+    end_year: 2026
+    categories:
+      - computer-science
+      - bio
+  wos:
+    start_year: 2018
+    end_year: 2026
+    categories:
+      - computer-science
+      - biotechnology
+  acm:
+    start_year: 2018
+    end_year: 2026
+    categories:
+      - cs
+      - bio
+
+protocols:
+  default: 4.0
+
+common:
+  batch_size: 100
+  max_pages: 5
+  max_records_per_source: 1000
+
+constants:
+  MAX_RECORDS: 10000
+  BATCH_SIZE: 100
+
+PICOC_criteria:
+  Provenance:
+    terms:
+      - provenance
+      - "data lineage"
+      - "chain of custody"
+      - verification
+      - reproducibility
+      - "reproducible research"
+      - "reproducible science"
+    keywords:
+      - "provenance"
+      - "data lineage"
+      - "chain of custody"
+      - verification
+      - reproducibility
+  Openness:
+    terms:
+      - openness
+      - open science
+      - open access
+      - transparent
+      - FAIR
+      - "open data"
+      - "open research"
+    keywords:
+      - openness
+      - "open science"
+      - "open access"
+      - transparent
+      - FAIR
+      - "open data"
+      - "open research"
+  Contribution:
+    terms:
+      - maDMP
+      - "machine-actionable"
+      - "data management plan"
+      - DMP
+      - DMP management
+      - maDMP support
+    keywords:
+      - "machine-actionable"
+      - maDMP
+      - "data management plan"
+      - DMP
+      - maDMP support
+  Provenance_Model:
+    terms:
+      - PROV-O
+      - PROV-DM
+      - OPM
+      - "Open Provenance Model"
+      - "Custom Provenance"
+    keywords:
+      - PROV-O
+      - PROV-DM
+      - OPM
+      - "Open Provenance Model"
+      - "Custom Provenance"
+  Blockchain_Platform:
+    terms:
+      - Fabric
+      - Iroha
+      - Ethereum
+      - Hyperledger
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+    keywords:
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+      - Ethereum
+      - Hyperledger
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+  Storage_Integration:
+    terms:
+      - IPFS
+      - "External Database"
+      - "OrbitDB"
+      - Hybrid
+      - "Off-chain"
+      - "On-chain"
+    keywords:
+      - IPFS
+      - "External Database"
+      - OrbitDB
+      - Hybrid
+      - "Off-chain"
+      - "On-chain"
+  Permission_Model:
+    terms:
+      - "Permissioned"
+      - "Permissionless"
+      - Hybrid
+      - Public
+      - Private
+      - Quorum
+    keywords:
+      - "Permissioned"
+      - "Permissionless"
+      - Hybrid
+      - Public
+      - Private
+      - Quorum
+  Research_Focus:
+    terms:
+      - Blockchain
+      - Provenance
+      - maDMP
+      - "Scientific Data"
+      - "Research Data"
+      - "Provenance"
+    keywords:
+      - Blockchain
+      - Provenance
+      - maDMP
+      - "Scientific Data"
+      - "Research Data"
+      - "Provenance"
+  System_Name:
+    terms:
+      - Hyperledger Fabric
+      - Hyperledger Iroha
+      - Ethereum
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+    keywords:
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+      - Ethereum
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+  maDMP_Support:
+    levels:
+      - Full
+      - Partial
+      - None
+    keywords:
+      - "machine-actionable"
+      - maDMP
+      - "data management plan"
+      - DMP
+  Evaluation_Method:
+    methods:
+      - Experiment
+      - "Case study"
+      - "User study"
+      - "Proof of concept"
+      - "Performance evaluation"
+      - Benchmark
+      - Demonstration
+    keywords:
+      - "Proof of concept"
+      - Demonstration
+      - Experiment
+      - "Performance evaluation"
+      - Benchmark
+      - "Case study"
+      - "User study"
+      - "User evaluation"
+      - Survey
+      - Evaluation
+  Scientific_Data:
+    terms:
+      - scientific data
+      - research data
+      - data curation
+      - data repository
+      - data sharing
+    keywords:
+      - scientific data
+      - research data
+      - data curation
+      - data repository
+      - data sharing
+
+# Protocol 4.0 configuration
+# These sections are currently hardcoded in pipeline.R but should be moved here
+
+title_operators:
+  ieee: "Document Title"
+  scopus: "TITLE"
+  wos: "TI"
+  pubmed: "[ti]"
+  acm: "Title:"
+  arxiv: "ti:"
+  scholar: "title"
+
+enclosure_style:
+  ieee: TRUE
+  scopus: TRUE
+  wos: TRUE
+  pubmed: FALSE
+  acm: TRUE
+  arxiv: TRUE
+  scholar: FALSE
+
+protocol_4_filters:
+  ieee: "Document Type: Conference OR Journal; Year: 2025-2026"
+  scopus: "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2025-2026"
+  wos: "Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2025-2026"
+  pubmed: "Publication Types: Article, Review, Clinical Trial; Year: 2025-2026"
+  acm: "Content Type: Conference Papers, Journal Articles; Year: 2025-2026"
+  arxiv: "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2025-2026"
+  scholar: "Limit first 200 results"
+

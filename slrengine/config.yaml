@@ -1,0 +1,256 @@
+sources:
+  arxiv:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - cs.DC
+      - cs.CY
+      - q-bio.QM
+  ieee:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - cs:
+        - DC
+        - CY
+      - EE
+      - IN
+  acm:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - CS:
+        - Data Management
+        - Provenance
+  scopus:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - Computer Science
+  wos:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - Computer Science
+      - Information Science
+  pubmed:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - Medicine
+  biorxiv:
+    enabled: true
+    start_year: 2025
+    end_year: 2026
+    categories:
+      - cs.DC
+      - cs.CY
+      - q-bio.QM
+
+categories:
+  default:
+    - cs.DC
+    - cs.CY
+    - q-bio.QM
+    - EE
+    - IN
+    - Medicine
+    - Information Science
+
+constants:
+  MAX_RECORDS: 10000
+  BATCH_SIZE: 1000
+PICOC_criteria:
+  Provenance:
+    terms:
+      - provenance
+      - "data lineage"
+      - "chain of custody"
+      - verification
+      - reproducibility
+      - "reproducible research"
+      - "reproducible science"
+    keywords:
+      - "provenance"
+      - "data lineage"
+      - "chain of custody"
+      - verification
+      - reproducibility
+  Openness:
+    terms:
+      - openness
+      - "open science"
+      - "open access"
+      - transparent
+      - FAIR
+      - "open data"
+      - "open research"
+    keywords:
+      - openness
+      - "open science"
+      - "open access"
+      - transparent
+      - FAIR
+      - "open data"
+      - "open research"
+  Contribution:
+    terms:
+      - maDMP
+      - "machine-actionable"
+      - "data management plan"
+      - DMP
+      - DMP management
+      - maDMP support
+    keywords:
+      - "machine-actionable"
+      - maDMP
+      - "data management plan"
+      - DMP
+      - maDMP support
+  Provenance_Model:
+    terms:
+      - PROV-O
+      - PROV-DM
+      - OPM
+      - "Open Provenance Model"
+      - "Custom Provenance"
+    keywords:
+      - PROV-O
+      - PROV-DM
+      - OPM
+      - "Open Provenance Model"
+      - "Custom Provenance"
+  Blockchain_Platform:
+    terms:
+      - Fabric
+      - Iroha
+      - Ethereum
+      - Hyperledger
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+    keywords:
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+      - Ethereum
+      - Hyperledger
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+  Storage_Integration:
+    terms:
+      - IPFS
+      - "External Database"
+      - "OrbitDB"
+      - Hybrid
+      - "Off-chain"
+      - "On-chain"
+    keywords:
+      - IPFS
+      - "External Database"
+      - OrbitDB
+      - Hybrid
+      - "Off-chain"
+      - "On-chain"
+  Permission_Model:
+    terms:
+      - "Permissioned"
+      - "Permissionless"
+      - Hybrid
+      - Public
+      - Private
+      - Quorum
+    keywords:
+      - "Permissioned"
+      - "Permissionless"
+      - Hybrid
+      - Public
+      - Private
+      - Quorum
+  Research_Focus:
+    terms:
+      - Blockchain
+      - Provenance
+      - maDMP
+      - "Scientific Data"
+      - "Research Data"
+      - "Provenance"
+    keywords:
+      - Blockchain
+      - Provenance
+      - maDMP
+      - "Scientific Data"
+      - "Research Data"
+      - "Provenance"
+  System_Name:
+    terms:
+      - Hyperledger Fabric
+      - Hyperledger Iroha
+      - Ethereum
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+    keywords:
+      - "Hyperledger Fabric"
+      - "Hyperledger Iroha"
+      - Ethereum
+      - BigchainDB
+      - Multi-chain
+      - Corda
+      - Sawtooth
+  maDMP_Support:
+    levels:
+      - Full
+      - Partial
+      - None
+    keywords:
+      - "machine-actionable"
+      - maDMP
+      - "data management plan"
+      - DMP
+  Scientific_Data:
+    terms:
+      - "Scientific Data"
+      - "Research Data"
+      - metadata
+      - reproducible
+      - reproducibility
+    keywords:
+      - "scientific data"
+      - "research data"
+      - metadata
+      - reproducible
+      - reproducibility
+  Evaluation_Method:
+    methods:
+      - Experiment
+      - "Case study"
+      - "User study"
+      - "Proof of concept"
+      - "Performance evaluation"
+      - "Benchmark"
+      - Demonstration
+    keywords:
+      - "Proof of concept"
+      - Demonstration
+      - Experiment
+      - "Performance evaluation"
+      - Benchmark
+      - "Case study"
+      - "User study"
+      - "User evaluation"
+      - Survey
+      - Evaluation

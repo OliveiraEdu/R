@@ -7,7 +7,7 @@ import_scopus <- function(path) {
     stop(paste("File not found:", path))
   }
   
-  df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8")
+  df <- read.csv(path, stringsAsFactors = FALSE, fill = TRUE, header = TRUE, quote = "\"", encoding = "UTF-8", colClasses = "character")
   
   # Map Scopus columns to standard format (handles multiple column name variations)
   get_col <- function(df, names_vec) {
@@ -22,22 +22,22 @@ import_scopus <- function(path) {
     NA
   }
   
-  standardized <- data.frame(
-    TI = get_col(df, c("Title")),
-    AU = get_col(df, c("Authors")),
-    PY = as.integer(get_col(df, c("Year"))),
-    SO = get_col(df, c("Source title", "Source.title")),
-    DOI = get_col(df, c("DOI")),
-    ID = get_col(df, c("Author Keywords", "Index Keywords", "Author.Keywords", "Index.Keywords")),
-    AB = get_col(df, c("Abstract")),
-    C1 = get_col(df, c("Affiliations")),
-    TC = as.integer(get_col(df, c("Cited by", "Cited.by"))),
-    DB = "Scopus",
-    LA = NA,
-    OA = get_col(df, c("Open Access", "Open.Access")),
-    PT = get_col(df, c("Document Type", "Document.Type")),
-    stringsAsFactors = FALSE
-  )
+   standardized <- data.frame(
+      TI = get_col(df, c("Title")),
+      AU = get_col(df, c("Authors")),
+      PY = as.integer(get_col(df, c("Year"))),
+      SO = get_col(df, c("Source title", "Source.title")),
+      DOI = get_col(df, c("DOI")),
+      ID = as.character(get_col(df, c("EID"))),
+      AB = get_col(df, c("Abstract")),
+      C1 = get_col(df, c("Affiliations")),
+      TC = as.integer(get_col(df, c("Cited by", "Cited.by"))),
+      DB = "Scopus",
+      LA = NA,
+      OA = get_col(df, c("Open Access", "Open.Access")),
+      PT = get_col(df, c("Document Type", "Document.Type")),
+      stringsAsFactors = FALSE
+    )
   
   standardized
 }
@@ -68,7 +68,7 @@ import_pubmed_csv <- function(path) {
     PY = as.integer(get_col_pm(df, c("Publication.Year", "Publication Year"))),
     SO = get_col_pm(df, c("Journal.Book", "Journal/Book")),
     DOI = get_col_pm(df, c("DOI")),
-    ID = get_col_pm(df, c("PMID")),
+    ID = as.character(get_col_pm(df, c("PMID"))),
     AB = NA,
     C1 = NA,
     TC = NA,
@@ -113,7 +113,7 @@ import_ieee <- function(path) {
     PY = as.integer(get_col_ieee(df, c("Publication Year"))),
     SO = get_col_ieee(df, c("Publication Title")),
     DOI = get_col_ieee(df, c("DOI")),
-    ID = get_col_ieee(df, c("Author Keywords", "IEEE Terms")),
+    ID = as.character(get_col_ieee(df, c("KEY", "DOI", "Document Number"))),
     AB = get_col_ieee(df, c("Abstract")),
     C1 = get_col_ieee(df, c("Author Affiliations")),
     TC = as.integer(get_col_ieee(df, c("Article Citation Count"))),
@@ -188,7 +188,7 @@ import_wos <- function(paths) {
       }),
       SO = sapply(records, function(x) ifelse(is.null(x$JOURNAL), ifelse(is.null(x$BOOKTITLE), NA, x$BOOKTITLE), x$JOURNAL)),
       DOI = sapply(records, function(x) ifelse(is.null(x$DOI), NA, x$DOI)),
-      ID = sapply(records, function(x) ifelse(is.null(x$KEYWORDS), NA, x$KEYWORDS)),
+       ID = as.character(sapply(records, function(x) ifelse(is.null(x$KEY), NA, x$KEY))),
       AB = sapply(records, function(x) ifelse(is.null(x$ABSTRACT), NA, x$ABSTRACT)),
       C1 = sapply(records, function(x) ifelse(is.null(x$AFFILIATION), NA, x$AFFILIATION)),
       TC = sapply(records, function(x) {
@@ -267,7 +267,7 @@ import_acm <- function(path) {
     }),
     SO = sapply(records, function(x) ifelse(is.null(x$JOURNAL), ifelse(is.null(x$BOOKTITLE), NA, x$BOOKTITLE), x$JOURNAL)),
     DOI = sapply(records, function(x) ifelse(is.null(x$DOI), NA, x$DOI)),
-    ID = sapply(records, function(x) ifelse(is.null(x$KEYWORDS), NA, x$KEYWORDS)),
+     ID = as.character(sapply(records, function(x) ifelse(is.null(x$KEY), NA, x$KEY))),
     AB = sapply(records, function(x) ifelse(is.null(x$ABSTRACT), NA, x$ABSTRACT)),
     C1 = sapply(records, function(x) ifelse(is.null(x$AFFILIATION), NA, x$AFFILIATION)),
     TC = NA,
@@ -332,7 +332,7 @@ import_pubmed <- function(path) {
     PY = sapply(records, function(x) ifelse(is.null(x$PY), NA, x$PY)),
     SO = sapply(records, function(x) ifelse(is.null(x$SO), NA, x$SO)),
     DOI = sapply(records, function(x) ifelse(is.null(x$DOI), NA, x$DOI)),
-    ID = sapply(records, function(x) ifelse(is.null(x$PMID), NA, x$PMID)),
+    ID = as.character(sapply(records, function(x) ifelse(is.null(x$PMID), NA, x$PMID))),
     AB = sapply(records, function(x) ifelse(is.null(x$AB), NA, x$AB)),
     C1 = sapply(records, function(x) ifelse(is.null(x$C1), NA, x$C1)),
     TC = NA,
@@ -393,11 +393,50 @@ import_file <- function(path) {
 #' Import multiple database exports and merge
 #' @param sources Named list with database names as keys and file paths as values
 #' @param remove_duplicates Logical; remove duplicates after merging
+#' @param config_path Path to config.yaml file (optional)
 #' @return Merged data frame with all records
 #' @export
-import_databases <- function(sources, remove_duplicates = TRUE) {
+import_databases <- function(sources, remove_duplicates = TRUE, config_path = "config.yaml") {
+   
+# Load config.yaml if provided
+config <- tryCatch({
+  yaml::read_yaml(config_path)
+}, error = function(e) {
+  warning(paste("Could not load config.yaml:", e$message, "Importing all databases anyway"))
+  list()
+})
+
+# Define valid database sources
+valid_sources <- c("arxiv", "ieee", "acm", "scopus", "wos", "pubmed", "biorxiv", "pubmed_csv")
+
+# Check if config exists and has sources
+if (is.list(config) && "sources" %in% names(config) && length(config$sources) > 0) {
+  # Create enabled status for each database from config
+  # config$sources is a list of named lists, each with $enabled field
+  enabled_dbs <- sapply(names(config$sources), function(db) {
+    if (db %in% names(config$sources)) {
+      config$sources[[db]]$enabled
+    } else {
+      # Database not in config, assume enabled
+      TRUE
+    }
+  })
   
-  valid_sources <- c("wos", "scopus", "pubmed", "ieee", "acm", "pubmed_csv")
+  # Check each database before importing
+  for (db_name in names(sources)) {
+    if (!(db_name %in% valid_sources)) {
+      warning(paste("Unknown database:", db_name))
+      next
+    }
+    
+    # Check if database is enabled in config
+    db_enabled <- enabled_dbs[db_name]
+    if (!isTRUE(db_enabled)) {
+      message(paste("Skipping disabled database:", db_name))
+      next
+    }
+  }
+}
   
   dfs <- list()
   

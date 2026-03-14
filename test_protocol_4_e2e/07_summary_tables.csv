@@ -1,0 +1,18 @@
+"Table","Category","Count"
+"by_year","2025",230
+"by_year","2026",39
+"by_research_focus","Blockchain",1
+"by_research_focus","Other",200
+"by_research_focus","Provenance",67
+"by_research_focus","maDMP",1
+"by_blockchain_platform","Ethereum",17
+"by_blockchain_platform","Ethereum; Hyperledger",5
+"by_blockchain_platform","Hyperledger",1
+"by_blockchain_platform","Hyperledger Fabric; Ethereum; Hyperledger",2
+"by_blockchain_platform","Hyperledger Fabric; Hyperledger",9
+"by_blockchain_platform","Not specified",235
+"by_provenance_model","None",269
+"by_madmp_support","None",269
+"by_evaluation","Experiment; Proof of concept",1
+"by_evaluation","Not clear",267
+"by_evaluation","Proof of concept",1

@@ -1,0 +1,9 @@
+sources:
+  ieee:
+    enabled: true
+  wos:
+    enabled: true
+  acm:
+    enabled: false
+  scopus:
+    enabled: false

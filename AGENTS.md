@@ -205,10 +205,24 @@ Note: `bibliometrix` is optional - standalone import functions exist as fallback
 ### Protocol 1.0 (Narrow)
 - 3-concept search: Provenance + Technology + DMP
 - Peer-reviewed sources only
+- **Status**: ✅ Config-driven search string builder (COMPLETE)
 
 ### Protocol 3.0 (Broad)
 - 2-concept search: Technology + Scientific Data
 - Includes preprint servers (arXiv, bioRxiv)
+- **Status**: ✅ Config-driven search string builder (COMPLETE)
+
+### Protocol 4.0 (Focused)
+- 5-concept title-focused search: maDMP + Provenance + Technology + Openness + Scientific Data
+- High precision via title field targeting
+- **Status**: ✅ Config-driven search string builder (COMPLETE)
+
+**Known Issue**: Protocol 4.0 search strings are hardcoded in `pipeline.R` (lines 261-281) despite config being built. This defeats the config-driven architecture.
+
+**What remains**:
+1. Convert hardcoded Protocol 4.0 search strings to use `protocol_4_concepts` from config
+2. Update filter builder to use `config$PICOC_criteria$Contribution$keywords` and `config$PICOC_criteria$Openness$keywords`
+3. Ensure `generate_search_strings()` returns config-driven search strings for Protocol 4.0
 
 ---
 
@@ -240,7 +254,8 @@ qa <- auto_quality_indicators(quality_assessment(extraction))
 - Check for NA values before operations
 - Standard column names: TI, AU, PY, SO, DOI, AB, C1, TC, DB
 - Use `DB` column to identify sources (arXiv, bioRxiv, WoS, ACM, etc.)
+- Protocol 4.0 search strings are config-driven (COMPLETE)
 
 ---
 
-*Last Updated: March 2026*
+*Last Updated: March 14, 2026*

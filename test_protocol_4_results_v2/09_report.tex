@@ -1,0 +1,254 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{geometry}
+\geometry{a4paper,margin=1in}
+
+\title{
+Systematic Review Findings Report
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Executive Summary}
+
+This systematic review identified \textbf{269 studies} meeting inclusion criteria. 
+The review followed PRISMA 2020 guidelines and covered the period 2025-2026. 
+The studies were sourced from multiple databases, focusing on blockchain-enabled provenance for scientific data management.
+
+\section{PRISMA Flow}
+
+\begin{table}[htbp]
+\centering
+\caption{PRISMA Flow Diagram}
+\begin{tabular}{lrr}
+\toprule
+Stage & Count & Percentage \\
+\midrule
+Records identified & 6010 & 100\\% \\
+After duplicates removed & 6010 & 100\% \\
+Excluded at title/abstract & 5722 & 95.2\% \\
+Assessed for full-text & 288 & 4.8\% \\
+Excluded at full-text & 19 & 6.6\% \\
+\textbf{Studies included} & \textbf{269} & \textbf{4.5\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Study Characteristics}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by Research Focus}
+\begin{tabular}{lr}
+\toprule
+Research Focus & Count \\
+\midrule
+Blockchain & 1 \\
+Other & 200 \\
+Provenance & 67 \\
+maDMP & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by Blockchain Platform}
+\begin{tabular}{lr}
+\toprule
+Platform & Count \\
+\midrule
+Ethereum & 17 \\
+Ethereum; Hyperledger & 5 \\
+Hyperledger & 1 \\
+Hyperledger Fabric; Ethereum; Hyperledger & 2 \\
+Hyperledger Fabric; Hyperledger & 9 \\
+Not specified & 235 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by Provenance Model}
+\begin{tabular}{lr}
+\toprule
+Model & Count \\
+\midrule
+None & 269 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribution by maDMP Support}
+\begin{tabular}{lr}
+\toprule
+maDMP Support & Count \\
+\midrule
+None & 269 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Publication Year Distribution}
+\begin{tabular}{lr}
+\toprule
+Year & Count \\
+\midrule
+2025 & 230 \\
+2026 & 39 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Storage Integration Patterns}
+\begin{tabular}{lr}
+\toprule
+Storage Type & Count \\
+\midrule
+External DB & 36 \\
+External DB; Hybrid & 8 \\
+Hybrid & 13 \\
+IPFS & 2 \\
+IPFS + blockchain & 18 \\
+IPFS + blockchain; External DB & 9 \\
+IPFS + blockchain; External DB; Hybrid & 1 \\
+IPFS + blockchain; Hybrid & 2 \\
+Not specified & 180 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Permission Model Distribution}
+\begin{tabular}{lr}
+\toprule
+Permission Model & Count \\
+\midrule
+Hybrid & 22 \\
+Not specified & 237 \\
+Permissioned & 2 \\
+Permissioned; Hybrid & 1 \\
+Permissionless & 6 \\
+Permissionless; Hybrid & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Quality Assessment}
+
+Mean Quality Score: 0.62 / 1.0
+Mean Rating (1-5 scale): 3.34 / 5.0
+
+\begin{table}[htbp]
+\centering
+\caption{Quality Ratings (1-5 Scale per MMAT)}
+\begin{tabular}{lr}
+\toprule
+Rating & Count \\
+\midrule
+Good & 91 \\
+Acceptable & 178 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{MMAT Item Scores (1 = Yes, 0.5 = Can't tell, 0 = No)}
+\begin{tabular}{lrrr}
+\toprule
+MMAT Item & Yes & Can't tell & Rate \\
+\midrule
+Clear Research Questions & 5 & 264 & 1.9\% \\
+Appropriate Methodology & 115 & 154 & 42.8\% \\
+Rigorous Data Collection & 0 & 269 & 0\% \\
+Sound Analysis & 204 & 65 & 75.8\% \\
+Well-supported Conclusions & 0 & 269 & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Key Findings and Implications}
+
+\subsection{Summary of Current State}
+
+\begin{itemize}
+    \item The review identified \textbf{269 studies} addressing blockchain for scientific data provenance
+    \item Research spans from 2025 to 2026
+    \item Most studies (0.4\%) focus on blockchain infrastructure
+    \item Limited integration of formal provenance models (PROV-O)
+    \item Few studies address maDMP specifically
+\end{itemize}
+
+\subsection{Research Gaps}
+
+\begin{itemize}
+    \item Lack of permissioned blockchain solutions for scientific data
+    \item Limited PROV-O implementation for provenance tracking
+    \item Gap in maDMP + blockchain integration
+    \item Need for evaluation studies comparing approaches
+\end{itemize}
+
+\section{Limitations}
+
+\begin{itemize}
+    \item \textbf{Language restriction:} English publications only
+    \item \textbf{Database coverage:} May miss specialized sources
+    \item \textbf{Classification:} Based on title/abstract may have errors
+    \item \textbf{Rapidly evolving field:} Snapshot as of review date
+    \item \textbf{Automated extraction:} Key findings require manual verification
+\end{itemize}
+
+\section{Conclusions}
+
+This systematic review identified \textbf{269 relevant studies} examining blockchain-enabled provenance for scientific data management. 
+The literature shows growing interest in blockchain for research data integrity, with a concentration on permissionless platforms. 
+However, significant gaps remain in permissioned blockchain solutions, PROV-O integration, and maDMP support. 
+This review provides a foundation for understanding the current landscape and identifying opportunities for future research, 
+particularly in addressing the reproducibility crisis through cryptographically-secured provenance tracking.
+
+\section{Included Studies}
+
+See Appendix A: Extraction Form (04_extraction_form.csv) for complete list of studies.
+
+\section*{Appendix A: Top Publication Sources}
+\addcontentsline{toc}{section}{Appendix A: Top Publication Sources}
+
+\begin{table}[htbp]
+\centering
+\caption{Top 10 Publication Sources}
+\begin{tabular}{lr}
+\toprule
+Source & Count \\
+\midrule
+Lecture Notes in Networks and Systems & 18 \\
+Communications in Computer and Inform... & 5 \\
+Lecture Notes in Computer Science & 5 \\
+Lecture Notes in Computer Science (in... & 4 \\
+CEUR Workshop Proceedings & 3 \\
+IEEE Access & 3 \\
+International Journal of Advanced Com... & 3 \\
+Studies in Health Technology and Info... & 3 \\
+2025 7th International Conference on ... & 2 \\
+2025 International Conference on Emer... & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

@@ -14,16 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **arXiv API integration**: `search_arxiv()` for searching arXiv preprints via API
 - **bioRxiv API integration**: `search_biorxiv()` for searching bioRxiv preprints via API
 - Default 6-month window for arXiv/bioRxiv searches to focus on recent research
-- **Protocol 3.0 support**: Broad search strategy with preprint servers
-  - `generate_search_strings(protocol_version = "3.0")` for broad search
-  - `run_slr_pipeline()` now accepts `arxiv_search`, `biorxiv_search`, `protocol_version` params
-  - Preprint-aware screening criteria for Protocol 3.0
-  - `title_abstract_screening()` accepts `protocol_version` parameter
-- **Protocol 4.0 support**: Focused RQ with title-focused search
-  - `generate_search_strings(protocol_version = "4.0")` for focused search
-  - Title-focused search strings for IEEE, Scopus, WoS, PubMed, ACM, arXiv
-  - Database-specific validated syntax
-- **New extraction fields** (Protocol 4.0):
+ - **Protocol 3.0 support**: Broad search strategy with preprint servers
+   - `generate_search_strings(protocol_version = "3.0")` for broad search
+   - `run_slr_pipeline()` now accepts `arxiv_search`, `biorxiv_search`, `protocol_version` params
+   - Preprint-aware screening criteria for Protocol 3.0
+   - `title_abstract_screening()` accepts `protocol_version` parameter
+  - **Protocol 4.0 support** (COMPLETE): Focused RQ with title-focused search
+   - `generate_search_strings(protocol_version = "4.0")` for focused search
+   - Title-focused search strings for IEEE, Scopus, WoS, PubMed, ACM, arXiv, Scholar
+   - Database-specific validated syntax with 5 config-driven concepts (maDMP, provenance, technology, openness, scientific data)
+   - Config-driven search string builder
+   - **Note**: Protocol 4.0 search strings are now fully config-driven
+ - **New extraction fields** (Protocol 4.0):
   - `Storage_Integration`: IPFS, IPFS + blockchain, External DB, Hybrid
   - `Permission_Model`: Permissioned, Permissionless, Hybrid
 - **Enhanced reporting**: Both markdown and LaTeX reports now include:

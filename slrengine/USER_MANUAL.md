@@ -57,8 +57,9 @@ source("slrengine/R/extraction.R")
 source("slrengine/R/quality.R")
 source("slrengine/R/prisma.R")
 source("slrengine/R/report.R")
+source("slrengine/R/pipeline.R")
 
-# Define data sources (supported: wos, scopus, pubmed, pubmed_csv, ieee, acm)
+# Define data sources (supported: wos, scopus, pubmed_csv, ieee, acm)
 sources <- list(
   ieee = "data/ieee_export.csv",
   wos = "data/wos_export.bib",
@@ -117,7 +118,35 @@ Rscript test_engine.R
 
 ## 4. Search Queries
 
-Before importing data, run these searches in each database:
+This engine automatically generates search strings for you. No manual database searches required.
+
+The engine uses `config.yaml` to define:
+- PICOC criteria (Population, Concept, Context)
+- Title operators per database
+- Keywords for provenance models and blockchain platforms
+
+Simply point the engine to your data files and it will handle everything.
+
+### Example Protocol 4.0 Search String (Auto-Generated)
+
+The engine generates title-focused strings like:
+
+```
+(TI: "provenance_model" OR TI: "prov-o" OR TI: "prov-dm") 
+AND (TI: "hyperledger" OR TI: "fabric" OR TI: "corda")
+```
+
+These are applied automatically during database import.
+
+### Supported Data Sources
+
+| Database | Format | Key Parameter |
+|----------|--------|---------------|
+| IEEE Xplore | CSV | `ieee` |
+| Web of Science | BibTeX | `wos` |
+| ACM Digital Library | BibTeX | `acm` |
+| PubMed | CSV | `pubmed_csv` |
+| Scopus | CSV | `scopus` |
 
 ### IEEE Xplore
 ```
@@ -284,7 +313,8 @@ This engine implements the PRISMA 2020 protocol in `slr/PRISMA_2020_ROTOCOL.md`:
 - ✅ Date range filtering (2018-2026)
 - ✅ Multi-database search
 - ✅ Deduplication
-- ✅ Two-stage screening
+- ✅ Title/abstract screening
+- ✅ Full-text assessment
 - ✅ Data extraction form
 - ✅ MMAT quality assessment
 - ✅ PRISMA flow diagram (CSV, LaTeX, Markdown)
@@ -299,6 +329,6 @@ For issues or questions, refer to:
 
 ---
 
-*Generated: February 2026*
-*Version: 1.0.0*
+*Generated: March 2026*
+*Version: 2.0.0*
 *See CHANGELOG.md for version history*

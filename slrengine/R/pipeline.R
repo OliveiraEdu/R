@@ -171,38 +171,28 @@ run_slr_pipeline <- function(sources,
 #' @export
 generate_search_strings <- function(protocol_version = "1.0") {
   
-  # Base concepts (Protocol 1.0 - narrow)
-  concepts <- list(
-    provenance = c("provenance", "\"data lineage\"", "reproducibility", "verification", "\"chain of custody\""),
-    technology = c("blockchain", "\"distributed ledger\"", "decentralized", "IPFS", "\"content addressable\""),
-    data_management = c("DMP", "\"data management plan\"", "maDMP", "FAIR", "\"metadata standards\"")
-  )
+  # Load config from working directory
+  config_path <- file.path(normalizePath("."), "config.yaml")
+  config <- yaml::read_yaml(config_path)
   
   # Protocol 3.0 - Broad search strategy
+  # Extract from config.yaml
   broad_concepts <- list(
-    technology = c(
-      "blockchain", "\"distributed ledger\"", "\"distributed ledger technology\"", "DLT",
-      "\"smart contract\"", "\"smart contracts\"",
-      "Hyperledger", "Iroha", "Fabric", "Corda", "Ethereum",
-      "IPFS", "\"content addressable\"", "\"content addressing\""
-    ),
-    scientific_data = c(
-      "\"scientific data\"", "\"research data\"", "\"scholarly data\"",
-      "\"data management\"", "\"data sharing\"", "\"data repository\"",
-      "\"open science\"", "\"open data\"", "FAIR"
-    ),
-    provenance = c(
-      "provenance", "\"data lineage\"", "\"chain of custody\"",
-      "\"tamper-evident\"", "immutable", "integrity", "verification",
-      "reproducibility", "\"reproducible research\""
-    ),
-    dmp = c(
-      "DMP", "\"data management plan\"", "maDMP", "\"machine-actionable\"",
-      "\"DMPTool\"", "DMPonline", "Argos", "DAMAP"
-    )
+    technology = config$PICOC_criteria$Blockchain_Platform$keywords,
+    scientific_data = config$PICOC_criteria$Scientific_Data$keywords,
+    provenance = config$PICOC_criteria$Provenance$keywords
   )
   
-  # Build narrow search strings (Protocol 1.0)
+  # Build narrow search strings (Protocol 1.0) - config-driven
+  # Map config categories to concept names
+  concepts <- list(
+    provenance = config$PICOC_criteria$Provenance$keywords,
+    technology = config$PICOC_criteria$Blockchain_Platform$keywords,
+    data_management = c(config$PICOC_criteria$maDMP_Support$keywords,
+                        config$PICOC_criteria$Scientific_Data$keywords)
+  )
+  
+  # Build narrow search strings (Protocol 1.0) - config-driven
   narrow_strings <- list(
     ieee = paste0(
       "(", paste(concepts$provenance, collapse = " OR "), ") ",
@@ -256,114 +246,122 @@ generate_search_strings <- function(protocol_version = "1.0") {
     scholar = "\"blockchain provenance scientific data\""
   )
   
-  # Protocol 4.0 - Title-focused search (narrow scope, high precision)
-  protocol_4_concepts <- list(
-    madmp = c("\"machine-actionable\"", "maDMP", "\"data management\"", "DMP"),
-    provenance = c("provenance", "\"data lineage\"", "\"chain of custody\"", "verification"),
-    technology = c("platform", "repository", "storage", "blockchain", "IPFS", "decentralized"),
-    semantic = c("PROV-O", "semantic", "FAIR", "reproducibility", "reproducible"),
-    scientific_data = c("\"scientific data\"", "\"research data\"", "\"open science\"", "metadata")
-  )
-  
-  # Build Protocol 4.0 title-focused strings (from validated search)
-  protocol_4_strings <- list(
-    ieee = paste0(
-      '("Document Title":"machine-actionable" OR "Document Title":"maDMP" OR "Document Title":"data management" OR "Document Title":DMP OR "Document Title":provenance OR "Document Title":"data lineage" OR "Document Title":"chain of custody" OR "Document Title":verification OR "Document Title":"scientific data" OR "Document Title":"research data" OR "Document Title":"open science" OR "Document Title":metadata OR "Document Title":"PROV-O" OR "Document Title":semantic OR "Document Title":desci OR "Document Title":FAIR OR "Document Title":reproducibility OR "Document Title":reproducible) AND ("Document Title":platform OR "Document Title":repository OR "Document Title":storage OR "Document Title":blockchain OR "Document Title":IPFS OR "Document Title":decentralized)'
-    ),
-    scopus = paste0(
-      '(TITLE("machine-actionable") OR TITLE("maDMP") OR TITLE("data management") OR TITLE("DMP") OR TITLE("provenance") OR TITLE("data lineage") OR TITLE("chain of custody") OR TITLE("verification") OR TITLE("scientific data") OR TITLE("research data") OR TITLE("open science") OR TITLE("metadata") OR TITLE("PROV-O") OR TITLE("semantic") OR TITLE("desci") OR TITLE("FAIR") OR TITLE("reproducibility") OR TITLE("reproducible")) AND (TITLE("platform") OR TITLE("repository") OR TITLE("storage") OR TITLE("blockchain") OR TITLE("IPFS") OR TITLE("decentralized"))'
-    ),
-    wos = paste0(
-      'TI=("machine-actionable" OR "maDMP" OR "data management" OR "DMP" OR "provenance" OR "data lineage" OR "chain of custody" OR "verification" OR "scientific data" OR "research data" OR "open science" OR "metadata" OR "PROV-O" OR "semantic" OR "desci" OR "FAIR" OR "reproducibility" OR "reproducible") AND TI=("platform" OR "repository" OR "storage" OR "blockchain" OR "IPFS" OR "decentralized")'
-    ),
-    pubmed = paste0(
-      '("machine-actionable"[ti] OR "maDMP"[ti] OR "data management"[ti] OR "DMP"[ti] OR "provenance"[ti] OR "data lineage"[ti] OR "chain of custody"[ti] OR "verification"[ti] OR "scientific data"[ti] OR "research data"[ti] OR "open science"[ti] OR "metadata"[ti] OR "PROV-O"[ti] OR "semantic"[ti] OR "desci"[ti] OR "FAIR"[ti] OR "reproducibility"[ti] OR "reproducible"[ti]) AND ("platform"[ti] OR "repository"[ti] OR "storage"[ti] OR "blockchain"[ti] OR "IPFS"[ti] OR "decentralized"[ti])'
-    ),
-    acm = paste0(
-      '(Title:"machine-actionable" OR Title:maDMP OR Title:"data management" OR Title:DMP OR Title:provenance OR Title:"data lineage" OR Title:"chain of custody" OR Title:verification OR Title:"scientific data" OR Title:"research data" OR Title:"open science" OR Title:metadata OR Title:PROV-O OR Title:semantic OR Title:desci OR Title:FAIR OR Title:reproducibility OR Title:reproducible) AND (Title:platform OR Title:repository OR Title:storage OR Title:blockchain OR Title:IPFS OR Title:decentralized)'
-    ),
-    arxiv = paste0(
-      '(ti:"machine-actionable" OR ti:maDMP OR ti:"data management" OR ti:DMP OR ti:provenance OR ti:"data lineage" OR ti:"chain of custody" OR ti:verification OR ti:"scientific data" OR ti:"research data" OR ti:"open science" OR ti:metadata OR ti:PROV-O OR ti:semantic OR ti:desci OR ti:FAIR OR ti:reproducibility OR ti:reproducible) AND (ti:platform OR ti:repository OR ti:storage OR ti:blockchain OR ti:IPFS OR ti:decentralized)'
-    ),
-    scholar = "\"machine-actionable\" OR maDMP blockchain provenance \"scientific data\""
-  )
-  
-  # Protocol 3.0 filters
+
+# Protocol 3.0 filters
   filters_3.0 <- list(
-    ieee = "Document Type: Conference OR Journal; Year: 2018-2026",
-    scopus = "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2018-2026",
-    wos = "Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2018-2026",
-    pubmed = "Publication Types: Article, Review; Year: 2018-2026",
-    acm = "Content Type: Conference Papers, Journal Articles; Year: 2018-2026",
-    arxiv = "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2018-2026",
+    ieee = "Document Type: Conference OR Journal; Year: 2025-2026",
+    scopus = "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2025-2026",
+    wos = "Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2025-2026",
+    pubmed = "Publication Types: Article, Review; Year: 2025-2026",
+    acm = "Content Type: Conference Papers, Journal Articles; Year: 2025-2026",
+    arxiv = "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2025-2026",
     scholar = "Limit first 200 results"
   )
-  
-  # Protocol 4.0 filters
-  protocol_4_filters <- list(
-    ieee = "Document Type: Conference OR Journal; Year: 2018-2026",
-    scopus = "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2018-2026",
-    wos = "Categories: Computer Science, Information Science; Doc Types: Article, Conference Paper; Year: 2018-2026",
-    pubmed = "Publication Types: Article, Review, Clinical Trial; Year: 2018-2026",
-    acm = "Content Type: Conference Papers, Journal Articles; Year: 2018-2026",
-    arxiv = "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2018-2026",
-    scholar = "Limit first 200 results"
-  )
-  
-  # arXiv categories
+# Protocol 4.0 - Title-focused search (narrow scope, high precision)
+# Build Protocol 4 concepts from config
+protocol_4_concepts <- list(
+  maDMP_Support = config$PICOC_criteria$maDMP_Support$keywords,
+  Provenance_Model = config$PICOC_criteria$Provenance_Model$keywords,
+
+  Blockchain_Platform = config$PICOC_criteria$Blockchain_Platform$keywords,
+  Openness = config$PICOC_criteria$Openness$keywords,
+  Scientific_Data = config$PICOC_criteria$Scientific_Data$keywords
+)
+
+# Load database-specific operators and filters from config
+title_operators <- config$title_operators
+enclosure_style <- config$enclosure_style
+protocol_4_filters <- config$protocol_4_filters
+
+# Build Protocol 4 search strings for all databases
+protocol_4_strings <- list(
+  ieee = build_protocol_4_string(title_operators$ieee, protocol_4_concepts, enclosure_style$ieee),
+  scopus = build_protocol_4_string(title_operators$scopus, protocol_4_concepts, enclosure_style$scopus),
+  wos = build_protocol_4_string(title_operators$wos, protocol_4_concepts, enclosure_style$wos),
+  pubmed = build_protocol_4_string(title_operators$pubmed, protocol_4_concepts, enclosure_style$pubmed),
+  acm = build_protocol_4_string(title_operators$acm, protocol_4_concepts, enclosure_style$acm),
+  arxiv = build_protocol_4_string(title_operators$arxiv, protocol_4_concepts, enclosure_style$arxiv),
+  scholar = build_protocol_4_scholar(protocol_4_concepts)
+)
   arxiv_categories <- c("cs.DC", "q-bio.QM", "stat.ML", "cs.LG", "cs.AI")
+   # Return based on protocol version
+   if (protocol_version == "1.0") {
+     search_strings <- narrow_strings
+   } else if (protocol_version == "3.0") {
+     search_strings <- broad_strings
+   } else if (protocol_version == "4.0" || protocol_version == "4.4") {
+     search_strings <- protocol_4_strings
+   } else {
+     search_strings <- narrow_strings
+   }
+   
+   # Protocol 4.4 uses the same search strings as 4.0
+   effective_version <- if (protocol_version == "4.4") "4.0" else protocol_version
+   
+   # Return full protocol config
+   if (effective_version == "4.0") {
+     list(
+       protocol_version = protocol_version,
+       concepts = protocol_4_concepts,
+       filters = protocol_4_filters,
+       arxiv_categories = arxiv_categories,
+       date_range = "2025-2026",
+       search_strings = search_strings,
+       strategy = "title-focused",
+       focus = "maDMP + blockchain provenance intersection"
+     )
+   } else if (effective_version == "3.0") {
+     list(
+       protocol_version = protocol_version,
+       concepts_narrow = concepts,
+       concepts_broad = broad_concepts,
+       narrow = narrow_strings,
+       broad = broad_strings,
+       filters = filters_3.0,
+       arxiv_categories = arxiv_categories,
+       date_range = "2025-2026",
+       search_strings = search_strings,
+       strategy = "abstract-focused",
+       focus = "Technology + Scientific Data (broad)"
+     )
+   } else {
+     list(
+       protocol_version = protocol_version,
+       concepts = concepts,
+       narrow = narrow_strings,
+       filters = protocol_4_filters,
+       arxiv_categories = arxiv_categories,
+       date_range = "2025-2026",
+       search_strings = search_strings,
+       strategy = "abstract-focused",
+       focus = "Provenance + Technology + DMP (narrow)"
+     )
+   }
+ }
+
+# Helper function: Build Protocol 4 search string for databases with title operators
+build_protocol_4_string <- function(title_op, protocol_4_concepts, platform) {
+  # protocol_4_concepts is a list of character vectors
+  # Build OR groups for each concept category
+  or_groups <- lapply(protocol_4_concepts, function(concept) {
+    paste0("(", paste(concept, collapse = " OR "), ")")
+  })
   
-  # Return based on protocol version
-  if (protocol_version == "1.0") {
-    search_strings <- narrow_strings
-  } else if (protocol_version == "3.0") {
-    search_strings <- broad_strings
-  } else if (protocol_version == "4.0" || protocol_version == "4.4") {
-    search_strings <- protocol_4_strings
-  } else {
-    search_strings <- narrow_strings
+  # Combine all OR groups with AND
+  full_search <- paste0(title_op, ": ", paste(do.call(c, or_groups), collapse = " AND "))
+  
+  # Add platform-specific filters if needed
+  if (isTRUE(platform)) {
+    full_search <- paste0("(", full_search, ")")
   }
   
-  # Protocol 4.4 uses the same search strings as 4.0
-  effective_version <- if (protocol_version == "4.4") "4.0" else protocol_version
-  
-  # Return full protocol config
-  if (effective_version == "4.0") {
-    list(
-      protocol_version = protocol_version,
-      concepts = protocol_4_concepts,
-      filters = protocol_4_filters,
-      arxiv_categories = arxiv_categories,
-      date_range = "2018-2026",
-      search_strings = search_strings,
-      strategy = "title-focused",
-      focus = "maDMP + blockchain provenance intersection"
-    )
-  } else if (effective_version == "3.0") {
-    list(
-      protocol_version = protocol_version,
-      concepts_narrow = concepts,
-      concepts_broad = broad_concepts,
-      narrow = narrow_strings,
-      broad = broad_strings,
-      filters = filters_3.0,
-      arxiv_categories = arxiv_categories,
-      date_range = "2018-2026",
-      search_strings = search_strings,
-      strategy = "abstract-focused",
-      focus = "Technology + Scientific Data (broad)"
-    )
-  } else {
-    list(
-      protocol_version = protocol_version,
-      concepts = concepts,
-      narrow = narrow_strings,
-      filters = filters,
-      arxiv_categories = arxiv_categories,
-      date_range = "2018-2026",
-      search_strings = search_strings,
-      strategy = "abstract-focused",
-      focus = "Provenance + Technology + DMP (narrow)"
-    )
-  }
+  return(full_search)
+}
+
+# Helper function: Build Protocol 4 search string for Google Scholar
+build_protocol_4_scholar <- function(protocol_4_concepts) {
+  # Join all concepts from all categories and wrap in quotes for Google Scholar
+  all_concepts <- do.call(c, protocol_4_concepts)
+  concepts_str <- paste(all_concepts, collapse = " ")
+  return(paste0('"', concepts_str, '"'))
 }

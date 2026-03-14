@@ -68,7 +68,7 @@ get_default_criteria <- function(protocol_version = "1.0") {
     # I3: Date range 2018-2026
     function(df) {
       year <- as.integer(df$PY)
-      include <- !is.na(year) & year >= 2018 & year <= 2026
+      include <- !is.na(year) & year >= 2025 & year <= 2026
       list(include = include, reason = "I3: Date range")
     },
     
@@ -137,7 +137,7 @@ get_protocol_3_criteria <- function() {
     # I3: Date range 2018-2026
     function(df) {
       year <- as.integer(df$PY)
-      include <- !is.na(year) & year >= 2018 & year <= 2026
+      include <- !is.na(year) & year >= 2025 & year <= 2026
       list(include = include, reason = "I3: Date range")
     },
     
@@ -218,7 +218,7 @@ get_protocol_4_criteria <- function() {
     # I3: Date range 2018-2026
     function(df) {
       year <- as.integer(df$PY)
-      include <- !is.na(year) & year >= 2018 & year <= 2026
+      include <- !is.na(year) & year >= 2025 & year <= 2026
       list(include = include, reason = "I3: Date range")
     },
     

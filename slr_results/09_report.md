@@ -1,15 +1,15 @@
 # Systematic Review Findings Report
 
-**Date:** March 04, 2026
+**Date:** March 14, 2026
 **Review Protocol:** PRISMA 2020 Guidelines
 
 ---
 
 ## Executive Summary
 
-This systematic review identified **237 studies** meeting inclusion criteria. 
-The review followed PRISMA 2020 guidelines and covered the period 2018-2026. 
-The studies were sourced from WoS, ACM DL, IEEE Xplore, PubMed, arXiv, focusing on blockchain-enabled provenance for scientific data management.
+This systematic review identified **247 studies** meeting inclusion criteria. 
+The review followed PRISMA 2020 guidelines and covered the period 2025-2026. 
+The studies were sourced from WoS, ACM DL, IEEE Xplore, Scopus, PubMed, arXiv, focusing on blockchain-enabled provenance for scientific data management.
 
 ---
 
@@ -19,25 +19,25 @@ The studies were sourced from WoS, ACM DL, IEEE Xplore, PubMed, arXiv, focusing 
 
 | Stage | Count | Percentage |
 |-------|-------|------------|
-| Records identified | 2909 | 100% |
-| After duplicates removed | 2550 | 87.7% |
-| Screened | 2550 | 100% |
-| Excluded at title/abstract | 1992 | 78.1% |
-| Assessed for full-text | 558 | 21.9% |
-| Excluded at full-text | 321 | 57.5% |
-| **Studies included** | **237** | **8.1%** |
+| Records identified | 13248 | 100% |
+| After duplicates removed | 6723 | 50.7% |
+| Screened | 6723 | 100% |
+| Excluded at title/abstract | 6468 | 96.2% |
+| Assessed for full-text | 255 | 3.8% |
+| Excluded at full-text | 8 | 3.1% |
+| **Studies included** | **247** | **1.9%** |
 
 ### 1.2 Mermaid Flowchart
 
 ```mermaid
 flowchart TD
-    A[Records Identified<br/>n=2909] --> B[Duplicate Records Removed<br/>n=2550]
-    B --> C[Records Screened<br/>n=2550]
-    C --> D[Excluded by Title/Abstract<br/>n=1992]
-    D --> E[Records Eligible<br/>n=558]
-    E --> F[Full-Text Assessed<br/>n=558]
-    F --> G[Excluded Full-Text<br/>n=321]
-    G --> H[Studies Included<br/>n=237]
+    A[Records Identified<br/>n=13248] --> B[Duplicate Records Removed<br/>n=6723]
+    B --> C[Records Screened<br/>n=6723]
+    C --> D[Excluded by Title/Abstract<br/>n=6468]
+    D --> E[Records Eligible<br/>n=255]
+    E --> F[Full-Text Assessed<br/>n=255]
+    F --> G[Excluded Full-Text<br/>n=8]
+    G --> H[Studies Included<br/>n=247]
     style A fill:#e1f5fe
     style C fill:#fff3e0
     style F fill:#fff3e0
@@ -48,10 +48,10 @@ flowchart TD
 
 | Reason | Count |
 |--------|-------|
-| Wrong topic (technical implementation) | 260 |
-| Wrong topic (domain relevance) | 1564 |
-| Opinion piece | 19 |
-| Non-research context | 138 |
+| Wrong topic (technical implementation) | 821 |
+| Wrong topic (domain relevance) | 3580 |
+| Opinion piece | 196 |
+| Non-research context | 337 |
 
 ---
 
@@ -59,12 +59,14 @@ flowchart TD
 
 ### 2.1 Search Strategy
 
-This systematic review searched the following databases: WoS. 
-Search strings were developed following PRISMA 2020 guidelines with three concept groups:
+This systematic review searched the following databases: IEEE Xplore, Scopus, Web of Science, PubMed, ACM Digital Library. 
+Search strings were developed following PRISMA 2020 guidelines using a title-focused strategy targeting the intersection of:
 
-- **Concept 1:** Blockchain/DLT (blockchain, distributed ledger, smart contract, DLT)
-- **Concept 2:** Provenance (provenance, data lineage, chain of custody, verification)
-- **Concept 3:** Scientific Data (scientific data, research data, data management, FAIR)
+- **maDMP/Provenance:** machine-actionable, maDMP, data management, DMP, provenance, data lineage, chain of custody, verification
+- **Technology:** platform, repository, storage, blockchain, IPFS, decentralized
+- **Scientific Context:** scientific data, research data, open science, metadata, PROV-O, semantic, FAIR, reproducibility
+
+Date range: 2020-2026. Search focused on Title field for higher precision.
 
 ### 2.2 Eligibility Criteria
 
@@ -72,7 +74,7 @@ Search strings were developed following PRISMA 2020 guidelines with three concep
 |-----------|-------------|
 | Language | English |
 | Publication type | Journal articles, conference papers, preprints |
-| Date range | 2018-2026 |
+| Date range | 2025-2026 |
 | Topic | Blockchain/DLT for scientific data provenance |
 | Domain | Research data management, data sharing, reproducibility |
 
@@ -96,69 +98,56 @@ Quality was assessed using the MMAT with five criteria: Clear research questions
 
 ## 3. Study Characteristics
 
-### 3.1 Distribution by Research Focus (n=237)
+### 3.1 Distribution by Research Focus (n=247)
 
 | Research Focus | Count |
 |------------|------|
-| Blockchain | 93 |
-| Blockchain; Provenance | 33 |
-| Other | 91 |
-| Provenance | 20 |
+| Blockchain | 2 |
+| Other | 174 |
+| Provenance | 70 |
+| Provenance; Blockchain | 1 |
 
 
 ### 3.2 Distribution by Blockchain Platform
 
 | Platform | Count |
 |------------|------|
-| Ethereum | 7 |
-| Fabric | 2 |
-| Fabric; Hyperledger | 1 |
-| Multi-chain | 2 |
-| Not specified | 225 |
+| Ethereum | 17 |
+| Ethereum; Hyperledger | 2 |
+| Hyperledger Fabric; Ethereum; Hyperledger | 1 |
+| Hyperledger Fabric; Ethereum; Hyperledger; Corda | 1 |
+| Hyperledger Fabric; Hyperledger | 13 |
+| Multi-chain | 1 |
+| Not specified | 212 |
 
 
 ### 3.3 Distribution by Provenance Model
 
 | Model | Count |
 |------------|------|
-| Custom | 13 |
-| None | 200 |
-| OPM | 23 |
-| OPM; Custom | 1 |
+| None | 247 |
 
 
 ### 3.4 Distribution by maDMP Support
 
 | maDMP Support | Count |
 |------------|------|
-| None | 237 |
+| None | 247 |
 
 
 ### 3.5 Distribution by Evaluation Method
 
 | Evaluation Method | Count |
 |------------|------|
-| Case study | 3 |
-| Experiment | 32 |
-| Experiment; User study | 1 |
-| Not clear | 193 |
-| Proof of concept | 2 |
-| User study | 6 |
+| Not clear | 247 |
 
 
 ### 3.6 Publication Year Distribution
 
 | Year | Count |
 |------------|------|
-| 2018 | 14 |
-| 2019 | 20 |
-| 2020 | 23 |
-| 2021 | 18 |
-| 2022 | 29 |
-| 2023 | 18 |
-| 2024 | 30 |
-| 2025 | 66 |
-| 2026 | 19 |
+| 2025 | 201 |
+| 2026 | 46 |
 
 
 ---
@@ -169,61 +158,69 @@ Quality was assessed using the MMAT with five criteria: Clear research questions
 
 | Source | Count |
 |--------|-------|
-| arXiv | 49 |
-| ACM Trans. Storage | 7 |
-| IEEE ACCESS | 5 |
-| Proceedings of the International Conference for High Performance Computing Networking Storage and Analysis | 5 |
-| Proceedings of the SC '23 Workshops of the International Conference on High Performance Computing Network Storage and Analysis | 5 |
-| Proceedings of the SC '24 Workshops of the International Conference on High Performance Computing Network Storage and Analysis | 4 |
-| ELECTRONICS | 3 |
-| Proceedings of the SC '25 Workshops of the International Conference for High Performance Computing Networking Storage and Analysis | 3 |
-| ACM Trans. Sen. Netw. | 2 |
-| APPLIED SCIENCES-BASEL | 2 |
+| arXiv | 39 |
+| Lecture Notes in Networks and Systems | 18 |
+| Communications in Computer and Information Science | 5 |
+| Lecture Notes in Computer Science | 5 |
+| Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics) | 4 |
+| CEUR Workshop Proceedings | 3 |
+| International Journal of Advanced Computer Science and Applications | 3 |
+| Studies in Health Technology and Informatics | 3 |
+| 2025 2nd International Conference on Artificial Intelligence and Knowledge Discovery in Concurrent Engineering (ICECONF) | 2 |
+| 2025 7th International Conference on Blockchain Computing and Applications (BCCA) | 2 |
 
 ### 4.2 Storage Integration Patterns
 
 | Storage Type | Count |
 |------------|------|
-| External DB | 12 |
-| IPFS + blockchain | 6 |
-| IPFS + blockchain; External DB; Hybrid | 1 |
-| Not specified | 218 |
+| External DB | 31 |
+| External DB; Hybrid | 8 |
+| Hybrid | 16 |
+| IPFS | 1 |
+| IPFS + blockchain | 17 |
+| IPFS + blockchain; External DB | 10 |
+| IPFS + blockchain; External DB; Hybrid | 2 |
+| IPFS + blockchain; Hybrid | 4 |
+| Not specified | 158 |
 
 
 ### 4.3 Permission Model Distribution
 
 | Permission Model | Count |
 |------------|------|
-| Hybrid | 9 |
-| Not specified | 213 |
+| Hybrid | 26 |
+| Not specified | 204 |
 | Permissioned | 1 |
-| Permissionless | 13 |
-| Permissionless; Hybrid | 1 |
+| Permissioned; Hybrid | 2 |
+| Permissionless | 12 |
+| Permissionless; Hybrid | 2 |
 
 
 ### 4.4 Cross-Tabulation: Blockchain Platform × Provenance Model
 
 | Platform | 
-Custom | None | OPM | OPM; Custom
+None
  |
 |----------|
----|---|---|---
+---
 |
-| Ethereum | 1 | 5 | 1 | 0 |
-| Fabric | 0 | 2 | 0 | 0 |
-| Fabric; Hyperledger | 0 | 1 | 0 | 0 |
-| Multi-chain | 1 | 1 | 0 | 0 |
-| Not specified | 11 | 191 | 22 | 1 |
+| Ethereum | 17 |
+| Ethereum; Hyperledger | 2 |
+| Hyperledger Fabric; Ethereum; Hyperledger | 1 |
+| Hyperledger Fabric; Ethereum; Hyperledger; Corda | 1 |
+| Hyperledger Fabric; Hyperledger | 13 |
+| Multi-chain | 1 |
+| Not specified | 212 |
 
 ### 4.5 Systems/Frameworks Identified
 
 | System/Framework | Mentions |
 |------------------|----------|
-| Provenance | 51 |
-| Ethereum | 2 |
-| Ethereum, Provenance | 1 |
-| IPFS | 1 |
-| Provenance, IPFS | 1 |
+| Ethereum | 1 |
+| Hyperledger Fabric | 1 |
+| NA | NA |
+| NA | NA |
+| NA | NA |
 | NA | NA |
 | NA | NA |
 | NA | NA |
@@ -236,22 +233,68 @@ Custom | None | OPM | OPM; Custom
 
 ### 5.1 Quality Ratings Distribution
 
-| Rating | Count |
-|------------|------|
-| Medium | 237 |
+| Rating | Description | Count |
+|--------|-------------|-------|
+| Excellent | Score 5 - clear methodology, rigorous evaluation | 
+0
+ |
+| Good | Score 4 - minor methodological gaps | 
+76
+ |
+| Acceptable | Score 3 - some concerns | 
+171
+ |
+| Poor | Score 2 - significant gaps | 
+0
+ |
+| Very Poor | Score 1 - cannot assess | 
+0
+ |
 
+**Mean Quality Score:** 0.61 / 1.0
+**Mean Rating (1-5):** 3.31 / 5.0
 
 ### 5.2 MMAT Item Scores
 
 | MMAT Item | Yes | Can't tell | Rate |
 |-----------|-----|------------|------|
-| Clear Research Questions | 3 | 234 | 1.3% |
-| Appropriate Methodology | 141 | 96 | 59.5% |
-| Rigorous Data Collection | 0 | 237 | 0% |
-| Sound Analysis | 147 | 90 | 62% |
-| Well-supported Conclusions | 0 | 237 | 0% |
+| Clear Research Questions | 
+3
+ | 
+244
+ | 
+1.2
+% |
+| Appropriate Methodology | 
+114
+ | 
+133
+ | 
+46.2
+% |
+| Rigorous Data Collection | 
+0
+ | 
+247
+ | 
+0
+% |
+| Sound Analysis | 
+159
+ | 
+88
+ | 
+64.4
+% |
+| Well-supported Conclusions | 
+0
+ | 
+247
+ | 
+0
+% |
 
-**Mean Quality Score:** 0.62 / 5.0
+**Quality Scale (per Protocol Section 8.2):** 5 = Excellent, 4 = Good, 3 = Acceptable, 2 = Poor, 1 = Very Poor
 
 ---
 
@@ -262,16 +305,16 @@ Custom | None | OPM | OPM; Custom
 | Theme | Description | Studies |
 |-------|-------------|---------|
 | Blockchain Infrastructure | Papers focusing on blockchain platforms, DLT architecture | 
-126
+3
  |
 | Provenance Tracking | Papers on data lineage, verification, chain of custody | 
-53
+71
  |
 | maDMP | Papers on machine-actionable data management plans | 
 0
  |
 | Combined Approach | Papers addressing multiple themes | 
-33
+1
  |
 
 ### 6.2 Technical Architecture Patterns
@@ -279,16 +322,16 @@ Custom | None | OPM | OPM; Custom
 | Pattern | Description | Count |
 |---------|-------------|-------|
 | Permissioned Blockchain | Systems using Hyperledger Fabric/Iroha | 
-3
+15
  |
 | Permissionless Blockchain | Systems using Ethereum/public chains | 
-7
+21
  |
 | PROV-O Based | Systems using W3C PROV ontology | 
 0
  |
 | Custom Provenance | Systems with proprietary provenance models | 
-14
+0
  |
 
 ---
@@ -297,108 +340,108 @@ Custom | None | OPM | OPM; Custom
 
 | Study_ID | Title | Year | Authors | Source | Research_Focus | Blockchain_Platform | Provenance_Model | maDMP_Support | Evaluation_Method |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| REV001 | The Approach to Managing Provenance M... | 2018 | Demichev Andrey and Kryukov Alexander... | 2018 IVANNIKOV ISPRAS OPEN CONFERENCE... | Provenance | Not specified | None | None | Not clear |
-| REV002 | A Decentralized System for Medical Da... | 2020 | Yang Qingzhu and Liu Qiao and Lv Hair... | JOURNAL OF INTERNET TECHNOLOGY | Blockchain | Not specified | None | None | Not clear |
-| REV003 | A blockchain-based platform architect... | 2021 | Liu Yue and Lu Qinghua and Zhu Chunsh... | MULTIMEDIA TOOLS AND APPLICATIONS | Blockchain | Not specified | None | None | Not clear |
-| REV004 | PROV-IO+: A Cross-Platform Provenance... | 2024 | Han Runzhou and Zheng Mai and Byna Su... | IEEE TRANSACTIONS ON PARALLEL AND DIS... | Provenance | Not specified | None | None | Not clear |
-| REV005 | A healthcare data management system: ... | 2025 | Tiwari Kajal and Kumar Sanjay et al. | JOURNAL OF SUPERCOMPUTING | Blockchain | Not specified | None | None | Not clear |
-| REV006 | SciLedger: A Blockchain-based Scienti... | 2022 | Hoopes Reagan and Hardy Hamilton and ... | 2022 IEEE 8TH INTERNATIONAL CONFERENC... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV007 | Proposal of a Blockchain-Based Data M... | 2025 | Park Keundug and Youm Heung-Youl et al. | BIG DATA AND COGNITIVE COMPUTING | Blockchain | Not specified | None | None | Not clear |
-| REV008 | Highly Reliable IoT Data Management P... | 2020 | Hasegawa Yuki and Yamamoto Hiroshi et... | 2020 IEEE INTERNATIONAL CONFERENCE ON... | Blockchain | Not specified | None | None | Not clear |
-| REV009 | SciBlock: A Blockchain-Based Tamper-P... | 2019 | Fernando Dinuni and Kulshrestha Siddh... | 2019 IEEE 5TH INTERNATIONAL CONFERENC... | Blockchain | Not specified | None | None | Not clear |
-| REV010 | Blockchain Based Provenance for Agric... | 2018 | Hua Jing and Wang Xiujuan and Kang Me... | 2018 IEEE INTELLIGENT VEHICLES SYMPOS... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV011 | Blockchain-based Metadata Protection ... | 2019 | LHutereate Arnaud and Burihabwa Doria... | 2019 IEEE 38TH INTERNATIONAL SYMPOSIU... | Blockchain | Not specified | None | None | Not clear |
-| REV012 | Timestamping Metadata Using Blockchai... | 2019 | Kolydas Tassos et al. | METADATA AND SEMANTIC RESEARCH MTSR 2019 | Blockchain | Not specified | None | None | Not clear |
-| REV013 | A simulation provenance data manageme... | 2019 | Ma Jin and Lee Sik and Cho Kum Won an... | CLUSTER COMPUTING-THE JOURNAL OF NETW... | Provenance | Not specified | None | None | Not clear |
-| REV014 | Towards Eidetic Blockchain Systems wi... | 2020 | Linoy Shlomi and Ray Suprio and Stakh... | 2020 IEEE 36TH INTERNATIONAL CONFEREN... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV015 | A Survey of Blockchain Data Managemen... | 2022 | Wei Qian and Li Bingzhe and Chang Wan... | ACM TRANSACTIONS ON EMBEDDED COMPUTIN... | Blockchain | Not specified | None | None | User study |
-| REV016 | A Novel Distributed File System Using... | 2023 | Kumar Deepa S. and Dija S. and Sumith... | WIRELESS PERSONAL COMMUNICATIONS | Blockchain | Not specified | None | None | Not clear |
-| REV017 | Metadata Privacy Preservation for Blo... | 2022 | Liu Lixin and Li Xinyu and Man Ho Au ... | DATABASE SYSTEMS FOR ADVANCED APPLICA... | Blockchain | Not specified | None | None | Not clear |
-| REV018 | Hybrid On/Off Blockchain Approach for... | 2022 | Validi Aso and Kashansky Vladislav an... | 2022 IEEE 25TH INTERNATIONAL CONFEREN... | Blockchain | Not specified | None | None | Not clear |
-| REV019 | Data Provenance for healthcare: a blo... | 2022 | D'Antonio Salvatore and Uccello Feder... | 2022 IEEE 46TH ANNUAL COMPUTERS SOFTW... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV020 | SmartProvenance: A Distributed Blockc... | 2018 | Ramachandran Aravind and Kantarcioglu... | PROCEEDINGS OF THE EIGHTH ACM CONFERE... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV021 | BLINKER: A Blockchain-enabled Framewo... | 2019 | Bose R. P. Jagadeesh Chandra and Phok... | 2019 26TH ASIA-PACIFIC SOFTWARE ENGIN... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV022 | Blockchain-Enabled Fish Provenance an... | 2022 | Wang Xu and Yu Guangsheng and Liu Ren... | IEEE INTERNET OF THINGS JOURNAL | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV023 | A blockchain-based secure framework f... | 2024 | Zorlu Ozan and Ozsoy Adnan et al. | IET COMMUNICATIONS | Blockchain | Not specified | None | None | Not clear |
-| REV024 | EduChain: A Blockchain-Based Educatio... | 2021 | Liu Yihan and Li Ke and Huang Zihao a... | BLOCKCHAIN TECHNOLOGY AND APPLICATION... | Blockchain | Not specified | None | None | Not clear |
-| REV025 | A Data Management Method Based on Blo... | 2020 | Chen Xiaoyan and Liu Yuliang and Ge J... | 2020 3RD INTERNATIONAL CONFERENCE ON ... | Blockchain | Not specified | None | None | Not clear |
-| REV026 | Implementing a Blockchain-Powered Met... | 2023 | Dolhopolov Anton and Castelltort Arna... | BLOCKCHAIN AND APPLICATIONS 5TH INTER... | Blockchain | Not specified | None | None | Not clear |
-| REV027 | Data Provenance in the Cloud A blockc... | 2019 | Tosh Deepak and Shetty Sachin and Lia... | IEEE CONSUMER ELECTRONICS MAGAZINE | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV028 | A Blockchain-Based E-Healthcare Syste... | 2024 | Sun Lianshan and Liu Diandong and Li ... | IEEE ACCESS | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV029 | Blockchain-Based Pension System Ensur... | 2023 | Kamal Minhaz and Abdullah Chowdhury M... | IEICE TRANSACTIONS ON INFORMATION AND... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV030 | Blockchain-based Secure Medical Data ... | 2022 | Wang Meiquan and Zhang Huiru and Wu H... | BSCI'22: PROCEEDINGS OF THE FOURTH AC... | Blockchain | Not specified | None | None | Not clear |
-| REV031 | A Blockchain Based Framework for Smar... | 2021 | Guo Chenkai and Zi Yapeng and Ren Wei... | KNOWLEDGE SCIENCE ENGINEERING AND MAN... | Blockchain | Not specified | None | None | Not clear |
-| REV032 | An Interactive IoT-Blockchain System ... | 2022 | Al-Zoubi Abdallah and Saadeddin Tariq... | 2022 4TH IEEE MIDDLE EAST AND NORTH A... | Blockchain | Not specified | None | None | Not clear |
-| REV033 | Blockchain-based Built Environment Da... | 2024 | Zhang Yaqi and Tryfonas Theo and Carh... | 2024 IEEE INTERNATIONAL SMART CITIES ... | Blockchain | Not specified | None | None | Not clear |
-| REV034 | A Blockchain Based Data Management Sy... | 2018 | Chen Mengjie and Li Yuexuan and Xu Zh... | SMART BLOCKCHAIN | Blockchain | Not specified | None | None | Not clear |
-| REV035 | HealthBlock: A secure blockchain-base... | 2021 | Zaabar Bessem and Cheikhrouhou Omar a... | COMPUTER NETWORKS | Blockchain | Not specified | None | None | Not clear |
-| REV036 | Efficient Metadata Indexing for HPC S... | 2020 | Paul Arnab K. and Wang Brian and Rutm... | 2020 20TH IEEE/ACM INTERNATIONAL SYMP... | Other | Not specified | None | None | Not clear |
-| REV037 | IoT Big Data provenance scheme using ... | 2021 | Pajooh Houshyar Honar and Rashid Moha... | JOURNAL OF BIG DATA | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV038 | ProductChain: Scalable Blockchain Fra... | 2018 | Malik Sidra and Kanhere Salil S. and ... | 2018 IEEE 17TH INTERNATIONAL SYMPOSIU... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV039 | An Integrated Blockchain Approach for... | 2020 | Zayas Javier Ramirez and O'Neill Edua... | 2020 IEEE AEROSPACE CONFERENCE (AEROC... | Blockchain; Provenance | Not specified | OPM | None | Not clear |
-| REV040 | M2MHub: A Blockchain-based Approach f... | 2019 | Saguil Darren and Xue Qiao and Mahmou... | 2019 IEEE/ACS 16TH INTERNATIONAL CONF... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV041 | Blockchain for healthcare data manage... | 2022 | Yaqoob Ibrar and Salah Khaled and Jay... | NEURAL COMPUTING \& APPLICATIONS | Blockchain | Not specified | None | None | Not clear |
-| REV042 | A Blockchain-based data management ap... | 2025 | Imeri Adnan and Gharsallaoui Oussama ... | 2025 12TH IFIP INTERNATIONAL CONFEREN... | Blockchain | Not specified | None | None | Not clear |
-| REV043 | Design of personnel big data manageme... | 2019 | Chen Jian and Lv Zhihan and Song Houb... | FUTURE GENERATION COMPUTER SYSTEMS-TH... | Blockchain | Not specified | OPM | None | Not clear |
-| REV044 | A Framework for Secure Healthcare Dat... | 2021 | Taloba I Ahmed and Rayan Alanazi and ... | INTERNATIONAL JOURNAL OF ADVANCED COM... | Blockchain | Not specified | None | None | Not clear |
-| REV045 | FogChainFlow: On-off blockchain data ... | 2025 | Karthikeyan P. and Brindha K. et al. | CLUSTER COMPUTING-THE JOURNAL OF NETW... | Blockchain | Not specified | None | None | Not clear |
-| REV046 | Trusted Data Management for E-learnin... | 2021 | Cao Chenglong and Zhu Xiaoling et al. | 2021 IEEE 13TH INTERNATIONAL CONFEREN... | Blockchain | Not specified | None | None | Not clear |
-| REV047 | Design and Implementation of a Metada... | 2022 | Di Felice Paolino and Paolone Gaetani... | ELECTRONICS | Other | Not specified | None | None | Not clear |
-| REV048 | Metadata Model Construction and Annot... | 2024 | Lim Eunchae and Kim Changyeong and Li... | FLEXIBLE AUTOMATION AND INTELLIGENT M... | Other | Not specified | None | None | Not clear |
-| REV049 | A Decentralized Approach for Resource... | 2022 | Murturi Ilir and Dustdar Schahram et al. | IEEE TRANSACTIONS ON SERVICES COMPUTING | Other | Not specified | None | None | Not clear |
-| REV050 | Protecting metadata privacy in blockc... | 2025 | Saeidi Saeid Tousi and Shahriari Hami... | JOURNAL OF INFORMATION SECURITY AND A... | Blockchain | Not specified | None | None | Not clear |
-| REV051 | Exploring the Benefits of Blockchain-... | 2024 | Dolhopolov Anton and Castelltort Arna... | MANAGEMENT OF DIGITAL ECOSYSTEMS MEDE... | Blockchain | Not specified | None | None | Not clear |
-| REV052 | CoPS - Cooperative Provenance System ... | 2018 | Gouru Navya and Vadlamani NagaLakshmi... | INTERNATIONAL JOURNAL OF DISTRIBUTED ... | Blockchain; Provenance | Ethereum | None | None | Not clear |
-| REV053 | ForensiBlock: A Provenance-Driven Blo... | 2023 | Akbarfam Asma Jodeiri and Heidaripour... | 2023 5TH IEEE INTERNATIONAL CONFERENC... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV054 | Blockchain-Based Research Data Sharin... | 2018 | Shrestha Ajay Kumar and Vassileva Jul... | BLOCKCHAIN - ICBC 2018 | Blockchain | Not specified | None | None | Not clear |
-| REV055 | Data Management System based on Block... | 2020 | Yang Chenxue and Sun Zhiguo et al. | 20TH IEEE INTERNATIONAL CONFERENCE ON... | Blockchain | Not specified | None | None | Not clear |
-| REV056 | HierChain: A Hierarchical-Blockchain-... | 2024 | Agarwal Vidushi and Pal Sujata et al. | IEEE INTERNET OF THINGS JOURNAL | Blockchain | Not specified | None | None | Not clear |
-| REV057 | An Efficient and Metadata-Aware Big D... | 2020 | Jin Rize and Paik Joon-Young and Biad... | DATABASE SYSTEMS FOR ADVANCED APPLICA... | Other | Not specified | None | None | Not clear |
-| REV058 | The Case for Learned Provenance Graph... | 2023 | Ding Hailun and Zhai Juan and Deng Do... | PROCEEDINGS OF THE 32ND USENIX SECURI... | Provenance | Not specified | None | None | Not clear |
-| REV059 | In-memory Blockchain: Toward Efficien... | 2018 | Al-Mamun Abdullah and Li Tonglin and ... | 2018 IEEE INTERNATIONAL CONFERENCE ON... | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV060 | A Framework for Data Provenance Assur... | 2024 | Narayan D. G. and Rashmi B. and Pavit... | EAI ENDORSED TRANSACTIONS ON SCALABLE... | Provenance | Not specified | None | None | Not clear |
-| REV061 | An Architecture for Attesting to the ... | 2022 | Curty Simon and Fill Hans-Georg and G... | BUSINESS MODELING AND SOFTWARE DESIGN... | Provenance | Not specified | None | None | Not clear |
-| REV062 | Tiger Tally: A secure IoT data manage... | 2024 | Zhao Liushun and Guo Deke and Luo Lai... | COMPUTER NETWORKS | Other | Not specified | None | None | Not clear |
-| REV063 | Analysis of Data Management in Blockc... | 2019 | Paik Hye-Young and Xu Xiwei and Banda... | IEEE ACCESS | Blockchain | Not specified | None | None | Not clear |
-| REV064 | Secure and Transparent Space Explorat... | 2025 | Kim Jaehyun and Cartagena Miguel and ... | APPLIED SCIENCES-BASEL | Other | Not specified | None | None | Not clear |
-| REV065 | ISA API: An open platform for interop... | 2021 | Johnson David and Batista Dominique a... | GIGASCIENCE | Other | Not specified | None | None | Experiment |
-| REV066 | Globalized Creative Economies: Rethin... | 2025 | Herman Laura et al. | FEMINIST FUTURES OF WORK: Reimagining... | Provenance | Not specified | None | None | Not clear |
-| REV067 | Trimma: Trimming Metadata Storage and... | 2024 | Li Yiwei and Tian Boyu and Gao Mingyu... | PROCEEDINGS OF THE 2024 THE INTERNATI... | Other | Not specified | None | None | Not clear |
-| REV068 | A Blockchain-Based IoT Data Managemen... | 2019 | Wang Yawei and Wang Chenxu and Luo Xi... | NETWORK AND SYSTEM SECURITY NSS 2019 | Blockchain | Not specified | None | None | Not clear |
-| REV069 | Consensus in Data Management With Use... | 2024 | Nawab Faisal and Sadoghi Mohammad et al. | PROCEEDINGS OF THE VLDB ENDOWMENT | Blockchain | Not specified | None | None | Not clear |
-| REV070 | A scalable blockchain based framework... | 2024 | Haque Ehtisham Ul and Shah Adil and I... | SCIENTIFIC REPORTS | Blockchain | Not specified | None | None | Not clear |
-| REV071 | Blockchain Technology Implementation ... | 2022 | Hira Fariha Anjum and Khalid Haliyana... | TEM JOURNAL-TECHNOLOGY EDUCATION MANA... | Blockchain | Not specified | None | None | Not clear |
-| REV072 | Blockchain-Based Privacy-Preserving S... | 2021 | Park Young-Hoon and Kim Yejin and Shi... | ELECTRONICS | Blockchain | Not specified | None | None | Not clear |
-| REV073 | A Sensitive Data Management System Ba... | 2025 | Liu Yukun and Zhang Zheng and Zhang J... | 2025 28TH INTERNATIONAL CONFERENCE ON... | Blockchain | Not specified | None | None | Not clear |
-| REV074 | BDSP: A Fair Blockchain-enabled Frame... | 2023 | Nguyen Lam D. and Hoang James and Wan... | 2023 IEEE INTERNATIONAL CONFERENCE ON... | Blockchain | Not specified | None | None | Not clear |
-| REV075 | Construction of Educational Resource ... | 2022 | Zhang Jingbin and Qi Tianxiang et al. | JOURNAL OF SENSORS | Other | Not specified | None | None | Not clear |
-| REV076 | Design and Development of a Provenanc... | 2024 | Gregori Luca and Missier Paolo and St... | 2024 IEEE 40TH INTERNATIONAL CONFEREN... | Provenance | Not specified | OPM | None | Not clear |
-| REV077 | Toward a versatile and scalable metad... | 2018 | Billa Eloise and Zertal Soraya and Le... | PROCEEDINGS 2018 INTERNATIONAL CONFER... | Other | Not specified | None | None | Not clear |
-| REV078 | A Two Tier Hybrid Metadata Management... | 2022 | Cai Tao and Gao Pengfei and Chen Fuli... | NETWORK AND PARALLEL COMPUTING NPC 2021 | Other | Not specified | None | None | Not clear |
-| REV079 | A Blockchain Approach to Ensuring Pro... | 2022 | Sifah Emmanuel Boateng and Xia Qi and... | IEEE SYSTEMS JOURNAL | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV080 | Quine: A Temporal Graph System for Pr... | 2018 | Wright Ryan et al. | PROVENANCE AND ANNOTATION OF DATA AND... | Provenance | Not specified | None | None | Proof of concept |
-| REV081 | A secure and extensible blockchain-ba... | 2020 | Sigwart Marten and Borkowski Michael ... | PERSONAL AND UBIQUITOUS COMPUTING | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV082 | Blockchain-Based Data Integrity and P... | 2026 | Venugopal Anita and Yogi Kottala Sri ... | ANALYTICAL LETTERS | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV083 | Trusted Blockchain-Based Signcryption... | 2022 | Su Jinqi and Ren Runtao and Li Yingha... | WIRELESS COMMUNICATIONS \& MOBILE COM... | Blockchain | Not specified | None | None | Not clear |
-| REV084 | Intelligent Data Management System an... | 2021 | Han Jing et al. | PROCEEDINGS OF THE 2021 FIFTH INTERNA... | Blockchain | Not specified | None | None | Not clear |
-| REV085 | Blockchain technology for efficient d... | 2022 | Singh Suruchi and Sharma Satish Kumar... | MATERIALS TODAY-PROCEEDINGS | Blockchain | Not specified | None | None | Not clear |
-| REV086 | The systematic assessment of complete... | 2025 | Huang Yu-Ning and Jaiswal Pooja Vinod... | GENOME BIOLOGY | Other | Not specified | None | None | Not clear |
-| REV087 | Semantic data sharing and pricing in ... | 2025 | Sitharamulu V. and Sucharitha G. and ... | DISCOVER COMPUTING | Blockchain | Not specified | None | None | Not clear |
-| REV088 | Secure and Provenance Enhanced Intern... | 2020 | Rahman Mohamed Abdur and Hossain M. S... | IEEE ACCESS | Provenance | Not specified | None | None | Not clear |
-| REV089 | User Acceptance of Usable Blockchain-... | 2019 | Shrestha Ajay Kumar and Vassileva Jul... | 2019 FIRST IEEE INTERNATIONAL CONFERE... | Blockchain | Not specified | None | None | Not clear |
-| REV090 | ProML: A Decentralised Platform for P... | 2022 | Nguyen Khoi Tran and Sabir Bushra and... | SOFTWARE ARCHITECTURE ECSA 2022 | Provenance | Not specified | None | None | Not clear |
-| REV091 | A Binary Feature Extraction based Dat... | 2018 | Wang Yangyizhou and Li Lan and Fan Le... | 2018 INTERNATIONAL CONFERENCE ON CYBE... | Provenance | Not specified | None | None | Not clear |
-| REV092 | IoT-Blockchain Enabled Optimized Prov... | 2020 | Khan Prince Waqas and Byun Yung-Cheol... | SENSORS | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV093 | Integrating Internet of Things Proven... | 2020 | Markovic Milan and Jacobs Naomi and D... | FRONTIERS IN SUSTAINABLE FOOD SYSTEMS | Blockchain; Provenance | Not specified | None | None | Not clear |
-| REV094 | Transforming Healthcare Data Manageme... | 2024 | Samala Agariadne Dwinggo and Rawas So... | INTERNATIONAL JOURNAL OF ONLINE AND B... | Blockchain | Not specified | None | None | Not clear |
-| REV095 | Blockchain-Based Data Management Syst... | 2023 | Anggraito Sigit and Parentio Rahman a... | 2023 28TH ASIA PACIFIC CONFERENCE ON ... | Blockchain | Not specified | None | None | Not clear |
-| REV096 | A privacy preserving medical data man... | 2025 | Taloba Ahmed I. and Rayan Alanazi et al. | SCIENTIFIC REPORTS | Blockchain | Not specified | None | None | Not clear |
-| REV097 | Do Blockchain and IoT Architecture Cr... | 2021 | Mazumdar Somnath and Jensen Thomas an... | PROCEEDINGS OF THE 54TH ANNUAL HAWAII... | Blockchain | Not specified | None | None | Not clear |
-| REV098 | On the Design and Implementation of a... | 2022 | Jing Zhengjun and Hu Niuping and Song... | APPLIED SCIENCES-BASEL | Blockchain | Not specified | None | None | Not clear |
-| REV099 | A Reliable Data Provenance and Privac... | 2018 | Liang Xueping and Shetty Sachin and T... | INTERNATIONAL JOURNAL OF INFORMATION ... | Provenance | Not specified | None | None | Not clear |
-| REV100 | Power global multi-source heterogeneo... | 2025 | Li Jiwei and Li Bo and Liu Shi and Lv... | RESULTS IN ENGINEERING | Other | Not specified | None | None | Not clear |
+| REV001 | Analysis of Web3 Platform Data Manage... | 2026 | Shi Jianzheng and Wang Yue and Ow Ter... | Distrib. Ledger Technol. | Other | Not specified | None | None | Not clear |
+| REV002 | Library resource sharing system and d... | 2025 | Sun Yuheng and Zhou Wei and Deng Lin ... | Proceedings of the 2024 3rd Internati... | Other | Not specified | None | None | Not clear |
+| REV003 | Design of Educational Data Management... | 2025 | Hata Yudai and Sakurai Kouichi et al. | Proceedings of the 2024 5th Internati... | Other | Not specified | None | None | Not clear |
+| REV004 | Reproducibility Report for ACM SIGMOD... | 2026 | Deng Yangshen and Fruth Michael and S... | Reproducibility Reports of the 2025 I... | Provenance | Not specified | None | None | Not clear |
+| REV005 | CP2GS: Cross-Platform Provenance Gene... | 2025 | Zhang Zilong and Dong Weiyu and Li Zh... | Proceedings of the 2025 4th Internati... | Provenance | Not specified | None | None | Not clear |
+| REV006 | A Blockchain-based System for Dataset... | 2025 | Galletta Antonino and Branca Salvator... | Proceedings of the 6th Workshop on Se... | Provenance | Not specified | None | None | Not clear |
+| REV007 | A Neuro-Symbolic and Blockchain-Enhan... | 2026 | Zhang Tiantian et al. | Proceedings of the 2025 International... | Other | Not specified | None | None | Not clear |
+| REV008 | SrFTL: Leveraging Storage Semantics f... | 2025 | Zhu Weidong and Hernandez Grant and G... | ACM Trans. Storage | Other | Not specified | None | None | Not clear |
+| REV009 | AI-Enhanced Blockchain Networks for C... | 2025 | Gupta Shubham and Vanteru Kusumakumar... | Proceedings of the 2025 4th Internati... | Provenance | Not specified | None | None | Not clear |
+| REV010 | The BigFAIR Architecture: Enabling Bi... | 2025 | Castro Jo\~ao Pedro de Carvalho and M... | J. Data and Information Quality | Other | Not specified | None | None | Not clear |
+| REV011 | Accelerating Verifiable Queries over ... | 2025 | Hua Yifan and Zheng Shengan and Kong ... | ACM Trans. Archit. Code Optim. | Other | Ethereum | None | None | Not clear |
+| REV012 | Performance Characterization and Prov... | 2025 | Gueroudji Amal and Phelps Chase and I... | Proceedings of the SC '24 Workshops o... | Provenance | Not specified | None | None | Not clear |
+| REV013 | Measuring While Playing Fair: An Empi... | 2025 | Magin Florian and Scherf Fabian and R... | Proceedings of the 2025 Workshop on S... | Other | Not specified | None | None | Not clear |
+| REV014 | Optimizing the Performance of NDP Ope... | 2025 | Li Lin and Chen Xianzhang and Li Jial... | Proceedings of the 60th Annual ACM/IE... | Other | Not specified | None | None | Not clear |
+| REV015 | Secure and Scalable Data Integrity Ve... | 2025 | S. Das; M. Mishra; R. Priyadarshini e... | 2025 IEEE 6th India Council Internati... | Provenance | Not specified | None | None | Not clear |
+| REV016 | Blockchain-Enhanced Chain of Custody ... | 2025 | R. Mishra; P. Arya; M. Narwaria; I. K... | 2025 IEEE International Conference on... | Provenance | Not specified | None | None | Not clear |
+| REV017 | GalaxyQ: A Platform for Reproducible ... | 2025 | B. Raubenolt; D. Blankenberg et al. | 2025 IEEE International Conference on... | Provenance | Not specified | None | None | Not clear |
+| REV018 | Decentralized Provenance Metadata Reg... | 2025 | T. Hardjono; D. Avrilionis et al. | 2025 IEEE International Conference on... | Provenance | Not specified | None | None | Not clear |
+| REV019 | Research on the Construction of Scien... | 2025 | S. Yang; Y. Liu; J. Meng; B. Li et al. | 2025 IEEE 12th Joint International In... | Other | Not specified | None | None | Not clear |
+| REV020 | Secured and Decentralized Diabetes Da... | 2025 | J. Eda; K. Khalil et al. | 2025 3rd International Conference on ... | Other | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV021 | A Private Blockchain-Based Secure Fra... | 2025 | S. Gupta; A. L. Sangal et al. | 2025 International Conference on Elec... | Other | Not specified | None | None | Not clear |
+| REV022 | A Secure and Privacy-Centric Blockcha... | 2025 | S. A. Baker; K. H. Thanoon; M. N. Abe... | 2024 International Conference on IT I... | Other | Not specified | None | None | Not clear |
+| REV023 | Blockchain-Based Evidence Tracking Sy... | 2025 | S. G; V. Narendhran; K. D; M. A; K. K... | 2025 1st International Conference on ... | Provenance | Ethereum | None | None | Not clear |
+| REV024 | Bridging Metadata Service and CXL: A ... | 2025 | X. Xu; X. Xie; X. Qiao; L. Tian; Q. W... | 2025 IEEE International Conference on... | Other | Not specified | None | None | Not clear |
+| REV025 | SSI-Enabled Authentication and Enhanc... | 2025 | L. Li; Y. Yasue; Y. Matsubara et al. | 2025 7th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV026 | Blockchain-Based Decentralized Health... | 2025 | S. M; C. Senthilkumar et al. | 2025 International Conference on Emer... | Other | Not specified | None | None | Not clear |
+| REV027 | A Decentralized System for NFT Metada... | 2025 | A. Lakshana; R. Hemalatha; M. R. A. J... | 2025 10th International Conference on... | Other | Ethereum | None | None | Not clear |
+| REV028 | Decentralized Health Data Management:... | 2025 | F. Franco; A. Bogliolo; S. Montagna; ... | 2025 33rd International Conference on... | Other | Not specified | None | None | Not clear |
+| REV029 | Decentralized Healthcare Data Managem... | 2025 | G. Amine; E. Abdelaziz; T. Abderrahim... | 2025 7th International Conference on ... | Blockchain | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV030 | SAHChain: A Hybrid Storage Blockchain... | 2026 | C. Qin; D. Liu; B. Guo; Y. Tan; A. Re... | IEEE Transactions on Computers | Other | Ethereum | None | None | Not clear |
+| REV031 | Healthcare Big Data Management: A Tax... | 2025 | A. Arya; A. Malik et al. | 2025 Eighth International Conference ... | Other | Not specified | None | None | Not clear |
+| REV032 | SecureGenAI: A Standardized Framework... | 2025 | D. Besiahgari et al. | 2025 International Conference on Know... | Provenance | Not specified | None | None | Not clear |
+| REV033 | Provenance of AI-Generated Images: A ... | 2026 | J. Sharma; A. Carvalho; S. Bhunia et al. | 2026 IEEE 23rd Consumer Communication... | Provenance | Not specified | None | None | Not clear |
+| REV034 | Task-Driven Dynamic Metadata Mapping ... | 2025 | Y. Lin; C. Zhang; H. Boerzhijin et al. | 2025 International Conference on Trus... | Other | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV035 | A Patient-Centric Blockchain-Based Fr... | 2025 | W. Tarannum; S. Abidin et al. | 2025 3rd International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV036 | Health Data Management System Using B... | 2025 | P. V. Terlapu; R. Salakapuri; V. Kart... | 2025 International Conference on Next... | Other | Not specified | None | None | Not clear |
+| REV037 | Blockchain Data Management and SmartC... | 2025 | M. Pehlke; S. Fedder; C. Schmitt; M. ... | 2025 7th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV038 | Integrating Ensemble Learning and Blo... | 2025 | P. Pattnayak; T. Das; S. Patnaik; A. ... | 2025 IEEE 2nd International Conferenc... | Other | Not specified | None | None | Not clear |
+| REV039 | An Efficient Blockchain and Deep Lear... | 2025 | S. M. E; S. K; D. K. S; S. A. S. S et... | 2025 International Conference on Comp... | Other | Not specified | None | None | Not clear |
+| REV040 | A Blockchain Framework for Secure Hea... | 2025 | S. Akter; T. F. Sanam et al. | 2025 International Conference on Elec... | Other | Not specified | None | None | Not clear |
+| REV041 | Ontology-Driven LLM Service Protocol ... | 2025 | Y. Kwon; J. Lee; Y. B. Park et al. | 2025 16th International Conference on... | Provenance | Not specified | None | None | Not clear |
+| REV042 | Decentralized Intelligence for Smart ... | 2025 | S. Hardia et al. | 2025 IEEE 16th International Symposiu... | Other | Not specified | None | None | Not clear |
+| REV043 | Blockchain and the Internet of Health... | 2025 | B. K. Malamuthu; G. Pandian; K. Cherl... | 2025 International Conference on Info... | Other | Not specified | None | None | Not clear |
+| REV044 | Platform for Secure Data Management a... | 2025 | M. S. Saranya; T. Akshita et al. | 2025 6th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV045 | HireIndex: A RAG-Enhanced AI Recruitm... | 2025 | A. Tiwari; A. Katiyar; S. Dhanuka; N.... | 2025 8th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV046 | Certificate Verification in Dual Bloc... | 2025 | K. Hariprasath; N. M. S. Kumar et al. | 2025 IEEE 7th International Conferenc... | Provenance | Not specified | None | None | Not clear |
+| REV047 | Blockchain-Integrated Generative AI F... | 2025 | J. Dinesh Kumar; P. Dhayanithi; C. Su... | 2025 International Conference on NexG... | Provenance | Not specified | None | None | Not clear |
+| REV048 | Enhanced Naïve Bayes Model for Intell... | 2025 | V. R; D. Kamalin; S. Vanaja; C. H. Ra... | 2025 International Conference on Meta... | Provenance | Not specified | None | None | Not clear |
+| REV049 | Real-Time Fake News Detection System ... | 2025 | H. A V; S. T; V. C et al. | 2025 9th International Conference on ... | Provenance | Not specified | None | None | Not clear |
+| REV050 | An educational data depositing and ve... | 2025 | L. Lan; S. Yang; T. Leng; B. Han; Y. ... | 4th International Conference on Elect... | Provenance | Not specified | None | None | Not clear |
+| REV051 | Semantic Segmentation of Aerial Image... | 2025 | S. Mahapatra; P. Mishra; R. K. Dash; ... | 2025 OITS International Conference on... | Other | Not specified | None | None | Not clear |
+| REV052 | Key Technologies and Verification of ... | 2026 | Y. Luo et al. | 2026 6th International Conference on ... | Provenance | Not specified | None | None | Not clear |
+| REV053 | Design of a Cross-Platform Simulation... | 2025 | Z. Yang; S. Li; C. Zhou et al. | 2025 10th International Conference on... | Provenance | Not specified | None | None | Not clear |
+| REV054 | NEXERA: A Unified Smart Education Pla... | 2025 | S. S; S. B; T. S P; V. J; S. J et al. | 2025 6th International Conference on ... | Provenance | Not specified | None | None | Not clear |
+| REV055 | Graph-Based Customer Deduplication Us... | 2025 | T. Gürel; Ç. Atan; S. Çakmak; C. Ö. Z... | 2025 9th International Artificial Int... | Other | Not specified | None | None | Not clear |
+| REV056 | Blockchain-based Distributed Provenan... | 2025 | R. Li et al. | 2025 6th International Conference on ... | Provenance | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV057 | Novel Immutable Data Provenance in Em... | 2025 | K.Kalaiselvi; M. M. Al-Momani; E.Siva... | 2025 IEEE 7th International Conferenc... | Provenance | Not specified | None | None | Not clear |
+| REV058 | Reproducible Evaluation of Camera Aut... | 2025 | O. Gamache; J. -M. Fortin; M. Boxan; ... | IEEE Transactions on Field Robotics | Other | Not specified | None | None | Not clear |
+| REV059 | Towards Secure Medical Data Managemen... | 2025 | H. Makina; I. A. Ojen; A. Ben Letaifa... | 2025 IEEE Twelfth International Confe... | Other | Not specified | None | None | Not clear |
+| REV060 | VeilLock: Privacy-First Decentralized... | 2025 | V. S; D. R; R. S et al. | 2025 9th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV061 | Explainable AI-Enabled Privacy-Preser... | 2026 | J. Dutta; D. Puthal et al. | IEEE Transactions on Services Computing | Other | Not specified | None | None | Not clear |
+| REV062 | Advancing Blockchain-Based Systems to... | 2025 | M. Gulhane; N. Rakesh; S. Dixit; R. S... | 2025 10th International Conference on... | Other | Not specified | None | None | Not clear |
+| REV063 | Blockchain Powered IoT Solutions for ... | 2025 | A. AlGhamdi; H. B. Furaijl; N. A. Al-... | 2025 4th OPJU International Technolog... | Other | Not specified | None | None | Not clear |
+| REV064 | Post-Quantum Security for Blockchain ... | 2025 | Ö. Karaduman; Z. B. Gürbüz; M. T. Gen... | 2025 9th International Symposium on I... | Other | Not specified | None | None | Not clear |
+| REV065 | Blockchain for Healthcare: A Patient-... | 2025 | M. B. Jallow; E. Jaw et al. | 2025 IEEE European Technology and Eng... | Other | Not specified | None | None | Not clear |
+| REV066 | Development of AI Models Driven by Bl... | 2025 | S. A. Khan; F. A. Khan; S. Srinivasan... | 2025 IEEE International Conference on... | Other | Not specified | None | None | Not clear |
+| REV067 | Blockchain-Integrated Cloud and Edge ... | 2025 | N. Thakur; R. Gupta; S. Yadav et al. | 2025 IEEE 2nd International Conferenc... | Other | Not specified | None | None | Not clear |
+| REV068 | HBC-Med: A Hybrid Blockchain Model fo... | 2025 | E. Petkov; S. Georgiev et al. | 2025 9th International Symposium on M... | Other | Hyperledger Fabric; Ethereum; Hyperle... | None | None | Not clear |
+| REV069 | A Smart Medical Monitoring Data Manag... | 2025 | L. Chen; Y. Sun; Z. Wang; W. Guo et al. | 2025 2nd International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV070 | Integrating AI and Blockchain Technol... | 2025 | D. Manju; P. Gandham; A. V. B. Paavan... | 2025 International Conference on Inno... | Other | Ethereum | None | None | Not clear |
+| REV071 | Blockchain-Based Healthcare Data Mana... | 2025 | D. Zilong; M. Muwafak Alobaedy et al. | 2025 5th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV072 | Blockchain Technology for Secure and ... | 2025 | S. G. Kharat; S. S. Kethu; V. N. R. K... | 2025 2nd International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV073 | Secure and Transparent Rural Health D... | 2025 | A. A. Ahmed; D. K. Hanirex et al. | 2025 Global Conference on Information... | Other | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV074 | Hieranet: Hierarchical Blockchain-Bas... | 2025 | S. K; A. S. Poornima; K. LG; M. Shrey... | 2025 2nd International Conference on ... | Other | Ethereum | None | None | Not clear |
+| REV075 | Blockchain Driven Holistic Healthcare... | 2025 | D. Jaiswal; A. Choubey; M. Jaiswal; S... | 2025 International Conference on Sust... | Other | Not specified | None | None | Not clear |
+| REV076 | Leveraging Blockchain for Secure and ... | 2025 | M. S; S. Thaseen; V. D. Sahu; P. D. D... | 2025 2nd International Conference on ... | Other | Ethereum | None | None | Not clear |
+| REV077 | Efficient GDPR-Compliant Blockchain D... | 2025 | S. V; M. N. S et al. | 2025 IEEE 6th Global Conference for A... | Other | Not specified | None | None | Not clear |
+| REV078 | MedVault: A Blockchain-Integrated Dee... | 2025 | M. S. Karthikeyan; R. Rajasree; R. S.... | 2025 International Conference on Inte... | Other | Hyperledger Fabric; Ethereum; Hyperle... | None | None | Not clear |
+| REV079 | Blockchain-Driven Non-Repudiation and... | 2025 | S. K. Jagatheesaperumal; P. Sathikuma... | ICC 2025 - IEEE International Confere... | Other | Ethereum; Hyperledger | None | None | Not clear |
+| REV080 | Enterprise-Oriented Consortium Blockc... | 2025 | S. M. Zanjani; F. Ebrahimi; S. Mehrab... | 2025 9th Iranian Conference on Advanc... | Other | Not specified | None | None | Not clear |
+| REV081 | Blockchain-Enabled Framework for Effi... | 2025 | V. I. Kanu; J. Isong; S. O. Ajakwe; T... | 2025 Sixteenth International Conferen... | Other | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV082 | Efficient Persistent Storage of Graph... | 2025 | S. -O. Hänsel; C. Kleiner; F. Heine; ... | 2025 IEEE 13th International Conferen... | Provenance | Not specified | None | None | Not clear |
+| REV083 | Digital Library XML Metadata Storage ... | 2025 | Z. Sun et al. | 2025 4th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV084 | A Credible and Fair Federated Learnin... | 2025 | L. Chen; D. Zhao; L. Tao; K. Wang; S.... | IEEE Transactions on Artificial Intel... | Other | Not specified | None | None | Not clear |
+| REV085 | FlexTEE: Dynamically Enhancing Metada... | 2025 | R. M. Shadab; S. Gandham; M. Lin et al. | 2025 IEEE/ACM International Conferenc... | Other | Not specified | None | None | Not clear |
+| REV086 | A Two-Layer Metadata Framework for Cr... | 2025 | Y. Zhang; J. Niu et al. | 2025 9th International Symposium on C... | Other | Not specified | None | None | Not clear |
+| REV087 | A StationXML-Based Platform for Seism... | 2025 | D. Wu; Z. Li; S. Zhang; Q. Yu et al. | 2025 IEEE 7th International Conferenc... | Other | Not specified | None | None | Not clear |
+| REV088 | An AI-Powered Metadata-Driven File Ma... | 2025 | W. N. Devindi; K. M. Piyumal et al. | 2025 International Conference on Adva... | Other | Not specified | None | None | Not clear |
+| REV089 | Spoke 3 Big Data Management, Storage,... | 2025 | G. Coran; M. Costantini; S. Gelsumini... | 2025 33rd Euromicro International Con... | Other | Not specified | None | None | Not clear |
+| REV090 | A Comprehensive Survey on Secure Heal... | 2025 | S. Muthuvel; K. S. Kumar; R. K. Manoj... | 2025 International Conference on Emer... | Other | Not specified | None | None | Not clear |
+| REV091 | An Urban Data Management Platform for... | 2025 | I. Sotiropoulos; I. Karvelas; E. Sarm... | 2025 16th International Conference on... | Other | Not specified | None | None | Not clear |
+| REV092 | AI-Enhanced Job Search Platform for P... | 2025 | Mrs.A.Elavarasi; S. Devipriya; S. Gay... | 2025 5th International Conference on ... | Other | Not specified | None | None | Not clear |
+| REV093 | PBFT-Integrated Blockchain and AI-Dri... | 2025 | B. Abisha; V. S. Kumari; G. Rajaram e... | 2025 3rd International Conference on ... | Provenance | Not specified | None | None | Not clear |
+| REV094 | Towards Ethical Health Claim Verifica... | 2025 | C. E. R. Alba; J. M. M. Díaz; A. H. M... | 2025 IEEE International Smart Cities ... | Provenance | Not specified | None | None | Not clear |
+| REV095 | Blockchain-based Certificate Verifica... | 2025 | M. K; V. Y. S. T; C. P. Shankara; L. ... | 2025 International Conference on Sust... | Provenance; Blockchain | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV096 | A Secured Signature Verification Sche... | 2025 | S. R; S. M; S. A; S. P; S. S; S. G et... | 2025 International Conference on Rece... | Provenance | Hyperledger Fabric; Hyperledger | None | None | Not clear |
+| REV097 | Blockchain-Supported Adaptive Hash Ve... | 2025 | R. Gayathri; I. Kaur; P. N. S; S. Dha... | 2025 2nd International Conference on ... | Provenance | Not specified | None | None | Not clear |
+| REV098 | Blockchain-Based Credential Models: E... | 2025 | D. M. F. Rehtaliani; A. Alamsyah et al. | 2025 4th International Conference on ... | Provenance | Ethereum | None | None | Not clear |
+| REV099 | Video Integrity Verification against ... | 2025 | F. AlOtaibi; S. Aljohani; G. Alnifie ... | 2025 Computing, Communications and Io... | Provenance | Not specified | None | None | Not clear |
+| REV100 | Descriptor: Synthetic Carbon Capture ... | 2026 | S. Muktevi; Y. Nagpal; R. Leela; J. M... | IEEE Data Descriptions | Provenance | Not specified | None | None | Not clear |
 
-*... and 137 more studies (see extraction form for complete list)*
+*... and 147 more studies (see extraction form for complete list)*
 
 ---
 
@@ -417,10 +460,10 @@ Custom | None | OPM | OPM; Custom
 | Iroha x None | No studies found | 0 |
 | Ethereum x PROV-O | Public blockchain with standard provenance | 0 |
 | Ethereum x PROV-DM | No studies found | 0 |
+| Ethereum x OPM | No studies found | 0 |
+| Ethereum x Custom | No studies found | 0 |
 | Hyperledger x PROV-O | Hyperledger ecosystem with W3C PROV | 0 |
 | Hyperledger x PROV-DM | No studies found | 0 |
-| Hyperledger x OPM | No studies found | 0 |
-| Hyperledger x Custom | No studies found | 0 |
 
 ---
 
@@ -428,9 +471,9 @@ Custom | None | OPM | OPM; Custom
 
 ### 8.1 Summary of Current State
 
-- The review identified **237 studies** addressing blockchain for scientific data provenance
-- Research spans from 2018 to 2026
-- Most studies (53.2%) focus on blockchain infrastructure
+- The review identified **247 studies** addressing blockchain for scientific data provenance
+- Research spans from 2025 to 2026
+- Most studies (1.2%) focus on blockchain infrastructure
 - Limited integration of formal provenance models (PROV-O)
 - Few studies address maDMP specifically
 
@@ -455,7 +498,7 @@ Custom | None | OPM | OPM; Custom
 
 ## 10. Conclusions
 
-This systematic review identified **237 relevant studies** examining blockchain-enabled provenance for scientific data management. 
+This systematic review identified **247 relevant studies** examining blockchain-enabled provenance for scientific data management. 
 The literature shows growing interest in blockchain for research data integrity, with a concentration on permissionless platforms. 
 However, significant gaps remain in permissioned blockchain solutions, PROV-O integration, and maDMP support. 
 This review provides a foundation for understanding the current landscape and identifying opportunities for future research, 
@@ -463,5 +506,5 @@ particularly in addressing the reproducibility crisis through cryptographically-
 
 ---
 
-*Report generated: March 04, 2026*
+*Report generated: March 14, 2026*
 *Full extraction data available in: 04_extraction_form.csv*

@@ -10,6 +10,8 @@
 "Platform x Provenance Model","Iroha x None","No studies found",0
 "Platform x Provenance Model","Ethereum x PROV-O","Public blockchain with standard provenance",0
 "Platform x Provenance Model","Ethereum x PROV-DM","No studies found",0
+"Platform x Provenance Model","Ethereum x OPM","No studies found",0
+"Platform x Provenance Model","Ethereum x Custom","No studies found",0
 "Platform x Provenance Model","Hyperledger x PROV-O","Hyperledger ecosystem with W3C PROV",0
 "Platform x Provenance Model","Hyperledger x PROV-DM","No studies found",0
 "Platform x Provenance Model","Hyperledger x OPM","No studies found",0
@@ -22,15 +24,13 @@
 "Platform x Provenance Model","Multi-chain x PROV-O","No studies found",0
 "Platform x Provenance Model","Multi-chain x PROV-DM","No studies found",0
 "Platform x Provenance Model","Multi-chain x OPM","No studies found",0
+"Platform x Provenance Model","Multi-chain x Custom","No studies found",0
 "Platform x Provenance Model","Not specified x PROV-O","No studies found",0
 "Platform x Provenance Model","Not specified x PROV-DM","No studies found",0
-"Platform x Provenance Model","Ethereum x OPM","Active research area",1
-"Platform x Provenance Model","Ethereum x Custom","Active research area",1
-"Platform x Provenance Model","Hyperledger x None","Active research area",1
-"Platform x Provenance Model","Multi-chain x Custom","Active research area",1
+"Platform x Provenance Model","Not specified x OPM","No studies found",0
+"Platform x Provenance Model","Not specified x Custom","No studies found",0
 "Platform x Provenance Model","Multi-chain x None","Active research area",1
-"Platform x Provenance Model","Fabric x None","Active research area",3
-"Platform x Provenance Model","Ethereum x None","Active research area",5
-"Platform x Provenance Model","Not specified x Custom","Active research area",12
-"Platform x Provenance Model","Not specified x OPM","Active research area",23
-"Platform x Provenance Model","Not specified x None","Active research area",191
+"Platform x Provenance Model","Fabric x None","Active research area",15
+"Platform x Provenance Model","Hyperledger x None","Active research area",17
+"Platform x Provenance Model","Ethereum x None","Active research area",21
+"Platform x Provenance Model","Not specified x None","Active research area",212
