@@ -1,8 +1,8 @@
 Package: slrengine
 Type: Package
 Title: Systematic Literature Review Engine
-Version: 1.0.0
-Date: 2026-02-26
+Version: 2.0.0
+Date: 2026-03-14
 Authors@R: c(
     person("Researcher", "Primary", email = "researcher@example.com", role = c("aut", "cre"))
   )
