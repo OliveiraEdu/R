@@ -188,7 +188,7 @@ generate_search_strings <- function(protocol_version = "1.0") {
   concepts <- list(
     provenance = config$PICOC_criteria$Provenance$keywords,
     technology = config$PICOC_criteria$Blockchain_Platform$keywords,
-    data_management = c(config$PICOC_criteria$maDMP_Support$keywords,
+    data_management = c(config$PICOC_criteria$Contribution$keywords,
                         config$PICOC_criteria$Scientific_Data$keywords)
   )
   
@@ -260,7 +260,7 @@ generate_search_strings <- function(protocol_version = "1.0") {
 # Protocol 4.0 - Title-focused search (narrow scope, high precision)
 # Build Protocol 4 concepts from config
 protocol_4_concepts <- list(
-  maDMP_Support = config$PICOC_criteria$maDMP_Support$keywords,
+  Contribution = config$PICOC_criteria$Contribution$keywords,
   Provenance_Model = config$PICOC_criteria$Provenance_Model$keywords,
 
   Blockchain_Platform = config$PICOC_criteria$Blockchain_Platform$keywords,
@@ -283,7 +283,7 @@ protocol_4_strings <- list(
   arxiv = build_protocol_4_string(title_operators$arxiv, protocol_4_concepts, enclosure_style$arxiv),
   scholar = build_protocol_4_scholar(protocol_4_concepts)
 )
-  arxiv_categories <- c("cs.DC", "q-bio.QM", "stat.ML", "cs.LG", "cs.AI")
+  arxiv_categories <- config$arxiv_categories
    # Return based on protocol version
    if (protocol_version == "1.0") {
      search_strings <- narrow_strings
@@ -305,7 +305,7 @@ protocol_4_strings <- list(
        concepts = protocol_4_concepts,
        filters = protocol_4_filters,
        arxiv_categories = arxiv_categories,
-       date_range = "2025-2026",
+       date_range = config$date_range$end,
        search_strings = search_strings,
        strategy = "title-focused",
        focus = "maDMP + blockchain provenance intersection"

@@ -261,7 +261,8 @@ generate_search_strings <- function(protocol_version = "1.0") {
 # Build Protocol 4 concepts from config
 protocol_4_concepts <- list(
   maDMP_Support = config$PICOC_criteria$maDMP_Support$keywords,
-  Provenance = config$PICOC_criteria$Provenance$keywords,
+  Provenance_Model = config$PICOC_criteria$Provenance_Model$keywords,
+
   Blockchain_Platform = config$PICOC_criteria$Blockchain_Platform$keywords,
   Openness = config$PICOC_criteria$Openness$keywords,
   Scientific_Data = config$PICOC_criteria$Scientific_Data$keywords

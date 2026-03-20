@@ -254,3 +254,42 @@ PICOC_criteria:
       - "User evaluation"
       - Survey
       - Evaluation
+title_operators:
+  ieee: "Title:"
+  scopus: "Title:"
+  wos: "Title:"
+  pubmed: "Title:"
+  acm: "Title:"
+  arxiv: "Title:"
+  scholar: "\"Title:\""
+
+enclosure_style:
+  ieee: true
+  scopus: true
+  wos: true
+  pubmed: true
+  acm: true
+  arxiv: false
+  scholar: false
+
+protocol_4_filters:
+  ieee: "Document Type: Conference OR Journal; Year: 2025-2026"
+  scopus: "Subject Area: Computer Science; Year: 2025-2026"
+  wos: "Categories: Computer Science, Information Science; Year: 2025-2026"
+  pubmed: "Publication Types: Article, Review; Year: 2025-2026"
+  acm: "Content Type: Conference Papers, Journal Articles; Year: 2025-2026"
+  arxiv: "Categories: cs.DC, cs.CY, q-bio.QM; Year: 2025-2026"
+  scholar: "Limit first 200 results"
+
+arxiv_categories:
+  - cs.DC
+  - cs.CY
+  - q-bio.QM
+  - stat.ML
+  - cs.LG
+  - cs.AI
+
+date_range:
+  start: 2025
+  end: 2026
+

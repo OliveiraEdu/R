@@ -267,6 +267,39 @@ enclosure_style:
   arxiv: TRUE
   scholar: FALSE
 
+# arXiv categories for Protocol 4.0
+arxiv_categories:
+  - cs.AI
+  - cs.CL
+  - cs.CV
+  - cs.DL
+  - cs.IR
+  - cs.IT
+  - cs.LO
+  - cs.NI
+  - eess.SY
+  - math-ph
+  - math.AC
+  - math.AG
+  - math.AT
+  - math.CT
+  - math.DG
+  - math.FA
+  - math.GM
+  - math.GR
+  - math.HO
+  - math.KT
+  - math.LO
+  - math.OA
+  - math.QA
+  - math.RA
+  - math.RT
+  - quant-ph
+  - stat.ML
+  - cs.DC
+  - cs.CY
+  - q-bio.QM
+
 protocol_4_filters:
   ieee: "Document Type: Conference OR Journal; Year: 2025-2026"
   scopus: "Subject Area: Computer Science; Doc Type: Article, Conference Paper; Year: 2025-2026"

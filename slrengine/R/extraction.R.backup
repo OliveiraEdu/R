@@ -29,10 +29,14 @@ extract_data <- function(df) {
   extraction$Research_Focus <- sapply(df$TI, function(ti) {
     if (is.na(ti)) return("Unknown")
     ti_lower <- tolower(ti)
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     focus <- c()
-    if (any(grepl("blockchain|distributed ledger", ti_lower))) focus <- c(focus, "Blockchain")
-    if (any(grepl("provenance|data lineage|chain of custody", ti_lower))) focus <- c(focus, "Provenance")
-    if (any(grepl("madmp|data management plan|dmp", ti_lower))) focus <- c(focus, "maDMP")
+    keywords <- config$PICOC_criteria$Provenance$keywords
+    if (any(sapply(keywords, function(k) grepl(k, ti_lower, ignore.case = TRUE)))) focus <- c(focus, "Provenance")
+    keywords <- config$PICOC_criteria$Blockchain_Platform$keywords
+    if (any(sapply(keywords, function(k) grepl(k, ti_lower, ignore.case = TRUE)))) focus <- c(focus, "Blockchain")
+    keywords <- config$PICOC_criteria$maDMP_Support$keywords
+    if (any(sapply(keywords, function(k) grepl(k, ti_lower, ignore.case = TRUE)))) focus <- c(focus, "maDMP")
     if (length(focus) == 0) focus <- "Other"
     paste(focus, collapse = "; ")
   })
@@ -40,9 +44,8 @@ extract_data <- function(df) {
   # System Name (extract from title if mentioned)
   extraction$System_Name <- sapply(df$TI, function(ti) {
     if (is.na(ti)) return(NA)
-    # Common blockchain provenance systems
-    systems <- c("Hyperledger", "Fabric", "Iroha", "Ethereum", "ChainAnchor", 
-                 "Provenance", "OpenProvenance", "W3C PROV", "IPFS", "BigchainDB")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
+    systems <- config$PICOC_criteria$System_Name$keywords
     found <- systems[sapply(systems, function(s) grepl(s, ti, ignore.case = TRUE))]
     if (length(found) > 0) paste(found, collapse = ", ") else NA
   })
@@ -50,35 +53,44 @@ extract_data <- function(df) {
   # Blockchain Platform
   extraction$Blockchain_Platform <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("Not specified")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
+    platforms <- config$PICOC_criteria$Blockchain_Platform$keywords
     text_lower <- tolower(text)
-    platforms <- c()
-    if (any(grepl("hyperledger fabric|fabric", text_lower))) platforms <- c(platforms, "Fabric")
-    if (any(grepl("hyperledger iroha|iroha", text_lower))) platforms <- c(platforms, "Iroha")
-    if (any(grepl("ethereum", text_lower))) platforms <- c(platforms, "Ethereum")
-    if (any(grepl("hyperledger", text_lower))) platforms <- c(platforms, "Hyperledger")
-    if (any(grepl("bigchaindb", text_lower))) platforms <- c(platforms, "BigchainDB")
-    if (any(grepl("multichain", text_lower))) platforms <- c(platforms, "Multi-chain")
-    if (any(grepl("corda", text_lower))) platforms <- c(platforms, "Corda")
-    if (any(grepl("hyperledger sawtooth|sawtooth", text_lower))) platforms <- c(platforms, "Sawtooth")
-    if (length(platforms) == 0) platforms <- "Not specified"
-    paste(unique(platforms), collapse = "; ")
+    detected <- c()
+    for (p in platforms) {
+      if (any(grepl(p, text_lower, ignore.case = TRUE))) detected <- c(detected, p)
+    }
+    if (length(detected) == 0) detected <- "Not specified"
+    paste(detected, collapse = "; ")
   })
   
   # Storage Integration (Protocol 4.0)
   extraction$Storage_Integration <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("Not specified")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     text_lower <- tolower(text)
     storage <- c()
-    if (any(grepl("ipfs", text_lower))) {
-      if (any(grepl("blockchain.*ipfs|ipfs.*blockchain", text_lower))) {
+    keywords <- config$PICOC_criteria$Storage_Integration$keywords
+    if (any(sapply(keywords, function(k) grepl(k, text_lower, ignore.case = TRUE)))) {
+      # Check for IPFS + blockchain combination
+      if (any(grepl("blockchain", text_lower)) && any(grepl("ipfs", text_lower))) {
         storage <- c(storage, "IPFS + blockchain")
-      } else {
+      } else if (any(grepl("ipfs", text_lower))) {
         storage <- c(storage, "IPFS")
       }
     }
-    if (any(grepl("external database|external db|off-chain|database", text_lower))) storage <- c(storage, "External DB")
-    if (any(grepl("orbitdb", text_lower))) storage <- c(storage, "OrbitDB")
-    if (any(grepl("ipfs", text_lower)) && any(grepl("external|off-chain", text_lower))) storage <- c(storage, "Hybrid")
+    # Check for external database
+    if (any(grepl("external database|external db|off-chain|database", text_lower))) {
+      storage <- c(storage, "External DB")
+    }
+    # Check for OrbitDB
+    if (any(grepl("orbitdb", text_lower))) {
+      storage <- c(storage, "OrbitDB")
+    }
+    # Check for Hybrid (using config keywords)
+    if (any(grepl("hybrid", text_lower)) && any(sapply(config$PICOC_criteria$Storage_Integration$keywords, function(k) grepl(k, text_lower, ignore.case = TRUE)))) {
+      storage <- c(storage, "Hybrid")
+    }
     if (length(storage) == 0) storage <- "Not specified"
     paste(unique(storage), collapse = "; ")
   })
@@ -86,19 +98,26 @@ extract_data <- function(df) {
   # Permission Model (Protocol 4.0)
   extraction$Permission_Model <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("Not specified")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     text_lower <- tolower(text)
     model <- c()
-    if (any(grepl("permissioned|private.*blockchain|licensed", text_lower))) {
+    keywords <- config$PICOC_criteria$Permission_Model$keywords
+    if (any(grepl(keywords, text_lower, ignore.case = TRUE))) {
+      # Check for permissioned blockchain platforms
       if (any(grepl("fabric|iroha|corda|hyperledger", text_lower))) {
         model <- c(model, "Permissioned")
       }
     }
-    if (any(grepl("permissionless|public.*blockchain|unlicensed|ethereum", text_lower))) {
+    # Check for permissionless/public blockchain
+    if (any(grepl("permissionless|public.*blockchain|unlicensed", text_lower))) {
       if (!any(grepl("private|permissioned", text_lower))) {
         model <- c(model, "Permissionless")
       }
     }
-    if (any(grepl("hybrid.*blockchain|quorum|multichain", text_lower))) model <- c(model, "Hybrid")
+    # Check for hybrid blockchain (using config keywords)
+    if (any(grepl("hybrid", text_lower)) && any(sapply(config$PICOC_criteria$Permission_Model$keywords, function(k) grepl(k, text_lower, ignore.case = TRUE)))) {
+      model <- c(model, "Hybrid")
+    }
     if (length(model) == 0) model <- "Not specified"
     paste(unique(model), collapse = "; ")
   })
@@ -106,12 +125,28 @@ extract_data <- function(df) {
   # Provenance Model
   extraction$Provenance_Model <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("Not specified")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     text_lower <- tolower(text)
     models <- c()
-    if (any(grepl("prov-o|w3c prov|prov model", text_lower))) models <- c(models, "PROV-O")
-    if (any(grepl("prov-dm|prov-dm", text_lower))) models <- c(models, "PROV-DM")
-    if (any(grepl("opm|open provenance model", text_lower))) models <- c(models, "OPM")
-    if (any(grepl("custom|proprietary", text_lower))) models <- c(models, "Custom")
+    keywords <- config$PICOC_criteria$Provenance_Model$keywords
+    if (any(grepl(keywords, text_lower, ignore.case = TRUE))) {
+      # Check for PROV-O
+      if (any(grepl("prov-o|w3c prov|prov model", text_lower))) {
+        models <- c(models, "PROV-O")
+      }
+      # Check for PROV-DM
+      if (any(grepl("prov-dm", text_lower))) {
+        models <- c(models, "PROV-DM")
+      }
+      # Check for OPM
+      if (any(grepl("opm|open provenance model", text_lower))) {
+        models <- c(models, "OPM")
+      }
+      # Check for custom/proprietary
+      if (any(grepl("custom|proprietary", text_lower))) {
+        models <- c(models, "Custom")
+      }
+    }
     if (length(models) == 0) models <- "None"
     paste(unique(models), collapse = "; ")
   })
@@ -119,8 +154,10 @@ extract_data <- function(df) {
   # maDMP Support
   extraction$maDMP_Support <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("None")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     text_lower <- tolower(text)
-    if (any(grepl("madmp|rdamp|data management plan", text_lower))) {
+    keywords <- config$PICOC_criteria$maDMP_Support$keywords
+    if (any(grepl(keywords, text_lower, ignore.case = TRUE))) {
       if (any(grepl("full|complete|implement", text_lower))) return("Full")
       return("Partial")
     }
@@ -130,12 +167,28 @@ extract_data <- function(df) {
   # Evaluation Method
   extraction$Evaluation_Method <- sapply(paste(df$TI, df$AB), function(text) {
     if (is.na(text)) return("Not clear")
+    config <- yaml::read_yaml("/workspaces/R/slrengine/config.yaml")
     text_lower <- tolower(text)
     methods <- c()
-    if (any(grepl("experiment|performance evaluation|benchmark", text_lower))) methods <- c(methods, "Experiment")
-    if (any(grepl("case study", text_lower))) methods <- c(methods, "Case study")
-    if (any(grepl("user study|user evaluation|survey", text_lower))) methods <- c(methods, "User study")
-    if (any(grepl("proof of concept|demonstration|poc", text_lower))) methods <- c(methods, "Proof of concept")
+    keywords <- config$PICOC_criteria$Evaluation_Method$keywords
+    if (any(grepl(keywords, text_lower, ignore.case = TRUE))) {
+      # Check for experiment/performance evaluation/benchmark
+      if (any(grepl("experiment|performance evaluation|benchmark", text_lower))) {
+        methods <- c(methods, "Experiment")
+      }
+      # Check for case study
+      if (any(grepl("case study", text_lower))) {
+        methods <- c(methods, "Case study")
+      }
+      # Check for user study/evaluation/survey
+      if (any(grepl("user study|user evaluation|survey", text_lower))) {
+        methods <- c(methods, "User study")
+      }
+      # Check for proof of concept/demonstration
+      if (any(grepl("proof of concept|demonstration|poc", text_lower))) {
+        methods <- c(methods, "Proof of concept")
+      }
+    }
     if (length(methods) == 0) methods <- "Not clear"
     paste(unique(methods), collapse = "; ")
   })
